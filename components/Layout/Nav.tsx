@@ -1,3 +1,4 @@
+import { User } from '@/api-lib/types'
 import { Avatar } from '@/components/Avatar'
 import { Button, ButtonLink } from '@/components/Button'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
@@ -11,12 +12,6 @@ import Container from './Container'
 import styles from './Nav.module.css'
 import Spacer from './Spacer'
 import Wrapper from './Wrapper'
-
-type User = {
-  _id: string
-  username: string
-  profilePicture?: string | null
-}
 
 type UserMenuProps = {
   user: User
@@ -83,15 +78,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
       >
         {visible && (
           <div className={styles.menu}>
-            <Link href={`/user/${user.username}`} passHref legacyBehavior>
-              <a className={styles.item} href={`/user/${user.username}`}>
-                Profile
-              </a>
+            <Link href={`/user/${user.username}`} className={styles.item}>
+              Profile
             </Link>
-            <Link href='/settings' passHref legacyBehavior>
-              <a className={styles.item} href='/settings'>
-                Settings
-              </a>
+            <Link href='/settings' className={styles.item}>
+              Settings
             </Link>
             <div className={styles.item} style={{ cursor: 'auto' }}>
               <Container alignItems='center'>
@@ -121,17 +112,15 @@ const Nav: React.FC = () => {
           alignItems='center'
           justifyContent='space-between'
         >
-          <Link href='/' passHref legacyBehavior>
-            <a className={styles.logo} href='/'>
-              Next.js MongoDB App
-            </a>
+          <Link href='/' className={styles.logo}>
+            Next.js MongoDB App
           </Link>
           <Container>
             {user ? (
               <UserMenu user={user} mutate={mutate} />
             ) : (
               <>
-                <Link href='/login' passHref legacyBehavior>
+                <Link href='/login'>
                   <ButtonLink
                     size='small'
                     type='success'
@@ -142,7 +131,7 @@ const Nav: React.FC = () => {
                   </ButtonLink>
                 </Link>
                 <Spacer axis='horizontal' size={0.25} />
-                <Link href='/sign-up' passHref legacyBehavior>
+                <Link href='/sign-up'>
                   <Button size='small' type='button'>
                     Sign Up
                   </Button>
