@@ -60,7 +60,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
         method: 'DELETE'
       })
       toast.success('You have been signed out')
-      mutate({ user: null })
+      await mutate({ user: null }) // Ensure the promise is awaited here
     } catch (e: any) {
       toast.error(e.message)
     }
@@ -84,10 +84,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
         {visible && (
           <div className={styles.menu}>
             <Link href={`/user/${user.username}`} passHref legacyBehavior>
-              <a className={styles.item}>Profile</a>
+              <a className={styles.item} href={`/user/${user.username}`}>
+                Profile
+              </a>
             </Link>
             <Link href='/settings' passHref legacyBehavior>
-              <a className={styles.item}>Settings</a>
+              <a className={styles.item} href='/settings'>
+                Settings
+              </a>
             </Link>
             <div className={styles.item} style={{ cursor: 'auto' }}>
               <Container alignItems='center'>
@@ -118,7 +122,9 @@ const Nav: React.FC = () => {
           justifyContent='space-between'
         >
           <Link href='/' passHref legacyBehavior>
-            <a className={styles.logo}>Next.js MongoDB App</a>
+            <a className={styles.logo} href='/'>
+              Next.js MongoDB App
+            </a>
           </Link>
           <Container>
             {user ? (

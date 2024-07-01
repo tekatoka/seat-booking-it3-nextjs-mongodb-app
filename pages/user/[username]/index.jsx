@@ -27,7 +27,7 @@ export async function getServerSideProps(context) {
     }
   }
   user._id = user._id.toString()
-  user.createdAt = user.createdAt.toISOString()
+  user.createdAt = user.createdAt?.toISOString() ?? ''
 
   return { props: { user } }
 }
