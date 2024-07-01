@@ -1,19 +1,19 @@
-import { passport } from '@/api-lib/auth';
-import { auths } from '@/api-lib/middlewares';
-import { ncOpts } from '@/api-lib/nc';
-import nc from 'next-connect';
+import { passport } from '@/api-lib/auth'
+import { auths } from '@/api-lib/middlewares'
+import { ncOpts } from '@/api-lib/nc'
+import nc from 'next-connect'
 
-const handler = nc(ncOpts);
+const handler = nc(ncOpts)
 
-handler.use(...auths);
+handler.use(...auths)
 
 handler.post(passport.authenticate('local'), (req, res) => {
-  res.json({ user: req.user });
-});
+  res.json({ user: req.user })
+})
 
 handler.delete(async (req, res) => {
-  await req.session.destroy();
-  res.status(204).end();
-});
+  await req.session.destroy()
+  res.status(204).end()
+})
 
-export default handler;
+export default handler

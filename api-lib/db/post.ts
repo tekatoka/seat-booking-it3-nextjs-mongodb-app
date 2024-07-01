@@ -1,7 +1,9 @@
-import { ObjectId } from 'mongodb';
+// Assuming dbProjectionUsers correctly handles the projection for 'creator'
+import { Db, ObjectId } from 'mongodb';
+import { Post } from '../types';
 import { dbProjectionUsers } from './user';
 
-export async function findPostById(db, id) {
+export async function findPostById(db: Db, id: string): Promise<Post | null> {
   const posts = await db
     .collection('posts')
     .aggregate([
@@ -19,11 +21,15 @@ export async function findPostById(db, id) {
       { $project: dbProjectionUsers('creator.') },
     ])
     .toArray();
-  if (!posts[0]) return null;
-  return posts[0];
+  return posts[0] ? (posts[0] as Post) : null;
 }
 
-export async function findPosts(db, before, by, limit = 10) {
+export async function findPosts(
+  db: Db,
+  before: Date | null,
+  by: string | null,
+  limit: number = 10
+): Promise<Post[]> {
   return db
     .collection('posts')
     .aggregate([
@@ -46,16 +52,21 @@ export async function findPosts(db, before, by, limit = 10) {
       { $unwind: '$creator' },
       { $project: dbProjectionUsers('creator.') },
     ])
-    .toArray();
+    .toArray() as Promise<Post[]>;
 }
 
-export async function insertPost(db, { content, creatorId }) {
+export async function insertPost(
+  db: Db,
+  { content, creatorId }: { content: string; creatorId: string }
+): Promise<Post> {
   const post = {
     content,
-    creatorId,
+    creatorId: new ObjectId(creatorId),
     createdAt: new Date(),
   };
   const { insertedId } = await db.collection('posts').insertOne(post);
-  post._id = insertedId;
-  return post;
+  return {
+    ...post,
+    _id: insertedId,
+  } as Post;
 }

@@ -1,45 +1,45 @@
-import { Avatar } from '@/components/Avatar';
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { Container, Wrapper } from '@/components/Layout';
-import { LoadingDots } from '@/components/LoadingDots';
-import { Text, TextLink } from '@/components/Text';
-import { fetcher } from '@/lib/fetch';
-import { usePostPages } from '@/lib/post';
-import { useCurrentUser } from '@/lib/user';
-import Link from 'next/link';
-import { useCallback, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import styles from './Poster.module.css';
+import { Avatar } from '@/components/Avatar'
+import { Button } from '@/components/Button'
+import { Input } from '@/components/Input'
+import { Container, Wrapper } from '@/components/Layout'
+import { LoadingDots } from '@/components/LoadingDots'
+import { Text, TextLink } from '@/components/Text'
+import { fetcher } from '@/lib/fetch'
+import { usePostPages } from '@/lib/post'
+import { useCurrentUser } from '@/lib/user'
+import Link from 'next/link'
+import { useCallback, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+import styles from './Poster.module.css'
 
 const PosterInner = ({ user }) => {
-  const contentRef = useRef();
-  const [isLoading, setIsLoading] = useState(false);
+  const contentRef = useRef()
+  const [isLoading, setIsLoading] = useState(false)
 
-  const { mutate } = usePostPages();
+  const { mutate } = usePostPages()
 
   const onSubmit = useCallback(
-    async (e) => {
-      e.preventDefault();
+    async e => {
+      e.preventDefault()
       try {
-        setIsLoading(true);
+        setIsLoading(true)
         await fetcher('/api/posts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: contentRef.current.value }),
-        });
-        toast.success('You have posted successfully');
-        contentRef.current.value = '';
+          body: JSON.stringify({ content: contentRef.current.value })
+        })
+        toast.success('You have posted successfully')
+        contentRef.current.value = ''
         // refresh post lists
-        mutate();
+        mutate()
       } catch (e) {
-        toast.error(e.message);
+        toast.error(e.message)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     },
     [mutate]
-  );
+  )
 
   return (
     <form onSubmit={onSubmit}>
@@ -51,17 +51,17 @@ const PosterInner = ({ user }) => {
           placeholder={`What's on your mind, ${user.name}?`}
           ariaLabel={`What's on your mind, ${user.name}?`}
         />
-        <Button type="success" loading={isLoading}>
+        <Button type='success' loading={isLoading}>
           Post
         </Button>
       </Container>
     </form>
-  );
-};
+  )
+}
 
 const Poster = () => {
-  const { data, error } = useCurrentUser();
-  const loading = !data && !error;
+  const { data, error } = useCurrentUser()
+  const loading = !data && !error
 
   return (
     <Wrapper>
@@ -72,10 +72,10 @@ const Poster = () => {
         ) : data?.user ? (
           <PosterInner user={data.user} />
         ) : (
-          <Text color="secondary">
+          <Text color='secondary'>
             Please{' '}
-            <Link href="/login" passHref legacyBehavior>
-              <TextLink color="link" variant="highlight">
+            <Link href='/login' passHref legacyBehavior>
+              <TextLink color='link' variant='highlight'>
                 sign in
               </TextLink>
             </Link>{' '}
@@ -84,7 +84,7 @@ const Poster = () => {
         )}
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Poster;
+export default Poster

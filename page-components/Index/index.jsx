@@ -1,5 +1,5 @@
-import Hero from './Hero';
+import Hero from './Hero'
 
 export const Index = () => {
-  return <Hero />;
-};
+  return <Hero />
+}

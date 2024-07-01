@@ -1,7 +1,12 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db } from 'mongodb';
+
+declare global {
+  var mongoClientPromise: Promise<MongoClient> | undefined;
+}
 
 let indexesCreated = false;
-async function createIndexes(client) {
+
+async function createIndexes(client: MongoClient): Promise<MongoClient> {
   if (indexesCreated) return client;
   const db = client.db();
   await Promise.all([
@@ -23,24 +28,15 @@ async function createIndexes(client) {
   return client;
 }
 
-export async function getMongoClient() {
-  /**
-   * Global is used here to maintain a cached connection across hot reloads
-   * in development. This prevents connections growing exponentiatlly
-   * during API Route usage.
-   * https://github.com/vercel/next.js/pull/17666
-   */
+export async function getMongoClient(): Promise<MongoClient> {
   if (!global.mongoClientPromise) {
-    const client = new MongoClient(process.env.MONGODB_URI);
-    // client.connect() returns an instance of MongoClient when resolved
-    global.mongoClientPromise = client
-      .connect()
-      .then((client) => createIndexes(client));
+    const client = new MongoClient(process.env.MONGODB_URI || '');
+    global.mongoClientPromise = client.connect().then(createIndexes);
   }
   return global.mongoClientPromise;
 }
 
-export async function getMongoDb() {
+export async function getMongoDb(): Promise<Db> {
   const mongoClient = await getMongoClient();
   return mongoClient.db();
 }

@@ -1,5 +1,5 @@
-import { Feed } from '@/page-components/Feed';
-import Head from 'next/head';
+import { Feed } from '@/page-components/Feed'
+import Head from 'next/head'
 
 const FeedPage = () => {
   return (
@@ -9,7 +9,7 @@ const FeedPage = () => {
       </Head>
       <Feed />
     </>
-  );
-};
+  )
+}
 
-export default FeedPage;
+export default FeedPage

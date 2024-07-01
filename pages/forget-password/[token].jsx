@@ -1,7 +1,7 @@
-import { findTokenByIdAndType } from '@/api-lib/db';
-import { getMongoDb } from '@/api-lib/mongodb';
-import { ForgetPasswordToken } from '@/page-components/ForgetPassword';
-import Head from 'next/head';
+import { findTokenByIdAndType } from '@/api-lib/db'
+import { getMongoDb } from '@/api-lib/mongodb'
+import { ForgetPasswordToken } from '@/page-components/ForgetPassword'
+import Head from 'next/head'
 
 const ResetPasswordTokenPage = ({ valid, token }) => {
   return (
@@ -11,19 +11,19 @@ const ResetPasswordTokenPage = ({ valid, token }) => {
       </Head>
       <ForgetPasswordToken valid={valid} token={token} />
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
-  const db = await getMongoDb();
+  const db = await getMongoDb()
 
   const tokenDoc = await findTokenByIdAndType(
     db,
     context.params.token,
     'passwordReset'
-  );
+  )
 
-  return { props: { token: context.params.token, valid: !!tokenDoc } };
+  return { props: { token: context.params.token, valid: !!tokenDoc } }
 }
 
-export default ResetPasswordTokenPage;
+export default ResetPasswordTokenPage

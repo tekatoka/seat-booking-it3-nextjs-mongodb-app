@@ -1,5 +1,5 @@
-import { Settings } from '@/page-components/Settings';
-import Head from 'next/head';
+import { Settings } from '@/page-components/Settings'
+import Head from 'next/head'
 
 const SettingPage = () => {
   return (
@@ -9,7 +9,7 @@ const SettingPage = () => {
       </Head>
       <Settings />
     </>
-  );
-};
+  )
+}
 
-export default SettingPage;
+export default SettingPage

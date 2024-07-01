@@ -1,37 +1,37 @@
-import { Button } from '@/components/Button';
-import { ButtonLink } from '@/components/Button/Button';
-import { Input } from '@/components/Input';
-import { Spacer, Wrapper } from '@/components/Layout';
-import { Text } from '@/components/Text';
-import { fetcher } from '@/lib/fetch';
-import Link from 'next/link';
-import { useCallback, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import styles from './ForgetPassword.module.css';
+import { Button } from '@/components/Button'
+import { ButtonLink } from '@/components/Button/Button'
+import { Input } from '@/components/Input'
+import { Spacer, Wrapper } from '@/components/Layout'
+import { Text } from '@/components/Text'
+import { fetcher } from '@/lib/fetch'
+import Link from 'next/link'
+import { useCallback, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+import styles from './ForgetPassword.module.css'
 
 const ForgetPasswordIndex = () => {
-  const emailRef = useRef();
+  const emailRef = useRef()
   // 'loading' || 'success'
-  const [status, setStatus] = useState();
-  const [email, setEmail] = useState('');
-  const onSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const [status, setStatus] = useState()
+  const [email, setEmail] = useState('')
+  const onSubmit = useCallback(async e => {
+    e.preventDefault()
     try {
-      setStatus('loading');
+      setStatus('loading')
       await fetcher('/api/user/password/reset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: emailRef.current.value,
-        }),
-      });
-      setEmail(emailRef.current.value);
-      setStatus('success');
+          email: emailRef.current.value
+        })
+      })
+      setEmail(emailRef.current.value)
+      setStatus('success')
     } catch (e) {
-      toast.error(e.message);
-      setStatus(undefined);
+      toast.error(e.message)
+      setStatus(undefined)
     }
-  }, []);
+  }, [])
 
   return (
     <Wrapper className={styles.root}>
@@ -41,7 +41,7 @@ const ForgetPasswordIndex = () => {
             <h1 className={styles.title}>Check your inbox</h1>
             <p className={styles.subtitle}>
               An email has been sent{' '}
-              <Text as="span" color="link">
+              <Text as='span' color='link'>
                 {email}
               </Text>
               . Please follow the link in that email to reset your password.
@@ -58,19 +58,19 @@ const ForgetPasswordIndex = () => {
             <form onSubmit={onSubmit}>
               <Input
                 ref={emailRef}
-                htmlType="email"
-                autoComplete="email"
-                placeholder="Email Address"
-                ariaLabel="Email Address"
-                size="large"
+                htmlType='email'
+                autoComplete='email'
+                placeholder='Email Address'
+                ariaLabel='Email Address'
+                size='large'
                 required
               />
-              <Spacer size={0.5} axis="vertical" />
+              <Spacer size={0.5} axis='vertical' />
               <Button
-                htmlType="submit"
+                htmlType='submit'
                 className={styles.submit}
-                type="success"
-                size="large"
+                type='success'
+                size='large'
                 loading={status === 'loading'}
               >
                 Continue
@@ -78,15 +78,15 @@ const ForgetPasswordIndex = () => {
             </form>
           </>
         )}
-        <Spacer size={0.25} axis="vertical" />
-        <Link href="/login" passHref legacyBehavior>
-          <ButtonLink type="success" size="large" variant="ghost">
+        <Spacer size={0.25} axis='vertical' />
+        <Link href='/login' passHref legacyBehavior>
+          <ButtonLink type='success' size='large' variant='ghost'>
             Return to login
           </ButtonLink>
         </Link>
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default ForgetPasswordIndex;
+export default ForgetPasswordIndex

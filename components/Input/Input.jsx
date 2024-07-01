@@ -1,6 +1,6 @@
-import clsx from 'clsx';
-import { forwardRef } from 'react';
-import styles from './Input.module.css';
+import clsx from 'clsx'
+import { forwardRef } from 'react'
+import styles from './Input.module.css'
 
 const Input = forwardRef(function Input(
   {
@@ -11,7 +11,7 @@ const Input = forwardRef(function Input(
     autoComplete,
     size,
     ariaLabel,
-    required,
+    required
   },
   ref
 ) {
@@ -30,7 +30,7 @@ const Input = forwardRef(function Input(
         />
       </label>
     </div>
-  );
-});
+  )
+})
 
-export default Input;
+export default Input

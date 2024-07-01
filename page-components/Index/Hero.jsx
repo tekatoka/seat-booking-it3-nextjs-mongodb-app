@@ -1,7 +1,7 @@
-import { ButtonLink } from '@/components/Button';
-import { Container, Spacer, Wrapper } from '@/components/Layout';
-import Link from 'next/link';
-import styles from './Hero.module.css';
+import { ButtonLink } from '@/components/Button'
+import { Container, Spacer, Wrapper } from '@/components/Layout'
+import Link from 'next/link'
+import styles from './Hero.module.css'
 
 const Hero = () => {
   return (
@@ -12,17 +12,17 @@ const Hero = () => {
           <span className={styles.mongodb}>MongoDB</span>
           <span>App</span>
         </h1>
-        <Container justifyContent="center" className={styles.buttons}>
+        <Container justifyContent='center' className={styles.buttons}>
           <Container>
-            <Link passHref href="/feed" legacyBehavior>
+            <Link passHref href='/feed' legacyBehavior>
               <ButtonLink className={styles.button}>Explore Feed</ButtonLink>
             </Link>
           </Container>
-          <Spacer axis="horizontal" size={1} />
+          <Spacer axis='horizontal' size={1} />
           <Container>
             <ButtonLink
-              href="https://github.com/hoangvvo/nextjs-mongodb-app"
-              type="secondary"
+              href='https://github.com/hoangvvo/nextjs-mongodb-app'
+              type='secondary'
               className={styles.button}
             >
               GitHub
@@ -35,7 +35,7 @@ const Hero = () => {
         </p>
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero

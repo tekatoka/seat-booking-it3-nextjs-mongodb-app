@@ -1,6 +1,6 @@
-import clsx from 'clsx';
-import { forwardRef } from 'react';
-import styles from './Input.module.css';
+import clsx from 'clsx'
+import { forwardRef } from 'react'
+import styles from './Input.module.css'
 
 const Textarea = forwardRef(function TextArea(
   {
@@ -10,7 +10,7 @@ const Textarea = forwardRef(function TextArea(
     htmlType,
     autoComplete,
     ariaLabel,
-    required,
+    required
   },
   ref
 ) {
@@ -29,7 +29,7 @@ const Textarea = forwardRef(function TextArea(
         />
       </label>
     </div>
-  );
-});
+  )
+})
 
-export default Textarea;
+export default Textarea
