@@ -20,14 +20,14 @@ const UserPosts = ({ user }) => {
       <Spacer axis="vertical" size={1} />
       <Wrapper>
         {posts.map((post) => (
-          <Link
+          (<Link
             key={post._id}
             href={`/user/${post.creator.username}/post/${post._id}`}
-          >
-            <a className={styles.wrap}>
-              <Post className={styles.post} post={post} />
-            </a>
-          </Link>
+            className={styles.wrap}>
+
+            <Post className={styles.post} post={post} />
+
+          </Link>)
         ))}
         <Container justifyContent="center">
           {isReachingEnd ? (
