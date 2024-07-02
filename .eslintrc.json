@@ -45,7 +45,10 @@
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
-    "@typescript-eslint/no-unsafe-call": "off"
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "no-var": 0
   },
   "globals": {
     "RequestInfo": "readonly",

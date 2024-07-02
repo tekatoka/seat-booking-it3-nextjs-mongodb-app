@@ -41,7 +41,6 @@ const SignUp = () => {
         toast.success('Your account has been created')
         router.replace('/feed')
       } catch (e) {
-        debugger
         toast.error(e.message)
       } finally {
         setIsLoading(false)

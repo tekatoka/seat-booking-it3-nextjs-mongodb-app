@@ -32,7 +32,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
   }, [router.events])
 
   useEffect(() => {
-    // detect outside click to close menu
     const onMouseDown = (event: MouseEvent) => {
       if (
         menuRef.current &&
@@ -55,7 +54,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
         method: 'DELETE'
       })
       toast.success('You have been signed out')
-      await mutate({ user: null }) // Ensure the promise is awaited here
+      await mutate({ user: null })
     } catch (e: any) {
       toast.error(e.message)
     }
@@ -102,7 +101,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
 }
 
 const Nav: React.FC = () => {
-  const { data: { user } = {}, mutate } = useCurrentUser()
+  const { data, mutate } = useCurrentUser()
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    setUser(data?.user || null)
+  }, [data])
 
   return (
     <nav className={styles.nav}>
@@ -114,22 +118,23 @@ const Nav: React.FC = () => {
         >
           <Link href='/' className={styles.logo}>
             Next.js MongoDB App
+            {user && <span>{user.username}</span>}
           </Link>
           <Container>
             {user ? (
               <UserMenu user={user} mutate={mutate} />
             ) : (
               <>
-                <Link href='/login'>
-                  <ButtonLink
-                    size='small'
-                    type='success'
-                    variant='ghost'
-                    color='link'
-                  >
-                    Log in
-                  </ButtonLink>
-                </Link>
+                <ButtonLink
+                  size='small'
+                  type='success'
+                  variant='ghost'
+                  color='link'
+                  href='/login'
+                >
+                  Log in
+                </ButtonLink>
+
                 <Spacer axis='horizontal' size={0.25} />
                 <Link href='/sign-up'>
                   <Button size='small' type='button'>

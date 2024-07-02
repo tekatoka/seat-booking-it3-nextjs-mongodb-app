@@ -1,14 +1,14 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db } from 'mongodb'
 
 declare global {
-  var mongoClientPromise: Promise<MongoClient> | undefined;
+  var mongoClientPromise: Promise<MongoClient> | undefined
 }
 
-let indexesCreated = false;
+let indexesCreated = false
 
 async function createIndexes(client: MongoClient): Promise<MongoClient> {
-  if (indexesCreated) return client;
-  const db = client.db();
+  if (indexesCreated) return client
+  const db = client.db()
   await Promise.all([
     db
       .collection('tokens')
@@ -21,22 +21,22 @@ async function createIndexes(client: MongoClient): Promise<MongoClient> {
       .createIndexes([{ key: { createdAt: -1 } }, { key: { postId: -1 } }]),
     db.collection('users').createIndexes([
       { key: { email: 1 }, unique: true },
-      { key: { username: 1 }, unique: true },
-    ]),
-  ]);
-  indexesCreated = true;
-  return client;
+      { key: { username: 1 }, unique: true }
+    ])
+  ])
+  indexesCreated = true
+  return client
 }
 
 export async function getMongoClient(): Promise<MongoClient> {
   if (!global.mongoClientPromise) {
-    const client = new MongoClient(process.env.MONGODB_URI || '');
-    global.mongoClientPromise = client.connect().then(createIndexes);
+    const client = new MongoClient(process.env.MONGODB_URI || '')
+    global.mongoClientPromise = client.connect().then(createIndexes)
   }
-  return global.mongoClientPromise;
+  return global.mongoClientPromise
 }
 
 export async function getMongoDb(): Promise<Db> {
-  const mongoClient = await getMongoClient();
-  return mongoClient.db();
+  const mongoClient = await getMongoClient()
+  return mongoClient.db()
 }
