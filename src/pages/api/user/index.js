@@ -53,7 +53,6 @@ handler.patch(
 
     let profilePicture
     if (req.file) {
-      debugger
       const image = await cloudinary.uploader.upload(req.file.path, {
         width: 512,
         height: 512,
