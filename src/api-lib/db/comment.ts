@@ -1,6 +1,6 @@
-import { ObjectId, Db } from 'mongodb';
-import { dbProjectionUsers } from '.';
-import { Comment } from '../types';
+import { ObjectId, Db } from 'mongodb'
+import { dbProjectionUsers } from '.'
+import { Comment } from '../types/Comment'
 
 // Function to find comments for a specific post
 export async function findComments(
@@ -15,8 +15,8 @@ export async function findComments(
       {
         $match: {
           postId: new ObjectId(postId),
-          ...(before && { createdAt: { $lt: before } }),
-        },
+          ...(before && { createdAt: { $lt: before } })
+        }
       },
       { $sort: { _id: -1 } },
       { $limit: limit },
@@ -25,13 +25,13 @@ export async function findComments(
           from: 'users',
           localField: 'creatorId',
           foreignField: '_id',
-          as: 'creator',
-        },
+          as: 'creator'
+        }
       },
       { $unwind: '$creator' },
-      { $project: dbProjectionUsers('creator.') },
+      { $project: dbProjectionUsers('creator.') }
     ])
-    .toArray();
+    .toArray()
 }
 
 // Function to insert a new comment into the database
@@ -44,11 +44,11 @@ export async function insertComment(
     content,
     postId: new ObjectId(postId),
     creatorId,
-    createdAt: new Date(),
-  };
+    createdAt: new Date()
+  }
   const { insertedId } = await db
     .collection<Comment>('comments')
-    .insertOne(comment);
-  comment._id = insertedId;
-  return comment;
+    .insertOne(comment)
+  comment._id = insertedId
+  return comment
 }

@@ -9,7 +9,7 @@ type ButtonProps = {
   className?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   size?: 'small' | 'medium' | 'large'
-  variant?: 'invert' | 'primary' | 'secondary' // Add other variants as needed
+  variant?: 'invert' | 'primary' | 'secondary'
   loading?: boolean
   disabled?: boolean
 }

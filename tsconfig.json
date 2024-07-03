@@ -23,6 +23,7 @@
       "@/page-components/*": ["page-components/*"],
       "@/styles/*": ["styles/*"]
     },
+    "typeRoots": ["node_modules/@types", "src/types"],
     "plugins": [
       {
         "name": "next"

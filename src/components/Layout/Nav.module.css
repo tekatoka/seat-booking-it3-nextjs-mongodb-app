@@ -81,3 +81,20 @@
   color: var(--foreground);
   background: var(--accents-1);
 }
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  max-width: 100%;
+  height: auto;
+}
+
+.text {
+  margin-left: 15px; /* Adjust the margin as needed */
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}

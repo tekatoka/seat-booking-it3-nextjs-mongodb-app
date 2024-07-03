@@ -1,24 +1,23 @@
-import { Db, ObjectId } from 'mongodb';
-import { nanoid } from 'nanoid';
+import { Db, ObjectId } from 'mongodb'
 
 interface CreateTokenParams {
-  creatorId: ObjectId; // or string, depending on your implementation
-  type: string;
-  expireAt: Date;
+  creatorId: ObjectId // or string, depending on your implementation
+  type: string
+  expireAt: Date
 }
 
 export function findTokenByIdAndType(db: Db, id: string, type: any) {
   return db.collection('tokens').findOne({
     _id: id,
-    type,
-  });
+    type
+  })
 }
 
 export function findAndDeleteTokenByIdAndType(db: Db, id: string, type: any) {
   return db
     .collection('tokens')
     .findOneAndDelete({ _id: id, type })
-    .then(({ value }) => value);
+    .then(({ value }) => value)
 }
 
 export async function createToken(
@@ -29,9 +28,9 @@ export async function createToken(
     creatorId,
     type,
     expireAt,
-    createdAt: new Date(),
-  };
+    createdAt: new Date()
+  }
 
-  const result = await db.collection('tokens').insertOne(token);
-  return result.insertedId;
+  const result = await db.collection('tokens').insertOne(token)
+  return result.insertedId
 }

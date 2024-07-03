@@ -1,7 +1,7 @@
-import { Db, ObjectId } from 'mongodb';
-import { NewUser, User } from '../types';
-import bcrypt from 'bcryptjs';
-import normalizeEmail from 'validator/lib/normalizeEmail';
+import { Db, ObjectId } from 'mongodb'
+import { NewUser, User } from '../types/User'
+import bcrypt from 'bcryptjs'
+import normalizeEmail from 'validator/lib/normalizeEmail'
 
 // Finds a user by email and password, verifying password correctness
 export async function findUserWithEmailAndPassword(
@@ -9,8 +9,8 @@ export async function findUserWithEmailAndPassword(
   email: string,
   password: string
 ): Promise<Omit<User, 'password'> | null> {
-  email = normalizeEmail(email) || '';
-  const user = await db.collection<User>('users').findOne({ email });
+  email = normalizeEmail(email) || ''
+  const user = await db.collection<User>('users').findOne({ email })
 
   // Ensure user exists and has a defined password before comparing
   if (
@@ -18,10 +18,10 @@ export async function findUserWithEmailAndPassword(
     user.password &&
     (await bcrypt.compare(password, user.password))
   ) {
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    const { password, ...userWithoutPassword } = user
+    return userWithoutPassword
   }
-  return null;
+  return null
 }
 
 // Finds a user for authentication purposes, excluding the password
@@ -31,7 +31,7 @@ export async function findUserForAuth(
 ): Promise<User | null> {
   return db
     .collection<User>('users')
-    .findOne({ _id: new ObjectId(userId) }, { projection: { password: 0 } });
+    .findOne({ _id: new ObjectId(userId) }, { projection: { password: 0 } })
 }
 
 // Finds a user by user ID
@@ -41,10 +41,7 @@ export async function findUserById(
 ): Promise<User | null> {
   return db
     .collection<User>('users')
-    .findOne(
-      { _id: new ObjectId(userId) },
-      { projection: dbProjectionUsers() }
-    );
+    .findOne({ _id: new ObjectId(userId) }, { projection: dbProjectionUsers() })
 }
 
 // Finds a user by username
@@ -54,7 +51,7 @@ export async function findUserByUsername(
 ): Promise<User | null> {
   return db
     .collection<User>('users')
-    .findOne({ username }, { projection: dbProjectionUsers() });
+    .findOne({ username }, { projection: dbProjectionUsers() })
 }
 
 // Finds a user by email
@@ -62,10 +59,10 @@ export async function findUserByEmail(
   db: Db,
   email: string
 ): Promise<User | null> {
-  email = normalizeEmail(email) || '';
+  email = normalizeEmail(email) || ''
   return db
     .collection<User>('users')
-    .findOne({ email }, { projection: dbProjectionUsers() });
+    .findOne({ email }, { projection: dbProjectionUsers() })
 }
 
 // Updates user by ID, returning the updated user excluding the password
@@ -81,7 +78,7 @@ export async function updateUserById(
       { $set: data },
       { returnDocument: 'after', projection: { password: 0 } }
     )
-    .then((result) => result.value || null);
+    .then(result => result.value || null)
 }
 
 // Inserts a new user with hashed password
@@ -89,7 +86,7 @@ export async function insertUser(
   db: Db,
   newUserDetails: NewUser
 ): Promise<Omit<User, 'password'>> {
-  const hashedPassword = await bcrypt.hash(newUserDetails.originalPassword, 10);
+  const hashedPassword = await bcrypt.hash(newUserDetails.originalPassword, 10)
   const user: User = {
     email: newUserDetails.email,
     name: newUserDetails.name,
@@ -98,12 +95,12 @@ export async function insertUser(
     emailVerified: false, // Default value for new users
     profilePicture: newUserDetails.profilePicture,
     password: hashedPassword,
-    createdAt: new Date(),
-  };
+    createdAt: new Date()
+  }
 
-  const { insertedId } = await db.collection<User>('users').insertOne(user);
-  const { password, ...userWithoutPassword } = user; // Exclude password from the return value
-  return { ...userWithoutPassword, _id: insertedId };
+  const { insertedId } = await db.collection<User>('users').insertOne(user)
+  const { password, ...userWithoutPassword } = user // Exclude password from the return value
+  return { ...userWithoutPassword, _id: insertedId }
 }
 
 // Updates user's password by verifying the old password first
@@ -115,18 +112,18 @@ export async function updateUserPasswordByOldPassword(
 ): Promise<boolean> {
   const user = await db
     .collection<User>('users')
-    .findOne({ _id: new ObjectId(id) });
-  if (!user || !user.password) return false;
-  const matched = await bcrypt.compare(oldPassword, user.password);
-  if (!matched) return false;
-  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    .findOne({ _id: new ObjectId(id) })
+  if (!user || !user.password) return false
+  const matched = await bcrypt.compare(oldPassword, user.password)
+  if (!matched) return false
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10)
   await db
     .collection('users')
     .updateOne(
       { _id: new ObjectId(id) },
       { $set: { password: hashedNewPassword } }
-    );
-  return true;
+    )
+  return true
 }
 
 // UNSAFE: Updates user's password directly
@@ -135,10 +132,10 @@ export async function UNSAFE_updateUserPassword(
   id: string,
   newPassword: string
 ): Promise<void> {
-  const password = await bcrypt.hash(newPassword, 10);
+  const password = await bcrypt.hash(newPassword, 10)
   await db
     .collection('users')
-    .updateOne({ _id: new ObjectId(id) }, { $set: { password } });
+    .updateOne({ _id: new ObjectId(id) }, { $set: { password } })
 }
 
 // Returns a projection object for user queries
@@ -146,6 +143,6 @@ export function dbProjectionUsers(prefix: string = ''): Record<string, number> {
   return {
     [`${prefix}password`]: 0,
     [`${prefix}email`]: 0,
-    [`${prefix}emailVerified`]: 0,
-  };
+    [`${prefix}emailVerified`]: 0
+  }
 }

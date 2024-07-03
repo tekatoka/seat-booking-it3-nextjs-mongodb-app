@@ -1,7 +1,7 @@
 // Assuming dbProjectionUsers correctly handles the projection for 'creator'
-import { Db, ObjectId } from 'mongodb';
-import { Post } from '../types';
-import { dbProjectionUsers } from './user';
+import { Db, ObjectId } from 'mongodb'
+import { Post } from '../types/Post'
+import { dbProjectionUsers } from './user'
 
 export async function findPostById(db: Db, id: string): Promise<Post | null> {
   const posts = await db
@@ -14,14 +14,14 @@ export async function findPostById(db: Db, id: string): Promise<Post | null> {
           from: 'users',
           localField: 'creatorId',
           foreignField: '_id',
-          as: 'creator',
-        },
+          as: 'creator'
+        }
       },
       { $unwind: '$creator' },
-      { $project: dbProjectionUsers('creator.') },
+      { $project: dbProjectionUsers('creator.') }
     ])
-    .toArray();
-  return posts[0] ? (posts[0] as Post) : null;
+    .toArray()
+  return posts[0] ? (posts[0] as Post) : null
 }
 
 export async function findPosts(
@@ -36,8 +36,8 @@ export async function findPosts(
       {
         $match: {
           ...(by && { creatorId: new ObjectId(by) }),
-          ...(before && { createdAt: { $lt: before } }),
-        },
+          ...(before && { createdAt: { $lt: before } })
+        }
       },
       { $sort: { _id: -1 } },
       { $limit: limit },
@@ -46,13 +46,13 @@ export async function findPosts(
           from: 'users',
           localField: 'creatorId',
           foreignField: '_id',
-          as: 'creator',
-        },
+          as: 'creator'
+        }
       },
       { $unwind: '$creator' },
-      { $project: dbProjectionUsers('creator.') },
+      { $project: dbProjectionUsers('creator.') }
     ])
-    .toArray() as Promise<Post[]>;
+    .toArray() as Promise<Post[]>
 }
 
 export async function insertPost(
@@ -62,11 +62,11 @@ export async function insertPost(
   const post = {
     content,
     creatorId: new ObjectId(creatorId),
-    createdAt: new Date(),
-  };
-  const { insertedId } = await db.collection('posts').insertOne(post);
+    createdAt: new Date()
+  }
+  const { insertedId } = await db.collection('posts').insertOne(post)
   return {
     ...post,
-    _id: insertedId,
-  } as Post;
+    _id: insertedId
+  } as Post
 }

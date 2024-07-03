@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import styles from './LoadingDots.module.css'
-import React from 'react'
 
 type LoadingDotsProps = {
   children?: React.ReactNode

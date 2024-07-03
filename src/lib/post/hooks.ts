@@ -1,12 +1,9 @@
 import { fetcher } from '@/lib/fetch'
 import useSWRInfinite from 'swr/infinite'
-
-interface Post {
-  createdAt: string // Assume posts have a createdAt property that is a string.
-}
+import { Post as PostType } from '@/api-lib/types' // Ensure this import path is correct
 
 interface PageData {
-  posts: Post[]
+  posts: PostType[]
 }
 
 interface PostPageOptions {

@@ -3,7 +3,7 @@ import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { getMongoDb } from '../mongodb'
 import { Db } from 'mongodb'
-import { User } from '../types' // Ensure this import points to the correct file
+import { User } from '../types/User'
 
 // Serialize user information to the session
 passport.serializeUser((user: any, done: (err: any, id?: any) => void) => {

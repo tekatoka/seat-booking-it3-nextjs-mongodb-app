@@ -1,0 +1,23 @@
+interface SpacerProps {
+  size: number
+  axis?: 'horizontal' | 'vertical'
+}
+
+const Spacer: React.FC<SpacerProps> = ({ size, axis = 'horizontal' }) => {
+  const width = axis === 'vertical' ? 1 : size * 24
+  const height = axis === 'horizontal' ? 1 : size * 24
+  return (
+    <span
+      style={{
+        display: 'block',
+        width,
+        minWidth: width,
+        height,
+        minHeight: height
+      }}
+      aria-hidden='true'
+    />
+  )
+}
+
+export default Spacer

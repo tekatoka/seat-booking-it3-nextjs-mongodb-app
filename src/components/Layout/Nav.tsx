@@ -12,6 +12,7 @@ import Container from './Container'
 import styles from './Nav.module.css'
 import Spacer from './Spacer'
 import Wrapper from './Wrapper'
+import Image from 'next/image'
 
 type UserMenuProps = {
   user: User
@@ -101,8 +102,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
 }
 
 const Nav: React.FC = () => {
-  const { data, mutate } = useCurrentUser()
+  const { data, mutate, error } = useCurrentUser()
   const [user, setUser] = useState<User | null>(null)
+  const loading = !data && !error
 
   useEffect(() => {
     setUser(data?.user || null)
@@ -117,33 +119,43 @@ const Nav: React.FC = () => {
           justifyContent='space-between'
         >
           <Link href='/' className={styles.logo}>
-            Next.js MongoDB App
-            {user && <span>{user.username}</span>}
+            <div className={styles.logoContainer}>
+              <Image
+                className={styles.avatar}
+                src={'/images/logo_ibb_plain.svg'}
+                alt={'IBB Logo'}
+                width={35}
+                height={35}
+              />
+              <span className={styles.text}>IT-3 Sitzplatz App</span>
+            </div>
           </Link>
-          <Container>
-            {user ? (
-              <UserMenu user={user} mutate={mutate} />
-            ) : (
-              <>
-                <ButtonLink
-                  size='small'
-                  type='success'
-                  variant='ghost'
-                  color='link'
-                  href='/login'
-                >
-                  Log in
-                </ButtonLink>
+          {!loading && (
+            <Container>
+              {user ? (
+                <UserMenu user={user} mutate={mutate} />
+              ) : (
+                <>
+                  <ButtonLink
+                    size='small'
+                    type='success'
+                    variant='ghost'
+                    color='link'
+                    href='/login'
+                  >
+                    Log in
+                  </ButtonLink>
 
-                <Spacer axis='horizontal' size={0.25} />
-                <Link href='/sign-up'>
-                  <Button size='small' type='button'>
-                    Sign Up
-                  </Button>
-                </Link>
-              </>
-            )}
-          </Container>
+                  <Spacer axis='horizontal' size={0.25} />
+                  <Link href='/sign-up'>
+                    <Button size='small' type='button'>
+                      Sign Up
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </Container>
+          )}
         </Container>
       </Wrapper>
     </nav>

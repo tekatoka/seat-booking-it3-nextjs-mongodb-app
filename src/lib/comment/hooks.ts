@@ -1,12 +1,9 @@
 import { fetcher } from '@/lib/fetch'
 import useSWRInfinite from 'swr/infinite'
-
-interface Comment {
-  createdAt: string // Use the appropriate date type here.
-}
+import { Comment as CommentType } from '@/api-lib/types' // Ensure this import path is correct
 
 interface PageData {
-  comments: Comment[]
+  comments: CommentType[]
 }
 
 interface CommentPageOptions {
@@ -14,11 +11,8 @@ interface CommentPageOptions {
   limit?: number
 }
 
-export function useCommentPages(
-  { postId, limit = 10 }: CommentPageOptions = {} as CommentPageOptions
-) {
+export function useCommentPages({ postId, limit = 10 }: CommentPageOptions) {
   const getKey = (index: number, previousPageData: PageData | null) => {
-    // reached the end
     if (previousPageData && previousPageData.comments.length === 0) return null
 
     const searchParams = new URLSearchParams()
@@ -39,7 +33,6 @@ export function useCommentPages(
     return `/api/posts/${postId}/comments?${searchParams.toString()}`
   }
 
-  // Type adjustment: Specify that each fetch returns PageData, not an array of PageData.
   const { data, error, size, ...props } = useSWRInfinite<PageData>(
     getKey,
     fetcher,
