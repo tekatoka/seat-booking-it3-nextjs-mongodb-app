@@ -21,14 +21,11 @@ const storage = multer.diskStorage({
     cb(null, imagesDirectory)
   },
   filename: (req, file, cb) => {
-    const fileName = req.user?.username
-      ? req.user.username + path.extname(file.originalname)
-      : file.originalname
+    const username = req.user?.username
+    const extension = path.extname(file.originalname)
+    const fileName = username ? `${username}${extension}` : file.originalname
     cb(null, `${Date.now()}-${fileName}`)
   }
-  // filename: (req, file, cb) => {
-  //   cb(null, `${Date.now()}-${file.originalname}`)
-  // }
 })
 
 const upload = multer({ storage })
