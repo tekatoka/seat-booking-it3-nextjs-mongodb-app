@@ -13,6 +13,7 @@ import styles from './Nav.module.css'
 import Spacer from './Spacer'
 import Wrapper from './Wrapper'
 import Image from 'next/image'
+import { LuUser } from 'react-icons/lu'
 
 type UserMenuProps = {
   user: User
@@ -63,13 +64,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
 
   return (
     <div className={styles.user}>
-      <button
-        className={styles.trigger}
-        ref={avatarRef}
+      <Button
+        size='icon'
+        type='button'
+        variant='invert'
         onClick={() => setVisible(!visible)}
       >
-        <Avatar size={32} username={user.username} url={user.profilePicture} />
-      </button>
+        <LuUser className='text-lg' />
+        <span className='sr-only'>Settings</span>
+      </Button>
       <div
         ref={menuRef}
         role='menu'
@@ -84,13 +87,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
             <Link href='/settings' className={styles.item}>
               Settings
             </Link>
-            <div className={styles.item} style={{ cursor: 'auto' }}>
-              <Container alignItems='center'>
-                <span>Theme</span>
-                <Spacer size={0.5} axis='horizontal' />
-                <ThemeSwitcher />
-              </Container>
-            </div>
             <button onClick={onSignOut} className={styles.item}>
               Sign out
             </button>
@@ -154,6 +150,7 @@ const Nav: React.FC = () => {
                   </Link>
                 </>
               )}
+              <ThemeSwitcher />
             </Container>
           )}
         </Container>

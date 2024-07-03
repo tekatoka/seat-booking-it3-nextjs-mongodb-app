@@ -65,6 +65,12 @@
   font-size: 1rem;
 }
 
+.icon {
+  height: 31px;
+  width: 31px;
+  border-radius: 50px;
+}
+
 /** Variants **/
 
 .invert:not([disabled]):hover {

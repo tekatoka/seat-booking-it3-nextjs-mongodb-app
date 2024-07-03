@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* Inspired by Vercel design */
 @import '../../node_modules/modern-normalize/modern-normalize.css';
 

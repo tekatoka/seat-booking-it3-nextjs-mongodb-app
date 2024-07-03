@@ -3,27 +3,37 @@ import { auths, validateBody } from '@/api-lib/middlewares'
 import { getMongoDb } from '@/api-lib/mongodb'
 import { ncOpts } from '@/api-lib/nc'
 import { slugUsername } from '@/lib/user'
-import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer'
 import nc from 'next-connect'
 import { ValidateProps } from '@/api-lib/constants'
+import path from 'path'
+import fs from 'fs'
 
-const upload = multer({ dest: '/tmp' })
-const handler = nc(ncOpts)
-
-if (process.env.CLOUDINARY_URL) {
-  const {
-    hostname: cloud_name,
-    username: api_key,
-    password: api_secret
-  } = new URL(process.env.CLOUDINARY_URL)
-
-  cloudinary.config({
-    cloud_name,
-    api_key,
-    api_secret
-  })
+// Ensure the 'public/images' directory exists
+const imagesDirectory = path.join(process.cwd(), 'public', 'images')
+if (!fs.existsSync(imagesDirectory)) {
+  fs.mkdirSync(imagesDirectory, { recursive: true })
 }
+
+// Configure multer to save files to the 'public/images' directory
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, imagesDirectory)
+  },
+  filename: (req, file, cb) => {
+    const fileName = req.user?.username
+      ? req.user.username + path.extname(file.originalname)
+      : file.originalname
+    cb(null, `${Date.now()}-${fileName}`)
+  }
+  // filename: (req, file, cb) => {
+  //   cb(null, `${Date.now()}-${file.originalname}`)
+  // }
+})
+
+const upload = multer({ storage })
+
+const handler = nc(ncOpts)
 
 handler.use(...auths)
 
@@ -45,7 +55,7 @@ handler.patch(
   }),
   async (req, res) => {
     if (!req.user) {
-      req.status(401).end()
+      res.status(401).end()
       return
     }
 
@@ -53,12 +63,20 @@ handler.patch(
 
     let profilePicture
     if (req.file) {
-      const image = await cloudinary.uploader.upload(req.file.path, {
-        width: 512,
-        height: 512,
-        crop: 'fill'
-      })
-      profilePicture = image.secure_url
+      // Delete the previous profile picture if it exists
+      if (req.user.profilePicture) {
+        const oldProfilePicturePath = path.join(
+          process.cwd(),
+          'public',
+          req.user.profilePicture
+        )
+        if (fs.existsSync(oldProfilePicturePath)) {
+          fs.unlinkSync(oldProfilePicturePath)
+        }
+      }
+
+      // Save the new profile picture
+      profilePicture = `/images/${req.file.filename}`
     }
     const { name, bio } = req.body
 

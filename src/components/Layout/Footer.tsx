@@ -1,7 +1,5 @@
 import { Text, TextLink } from '@/components/Text'
-import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import styles from './Footer.module.css'
-import Spacer from './Spacer'
 import Wrapper from './Wrapper'
 
 const Footer: React.FC = () => {
@@ -9,14 +7,11 @@ const Footer: React.FC = () => {
     <footer className={styles.footer}>
       <Wrapper>
         <Text color='accents-7'>
-          Made with ❤️, 🔥, and a keyboard by{' '}
-          <TextLink href='https://hoangvvo.com/' color='link'>
-            Hoang Vo
+          &copy; IT-3{' '}
+          <TextLink href='https://www.ibb.de/' color='link' target='_blank'>
+            Investitionsbank Berlin
           </TextLink>
-          .
         </Text>
-        <Spacer size={1} axis='vertical' />
-        <ThemeSwitcher />
       </Wrapper>
     </footer>
   )

@@ -8,8 +8,8 @@ type ButtonProps = {
   type?: 'button' | 'submit' | 'reset'
   className?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
-  size?: 'small' | 'medium' | 'large'
-  variant?: 'invert' | 'primary' | 'secondary'
+  size?: 'small' | 'medium' | 'large' | 'icon'
+  variant?: 'invert' | 'primary' | 'secondary' | 'ghost'
   loading?: boolean
   disabled?: boolean
 }

@@ -1,23 +1,46 @@
 import { useTheme } from 'next-themes'
-import { useCallback, ChangeEvent } from 'react'
-import styles from './ThemeSwitcher.module.css'
+import { FC, useEffect, useState } from 'react'
+import { LuMoon, LuSun, LuMonitor } from 'react-icons/lu'
+import { Button } from '../Button' // Ensure the path to Button is correct
+import { IconType } from 'react-icons'
 
-const ThemeSwitcher: React.FC = () => {
+const ThemeSwitcher: FC = () => {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      setTheme(e.currentTarget.value)
-    },
-    [setTheme]
-  )
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const nextTheme: { [key: string]: string } = {
+    light: 'dark',
+    dark: 'light'
+  }
+
+  const ThemeIcon: IconType =
+    {
+      light: LuSun,
+      dark: LuMoon,
+      system: LuMonitor
+    }[theme || 'light'] || LuSun // Default to LuSun if undefined
+
+  if (!mounted) return null
 
   return (
-    <select value={theme} onChange={onChange} className={styles.select}>
-      <option value='system'>System</option>
-      <option value='dark'>Dark</option>
-      <option value='light'>Light</option>
-    </select>
+    <div className='ml-1'>
+      <Button
+        size='icon'
+        type='button'
+        variant='invert'
+        onClick={() => {
+          const newTheme = nextTheme[theme || 'light']
+          setTheme(newTheme)
+        }}
+      >
+        <ThemeIcon className='text-lg' />
+        <span className='sr-only'>Toggle theme</span>
+      </Button>
+    </div>
   )
 }
 

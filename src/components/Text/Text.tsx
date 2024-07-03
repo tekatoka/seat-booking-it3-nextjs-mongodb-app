@@ -37,11 +37,12 @@ interface TextLinkProps {
   href: string
   onClick?: () => void
   variant?: string
+  target?: string
 }
 
 export const TextLink = forwardRef<HTMLAnchorElement, TextLinkProps>(
   function TextLink(
-    { color, children, className, href, onClick, variant },
+    { color, children, className, href, onClick, variant, target },
     ref
   ) {
     const style: CSSProperties = color
@@ -60,6 +61,7 @@ export const TextLink = forwardRef<HTMLAnchorElement, TextLinkProps>(
         href={href}
         ref={ref}
         onClick={onClick}
+        target={target}
       >
         {children}
       </a>

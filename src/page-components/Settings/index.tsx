@@ -202,6 +202,7 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
             accept='image/*'
             ref={profilePictureRef}
             onChange={onAvatarChange}
+            style={{ display: 'block', zIndex: 10 }}
           />
         </div>
         <Spacer size={0.5} axis='vertical' />
@@ -234,7 +235,6 @@ export const Settings: React.FC = () => {
       <Spacer size={2} axis='vertical' />
       {data?.user ? (
         <>
-          <EmailVerify user={data.user} />
           <AboutYou user={data.user} mutate={mutate} />
           <Auth />
         </>
