@@ -230,7 +230,7 @@ const users: User[] = [
 // Mock database functions
 async function getAllUsers(): Promise<User[]> {
   // Implement your database retrieval logic here
-  return users
+  return await users
 }
 
 async function getDayBooking(date: Date): Promise<DayBooking | null> {
@@ -249,12 +249,12 @@ async function getDayBooking(date: Date): Promise<DayBooking | null> {
       }
     ]
   }
-  return booking
+  return await booking
 }
 
 async function createDayBooking(date: Date): Promise<DayBooking> {
   // Implement your database creation logic here
-  return { date, bookings: [] }
+  return await { date, bookings: [] }
 }
 
 async function updateDayBooking(dayBooking: DayBooking): Promise<void> {
@@ -263,7 +263,7 @@ async function updateDayBooking(dayBooking: DayBooking): Promise<void> {
 
 async function getUserByUsername(username: string): Promise<User | null> {
   // Implement your database retrieval logic here
-  const user = users.find(
+  const user = await users.find(
     u => u.username.toLocaleLowerCase() == username.toLocaleLowerCase()
   )
   return user ?? null
@@ -365,7 +365,7 @@ const Hero: React.FC = () => {
       setAbsentUsers(allUsers.filter(u => isUserAbsentToday(u, new Date())))
     }
     getAvailableUsers()
-  }, [, allBookings])
+  }, [])
 
   useEffect(() => {
     const getCurrentBooking = async () => {
