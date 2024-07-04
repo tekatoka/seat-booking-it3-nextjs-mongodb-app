@@ -3,14 +3,24 @@ import { NewUser, User } from '../types/User'
 import bcrypt from 'bcryptjs'
 import normalizeEmail from 'validator/lib/normalizeEmail'
 
+//finds all users
+export async function findAllUsers(db: Db): Promise<Omit<User, 'password'>[]> {
+  const users = await db.collection<User>('users').find().toArray()
+
+  // Remove passwords from user objects
+  return users.map(
+    ({ password, ...userWithoutPassword }) => userWithoutPassword
+  )
+}
+
 // Finds a user by email and password, verifying password correctness
-export async function findUserWithEmailAndPassword(
+export async function findUserWithNameAndPassword(
   db: Db,
-  email: string,
+  username: string,
   password: string
 ): Promise<Omit<User, 'password'> | null> {
-  email = normalizeEmail(email) || ''
-  const user = await db.collection<User>('users').findOne({ email })
+  username = username || ''
+  const user = await db.collection<User>('users').findOne({ username })
 
   // Ensure user exists and has a defined password before comparing
   if (
@@ -95,6 +105,7 @@ export async function insertUser(
     emailVerified: false, // Default value for new users
     profilePicture: newUserDetails.profilePicture,
     password: hashedPassword,
+    isAdmin: newUserDetails.isAdmin,
     createdAt: new Date()
   }
 

@@ -4,11 +4,11 @@ import { Input, Textarea } from '@/components/Input'
 import { Container, Spacer } from '@/components/Layout'
 import Wrapper from '@/components/Layout/Wrapper'
 import { fetcher } from '@/lib/fetch'
-import { useCurrentUser, useUsers } from '@/lib/user'
+import { useCurrentUser } from '@/lib/user'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState, FormEvent } from 'react'
 import toast from 'react-hot-toast'
-import styles from './Settings.module.css'
+import styles from './UserSettings.module.css'
 import { User } from '@/api-lib/types'
 
 const Auth: React.FC = () => {
@@ -172,26 +172,26 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
   )
 }
 
-export const Settings: React.FC = () => {
-  const { data, error, mutate } = useUsers()
+export const UserSettings: React.FC = () => {
+  const { data, error, mutate } = useCurrentUser()
   const router = useRouter()
 
   useEffect(() => {
     if (!data && !error) return
+    if (!data?.user) {
+      router.replace('/login')
+    }
   }, [router, data, error])
 
   return (
     <Wrapper className={styles.wrapper}>
       <Spacer size={2} axis='vertical' />
-      {data?.users
-        ? data.users.map((user: User, i: number) => (
-            <p key={i}>{user.username}</p>
-          ))
-        : // <>
-          //   /* <AboutYou user={data.user} mutate={mutate} />
-          //   <Auth /> */
-          // </>
-          null}
+      {data?.user ? (
+        <>
+          <AboutYou user={data.user} mutate={mutate} />
+          <Auth />
+        </>
+      ) : null}
     </Wrapper>
   )
 }

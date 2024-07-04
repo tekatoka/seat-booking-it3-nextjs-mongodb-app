@@ -1,6 +1,7 @@
 import { FC } from 'react'
-import { Settings } from '@/page-components/Settings'
+import { UserSettings } from '@/page-components/UserSettings'
 import Head from 'next/head'
+import { Settings } from '@/page-components/Settings'
 
 const SettingsPage: FC = () => {
   return (
@@ -8,7 +9,14 @@ const SettingsPage: FC = () => {
       <Head>
         <title>Settings</title>
       </Head>
-      <Settings />
+      <div className='container'>
+        {/* <Container alignItems='center'>
+            <p className={styles.subtitle}>Your login</p>
+            <div className={styles.seperator} />
+          </Container> */}
+        <Settings />
+      </div>
+      {/* <Settings /> */}
     </>
   )
 }

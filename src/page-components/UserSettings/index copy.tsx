@@ -4,12 +4,55 @@ import { Input, Textarea } from '@/components/Input'
 import { Container, Spacer } from '@/components/Layout'
 import Wrapper from '@/components/Layout/Wrapper'
 import { fetcher } from '@/lib/fetch'
-import { useCurrentUser, useUsers } from '@/lib/user'
+import { useCurrentUser } from '@/lib/user'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState, FormEvent } from 'react'
 import toast from 'react-hot-toast'
-import styles from './Settings.module.css'
+import styles from './UserSettings.module.css'
 import { User } from '@/api-lib/types'
+
+interface EmailVerifyProps {
+  user: User
+}
+
+const EmailVerify: React.FC<EmailVerifyProps> = ({ user }) => {
+  const [status, setStatus] = useState<'loading' | 'success' | undefined>()
+
+  const verify = useCallback(async () => {
+    try {
+      setStatus('loading')
+      await fetcher('/api/user/email/verify', { method: 'POST' })
+      toast.success(
+        'An email has been sent to your mailbox. Follow the instruction to verify your email.'
+      )
+      setStatus('success')
+    } catch (e: any) {
+      toast.error(e.message)
+      setStatus(undefined)
+    }
+  }, [])
+
+  if (user.emailVerified) return null
+  return (
+    <Container className={styles.note}>
+      <Container flex={1}>
+        <p>
+          <strong>Note:</strong> <span>Your email</span> (
+          <span className={styles.link}>{user.email}</span>) is unverified.
+        </p>
+      </Container>
+      <Spacer size={1} axis='horizontal' />
+      <Button
+        loading={status === 'loading'}
+        size='small'
+        onClick={verify}
+        disabled={status === 'success'}
+      >
+        Verify
+      </Button>
+    </Container>
+  )
+}
 
 const Auth: React.FC = () => {
   const oldPasswordRef = useRef<HTMLInputElement>(null)
@@ -78,6 +121,7 @@ interface AboutYouProps {
 const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
   const usernameRef = useRef<HTMLInputElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
+  const bioRef = useRef<HTMLTextAreaElement>(null)
   const profilePictureRef = useRef<HTMLInputElement>(null)
 
   const [avatarHref, setAvatarHref] = useState(user.profilePicture)
@@ -108,6 +152,7 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
         if (usernameRef.current)
           formData.append('username', usernameRef.current.value)
         if (nameRef.current) formData.append('name', nameRef.current.value)
+        if (bioRef.current) formData.append('bio', bioRef.current.value)
         if (
           profilePictureRef.current &&
           profilePictureRef.current.files &&
@@ -133,6 +178,7 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
   useEffect(() => {
     if (usernameRef.current) usernameRef.current.value = user.username
     if (nameRef.current) nameRef.current.value = user.name
+    if (bioRef.current) bioRef.current.value = user.bio
     if (profilePictureRef.current) profilePictureRef.current.value = ''
     setAvatarHref(user.profilePicture)
   }, [user])
@@ -145,6 +191,7 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
         <Spacer size={0.5} axis='vertical' />
         <Input ref={nameRef} label='Your Name' />
         <Spacer size={0.5} axis='vertical' />
+        <Textarea ref={bioRef} label='Your Bio' />
         <Spacer size={0.5} axis='vertical' />
         <span className={styles.label}>Your Avatar</span>
         <div className={styles.avatar}>
@@ -173,25 +220,25 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
 }
 
 export const Settings: React.FC = () => {
-  const { data, error, mutate } = useUsers()
+  const { data, error, mutate } = useCurrentUser()
   const router = useRouter()
 
   useEffect(() => {
     if (!data && !error) return
+    if (!data?.user) {
+      router.replace('/login')
+    }
   }, [router, data, error])
 
   return (
     <Wrapper className={styles.wrapper}>
       <Spacer size={2} axis='vertical' />
-      {data?.users
-        ? data.users.map((user: User, i: number) => (
-            <p key={i}>{user.username}</p>
-          ))
-        : // <>
-          //   /* <AboutYou user={data.user} mutate={mutate} />
-          //   <Auth /> */
-          // </>
-          null}
+      {data?.user ? (
+        <>
+          <AboutYou user={data.user} mutate={mutate} />
+          <Auth />
+        </>
+      ) : null}
     </Wrapper>
   )
 }

@@ -63,18 +63,3 @@
 .note .link {
   color: var(--link);
 }
-
-.seperator {
-  background-color: var(--accents-2);
-  height: 1px;
-  margin: 8px 0 8px 10px;
-  flex: 1 1;
-}
-
-.subtitle {
-  font-size: 0.75rem;
-  letter-spacing: 0.2rem;
-  color: var(--secondary);
-  font-weight: 700;
-  text-transform: uppercase;
-}

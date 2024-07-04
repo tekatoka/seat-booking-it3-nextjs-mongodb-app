@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
+import Checkbox from '@/components/Input/Checkbox'
 import { Container, Spacer, Wrapper } from '@/components/Layout'
 import { TextLink } from '@/components/Text'
 import { fetcher } from '@/lib/fetch'
@@ -10,10 +11,9 @@ import toast from 'react-hot-toast'
 import styles from './Auth.module.css'
 
 const SignUp: React.FC = () => {
-  const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const usernameRef = useRef<HTMLInputElement>(null)
-  const nameRef = useRef<HTMLInputElement>(null)
+  const isAdminRef = useRef<HTMLInputElement>(null)
 
   const { mutate } = useCurrentUser()
 
@@ -30,10 +30,13 @@ const SignUp: React.FC = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: emailRef.current?.value,
-            name: nameRef.current?.value,
+            username: usernameRef.current?.value,
             password: passwordRef.current?.value,
-            username: usernameRef.current?.value
+            isAdmin:
+              isAdminRef.current?.value == 'on' ||
+              isAdminRef.current?.value == 'checked'
+                ? true
+                : false
           })
         })
         mutate({ user: response.user }, false)
@@ -51,18 +54,13 @@ const SignUp: React.FC = () => {
   return (
     <Wrapper className={styles.root}>
       <div className={styles.main}>
-        <h1 className={styles.title}>Join Now</h1>
+        <h1 className={styles.title}>Anmelden</h1>
         <form onSubmit={onSubmit}>
-          <Container alignItems='center'>
-            <p className={styles.subtitle}>Your login</p>
-            <div className={styles.seperator} />
-          </Container>
           <Input
-            ref={emailRef}
-            htmlType='email'
-            autoComplete='email'
-            placeholder='Email Address'
-            ariaLabel='Email Address'
+            ref={usernameRef}
+            autoComplete='username'
+            placeholder='Username'
+            ariaLabel='Username'
             size='large'
             required
           />
@@ -77,26 +75,10 @@ const SignUp: React.FC = () => {
             required
           />
           <Spacer size={0.75} axis='vertical' />
-          <Container alignItems='center'>
-            <p className={styles.subtitle}>About you</p>
-            <div className={styles.seperator} />
-          </Container>
-          <Input
-            ref={usernameRef}
-            autoComplete='username'
-            placeholder='Username'
-            ariaLabel='Username'
-            size='large'
-            required
-          />
-          <Spacer size={0.5} axis='vertical' />
-          <Input
-            ref={nameRef}
-            autoComplete='name'
-            placeholder='Your name'
-            ariaLabel='Your name'
-            size='large'
-            required
+          <Checkbox
+            ref={isAdminRef}
+            ariaLabel='isAdmin'
+            label='Administrator?'
           />
           <Spacer size={1} axis='vertical' />
           <Button

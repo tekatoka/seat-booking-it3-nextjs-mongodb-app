@@ -1,46 +1,36 @@
 import { ValidateProps } from '@/api-lib/constants'
-import { findUserByEmail, findUserByUsername, insertUser } from '@/api-lib/db'
+import { findAllUsers, findUserByUsername, insertUser } from '@/api-lib/db'
 import { auths, validateBody } from '@/api-lib/middlewares'
 import { getMongoDb } from '@/api-lib/mongodb'
 import { ncOpts } from '@/api-lib/nc'
-import { slugUsername } from '@/lib/user'
+import { capitalizeUsername, slugUsername } from '@/lib/user'
 import nc from 'next-connect'
-import isEmail from 'validator/lib/isEmail'
-import normalizeEmail from 'validator/lib/normalizeEmail'
 
 const handler = nc(ncOpts)
+
+handler.get(async (req, res) => {
+  const db = await getMongoDb()
+  const users = await findAllUsers(db)
+  res.json({ users })
+})
 
 handler.post(
   validateBody({
     type: 'object',
     properties: {
       username: ValidateProps.user.username,
-      name: ValidateProps.user.name,
       password: ValidateProps.user.password,
-      email: ValidateProps.user.email
+      isAdmin: ValidateProps.user.isAdmin
     },
-    required: ['username', 'name', 'password', 'email'],
+    required: ['username', 'password'],
     additionalProperties: false
   }),
   ...auths,
   async (req, res) => {
     const db = await getMongoDb()
 
-    let { username, name, email, password } = req.body
-    username = slugUsername(req.body.username)
-    email = normalizeEmail(req.body.email)
-    if (!isEmail(email)) {
-      res
-        .status(400)
-        .json({ error: { message: 'The email you entered is invalid.' } })
-      return
-    }
-    if (await findUserByEmail(db, email)) {
-      res
-        .status(403)
-        .json({ error: { message: 'The email has already been used.' } })
-      return
-    }
+    let { username, password, isAdmin } = req.body
+    username = capitalizeUsername(req.body.username)
     if (await findUserByUsername(db, username)) {
       res
         .status(403)
@@ -48,11 +38,9 @@ handler.post(
       return
     }
     const user = await insertUser(db, {
-      email,
       originalPassword: password,
-      bio: '',
-      name,
-      username
+      username,
+      isAdmin
     })
     req.logIn(user, err => {
       if (err) throw err

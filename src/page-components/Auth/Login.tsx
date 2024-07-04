@@ -4,14 +4,14 @@ import { Input } from '@/components/Input'
 import { Spacer, Wrapper } from '@/components/Layout'
 import { TextLink } from '@/components/Text'
 import { fetcher } from '@/lib/fetch'
-import { useCurrentUser } from '@/lib/user'
+import { capitalizeUsername, useCurrentUser } from '@/lib/user'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState, FormEvent } from 'react'
 import toast from 'react-hot-toast'
 import styles from './Auth.module.css'
 
 const Login: React.FC = () => {
-  const emailRef = useRef<HTMLInputElement>(null)
+  const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
   const [isLoading, setIsLoading] = useState(false)
@@ -33,14 +33,16 @@ const Login: React.FC = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: emailRef.current?.value,
+            username: usernameRef.current
+              ? capitalizeUsername(usernameRef.current?.value)
+              : '',
             password: passwordRef.current?.value
           })
         })
         mutate({ user: response.user }, false)
         toast.success('You have been logged in.')
       } catch (e) {
-        toast.error('Incorrect email or password.')
+        toast.error('Incorrect username or password.')
       } finally {
         setIsLoading(false)
       }
@@ -54,11 +56,11 @@ const Login: React.FC = () => {
         <h1 className={styles.title}>Login to App</h1>
         <form onSubmit={onSubmit}>
           <Input
-            ref={emailRef}
-            htmlType='email'
-            autoComplete='email'
-            placeholder='Email Address'
-            ariaLabel='Email Address'
+            ref={usernameRef}
+            htmlType='text'
+            autoComplete='text'
+            placeholder='Username'
+            ariaLabel='Username'
             size='large'
             required
           />

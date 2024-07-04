@@ -5,6 +5,10 @@ export function useCurrentUser() {
   return useSWR('/api/user', fetcher)
 }
 
+export function useUsers() {
+  return useSWR('/api/users', fetcher)
+}
+
 export function useUser(id: string) {
   return useSWR(`/api/users/${id}`, fetcher)
 }
