@@ -16,6 +16,7 @@
   height: 40px;
   cursor: pointer;
   text-decoration: none;
+  text-wrap: nowrap;
 }
 
 .button[disabled] {

@@ -10,6 +10,7 @@ export interface User {
   bio: string
   emailVerified: boolean
   profilePicture?: string
+  isAdmin?: boolean
 }
 
 export interface NewUser {
@@ -19,6 +20,7 @@ export interface NewUser {
   username: string
   bio?: string
   profilePicture?: string
+  isAdmin?: boolean
 }
 
 export type SafeUser = Omit<User, 'password'>

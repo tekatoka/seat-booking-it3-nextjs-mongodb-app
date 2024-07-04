@@ -6,12 +6,7 @@ import { GetServerSideProps } from 'next'
 import { Post as PostType } from '@/api-lib/types'
 
 interface UserPostPageProps {
-  post: PostType & {
-    _id: string
-    creatorId: string
-    createdAt: string
-    creator: { _id: string }
-  }
+  post: PostType
 }
 
 const UserPostPage: React.FC<UserPostPageProps> = ({ post }) => {
@@ -19,7 +14,7 @@ const UserPostPage: React.FC<UserPostPageProps> = ({ post }) => {
     <>
       <Head>
         <title>
-          {post.creator.name} ({post.creator.username}): {post.content}
+          {post.creator?.name} ({post.creator?.username}): {post.content}
         </title>
       </Head>
       <UserPost post={post} />
