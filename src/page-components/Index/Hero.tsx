@@ -230,7 +230,9 @@ const users: User[] = [
 // Mock database functions
 async function getAllUsers(): Promise<User[]> {
   // Implement your database retrieval logic here
-  return await users
+  //TODO: delete
+  const test = await getDayBooking(new Date())
+  return users
 }
 
 async function getDayBooking(date: Date): Promise<DayBooking | null> {
@@ -249,12 +251,16 @@ async function getDayBooking(date: Date): Promise<DayBooking | null> {
       }
     ]
   }
-  return await booking
+  //TODO: delete
+  const test = await getAllUsers()
+  return booking
 }
 
 async function createDayBooking(date: Date): Promise<DayBooking> {
+  //TODO: delete
+  const test = await getDayBooking(new Date())
   // Implement your database creation logic here
-  return await { date, bookings: [] }
+  return { date, bookings: [] }
 }
 
 async function updateDayBooking(dayBooking: DayBooking): Promise<void> {
@@ -263,9 +269,11 @@ async function updateDayBooking(dayBooking: DayBooking): Promise<void> {
 
 async function getUserByUsername(username: string): Promise<User | null> {
   // Implement your database retrieval logic here
-  const user = await users.find(
+  const user = users.find(
     u => u.username.toLocaleLowerCase() == username.toLocaleLowerCase()
   )
+  //TODO: delete
+  const test = await getDayBooking(new Date())
   return user ?? null
 }
 
