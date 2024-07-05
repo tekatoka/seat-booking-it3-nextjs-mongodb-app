@@ -172,7 +172,10 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
   )
 }
 
-export const Settings: React.FC = () => {
+interface SettingsProps {
+  user: User
+}
+export const Settings: React.FC<SettingsProps> = ({ user }) => {
   const { data, error, mutate } = useUsers()
   const router = useRouter()
 
