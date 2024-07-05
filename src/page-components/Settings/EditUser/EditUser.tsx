@@ -39,7 +39,6 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
 
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
-      debugger
       console.log('Form submitted') // Add console log to verify submission
       e.preventDefault()
       try {
