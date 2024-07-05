@@ -1,7 +1,6 @@
 import { findUserByUsername } from '@/api-lib/db'
 import { getMongoDb } from '@/api-lib/mongodb'
 import { User as UserType } from '@/api-lib/types' // Ensure this import path is correct
-import { User } from '@/page-components/User'
 import { UserSettings } from '@/page-components/UserSettings'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'

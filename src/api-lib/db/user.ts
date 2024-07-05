@@ -2,6 +2,7 @@ import { Db, ObjectId } from 'mongodb'
 import { NewUser, User } from '../types/User'
 import bcrypt from 'bcryptjs'
 import normalizeEmail from 'validator/lib/normalizeEmail'
+import { capitalizeUsername } from '@/lib/user'
 
 //finds all users
 export async function findAllUsers(db: Db): Promise<Omit<User, 'password'>[]> {
@@ -59,6 +60,7 @@ export async function findUserByUsername(
   db: Db,
   username: string
 ): Promise<User | null> {
+  username = capitalizeUsername(username)
   return db
     .collection<User>('users')
     .findOne({ username }, { projection: dbProjectionUsers() })
@@ -152,8 +154,6 @@ export async function UNSAFE_updateUserPassword(
 // Returns a projection object for user queries
 export function dbProjectionUsers(prefix: string = ''): Record<string, number> {
   return {
-    [`${prefix}password`]: 0,
-    [`${prefix}email`]: 0,
-    [`${prefix}emailVerified`]: 0
+    [`${prefix}password`]: 0
   }
 }

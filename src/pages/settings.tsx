@@ -25,13 +25,11 @@ const SettingsPage: FC = () => {
       <Head>
         <title>Settings</title>
       </Head>
-      <div className='container'>
-        {/* <Container alignItems='center'>
+      {/* <Container alignItems='center'>
             <p className={styles.subtitle}>Your login</p>
             <div className={styles.seperator} />
           </Container> */}
-        <Settings user={data.user} />
-      </div>
+      <Settings currentUser={data.user} />
     </>
   )
 }

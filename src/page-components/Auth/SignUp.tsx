@@ -32,16 +32,12 @@ const SignUp: React.FC = () => {
           body: JSON.stringify({
             username: usernameRef.current?.value,
             password: passwordRef.current?.value,
-            isAdmin:
-              isAdminRef.current?.value == 'on' ||
-              isAdminRef.current?.value == 'checked'
-                ? true
-                : false
+            isAdmin: isAdminRef.current?.checked
           })
         })
         mutate({ user: response.user }, false)
         toast.success('Your account has been created')
-        router.replace('/feed')
+        router.replace('/')
       } catch (e: any) {
         toast.error(e.message)
       } finally {
