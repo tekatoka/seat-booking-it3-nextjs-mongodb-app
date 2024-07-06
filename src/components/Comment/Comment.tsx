@@ -31,7 +31,6 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
                 username={comment.creator.username}
               />
               <Container column className={styles.meta}>
-                <p className={styles.name}>{comment.creator.name}</p>
                 <p className={styles.username}>{comment.creator.username}</p>
               </Container>
             </>
