@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<
   if (!deletedToken) return { props: { valid: false } }
 
   await updateUserById(db, deletedToken.creatorId, {
-    emailVerified: true
+    //emailVerified: true
   })
 
   return { props: { valid: true } }

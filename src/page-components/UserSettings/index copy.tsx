@@ -32,7 +32,6 @@ const EmailVerify: React.FC<EmailVerifyProps> = ({ user }) => {
     }
   }, [])
 
-  if (user.emailVerified) return null
   return (
     <Container className={styles.note}>
       <Container flex={1}>
@@ -177,8 +176,8 @@ const AboutYou: React.FC<AboutYouProps> = ({ user, mutate }) => {
 
   useEffect(() => {
     if (usernameRef.current) usernameRef.current.value = user.username
-    if (nameRef.current) nameRef.current.value = user.name
-    if (bioRef.current) bioRef.current.value = user.bio
+    // if (nameRef.current) nameRef.current.value = user.name
+    // if (bioRef.current) bioRef.current.value = user.bio
     if (profilePictureRef.current) profilePictureRef.current.value = ''
     setAvatarHref(user.profilePicture)
   }, [user])

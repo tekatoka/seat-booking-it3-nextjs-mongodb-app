@@ -14,10 +14,8 @@ const UserHeader: React.FC<UserHeaderProps> = ({ user }) => {
         <Avatar size={168} username={user.username} url={user.profilePicture} />
       </div>
       <h1>
-        <div className={styles.name}>{user.name}</div>
-        <div className={styles.username}>@{user.username}</div>
+        <div className={styles.name}>{user.username}</div>
       </h1>
-      <p className={styles.bio}>{user.bio}</p>
     </Container>
   )
 }
