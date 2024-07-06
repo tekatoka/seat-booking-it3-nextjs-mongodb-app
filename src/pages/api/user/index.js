@@ -31,7 +31,7 @@ handler.get((req, res) => {
   if (!req.user) return res.json({ user: null })
   return res.json({ user: req.user })
 })
-
+//todo: favourite places, absence times
 handler.patch(
   upload.single('profilePicture'),
   validateBody({
@@ -64,18 +64,18 @@ handler.patch(
 
     let username
 
-    if (req.body.username) {
-      username = slugUsername(req.body.username)
-      if (
-        username !== req.user.username &&
-        (await findUserByUsername(db, username))
-      ) {
-        res
-          .status(403)
-          .json({ error: { message: 'The username has already been taken.' } })
-        return
-      }
-    }
+    // if (req.body.username) {
+    //   username = slugUsername(req.body.username)
+    //   if (
+    //     username !== req.user.username &&
+    //     (await findUserByUsername(db, username))
+    //   ) {
+    //     res
+    //       .status(403)
+    //       .json({ error: { message: 'The username has already been taken.' } })
+    //     return
+    //   }
+    // }
 
     const user = await updateUserById(db, req.user._id, {
       ...(username && { username }),

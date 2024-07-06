@@ -44,6 +44,9 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
       try {
         setIsLoading(true)
         const formData = new FormData()
+        if (user._id) {
+          formData.append('_id', user._id.toString())
+        }
         if (usernameRef.current)
           formData.append('username', usernameRef.current.value)
         if (nameRef.current) formData.append('name', nameRef.current.value)
@@ -103,7 +106,7 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
           variant='primary'
           loading={isLoading}
         >
-          Save!
+          Save
         </Button>
       </form>
     </section>
