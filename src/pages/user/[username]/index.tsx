@@ -13,9 +13,7 @@ const UserPage: React.FC<UserPageProps> = ({ user }) => {
   return (
     <>
       <Head>
-        <title>
-          {user.name} (@{user.username})
-        </title>
+        <title>Prolile (@{user.username})</title>
       </Head>
       {/* <User user={user} /> */}
       <UserSettings />
@@ -36,7 +34,13 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const transformedUser = {
     ...user,
     _id: user._id?.toString() || '',
-    createdAt: user.createdAt?.toISOString() || ''
+    createdAt: user.createdAt?.toISOString() || '',
+    absences:
+      user.absences?.map(absence => ({
+        ...absence,
+        from: absence.from.toISOString(),
+        till: absence.till ? absence.till.toISOString() : null
+      })) || []
   }
 
   return { props: { user: transformedUser } }

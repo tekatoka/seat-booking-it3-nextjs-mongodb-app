@@ -54,8 +54,8 @@ const PosterInner: React.FC<PosterInnerProps> = ({ user }) => {
         <Input
           ref={contentRef}
           className={styles.input}
-          placeholder={`What's on your mind, ${user.name}?`}
-          ariaLabel={`What's on your mind, ${user.name}?`}
+          placeholder={`What's on your mind, ${user.username}?`}
+          ariaLabel={`What's on your mind, ${user.username}?`}
         />
         <Button type='submit' loading={isLoading}>
           Post

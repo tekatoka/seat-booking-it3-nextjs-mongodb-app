@@ -14,7 +14,7 @@ const UserPostPage: React.FC<UserPostPageProps> = ({ post }) => {
     <>
       <Head>
         <title>
-          {post.creator?.name} ({post.creator?.username}): {post.content}
+          ({post.creator?.username}): {post.content}
         </title>
       </Head>
       <UserPost post={post} />

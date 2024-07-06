@@ -56,3 +56,7 @@ body {
   color: var(--foreground);
   background-color: var(--background);
 }
+
+.react-datepicker__tab-loop {
+  display: inline-block;
+}

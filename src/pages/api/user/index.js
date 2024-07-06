@@ -7,6 +7,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer'
 import nc from 'next-connect'
 import { ValidateProps } from '@/api-lib/constants'
+import { ObjectId } from 'mongodb'
 
 const upload = multer({ dest: '/tmp' })
 const handler = nc(ncOpts)
@@ -37,9 +38,8 @@ handler.patch(
   validateBody({
     type: 'object',
     properties: {
-      username: ValidateProps.user.username,
-      name: ValidateProps.user.name,
-      bio: ValidateProps.user.bio
+      username: ValidateProps.user.username
+      //absences: ValidateProps.user.absences
     },
     additionalProperties: true
   }),
@@ -60,9 +60,17 @@ handler.patch(
       })
       profilePicture = image.secure_url
     }
-    const { name, bio } = req.body
+    const { _id, username } = req.body
+    let absences
 
-    let username
+    if (req.body.absences) {
+      absences = JSON.parse(req.body.absences)
+      absences = absences.map(absence => ({
+        ...absence,
+        from: new Date(absence.from),
+        till: absence.till ? new Date(absence.till) : null
+      }))
+    }
 
     // if (req.body.username) {
     //   username = slugUsername(req.body.username)
@@ -76,11 +84,11 @@ handler.patch(
     //     return
     //   }
     // }
-
-    const user = await updateUserById(db, req.user._id, {
+    const user = await updateUserById(db, _id, {
       ...(username && { username }),
-      ...(name && { name }),
-      ...(typeof bio === 'string' && { bio }),
+      ...(absences && { absences }),
+      // ...(name && { name }),
+      // ...(typeof bio === 'string' && { bio }),
       ...(profilePicture && { profilePicture })
     })
 

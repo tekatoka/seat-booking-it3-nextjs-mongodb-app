@@ -87,7 +87,11 @@ handler.patch(
       ) {
         res
           .status(403)
-          .json({ error: { message: 'The username has already been taken.' } })
+          .json({
+            error: {
+              message: 'Ein Benutzer mit diesem Namen existiert bereits.'
+            }
+          })
         return
       }
     }

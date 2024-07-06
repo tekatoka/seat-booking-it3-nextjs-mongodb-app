@@ -74,7 +74,6 @@ const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
 
   useEffect(() => {
     if (usernameRef.current) usernameRef.current.value = user.username
-    if (nameRef.current) nameRef.current.value = user.name
     if (profilePictureRef.current) profilePictureRef.current.value = ''
     setAvatarHref(user.profilePicture)
   }, [user])

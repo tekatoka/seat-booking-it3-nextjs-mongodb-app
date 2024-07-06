@@ -1,5 +1,5 @@
 import { Db, ObjectId } from 'mongodb'
-import { NewUser, User } from '../types/User'
+import { NewUser, User, Absence } from '../types/User'
 import bcrypt from 'bcryptjs'
 import normalizeEmail from 'validator/lib/normalizeEmail'
 import { capitalizeUsername } from '@/lib/user'
@@ -101,10 +101,7 @@ export async function insertUser(
   const hashedPassword = await bcrypt.hash(newUserDetails.originalPassword, 10)
   const user: User = {
     email: newUserDetails.email,
-    name: newUserDetails.name,
     username: newUserDetails.username,
-    bio: newUserDetails.bio ?? '', // Provide a default empty string if bio is undefined
-    emailVerified: false, // Default value for new users
     profilePicture: newUserDetails.profilePicture,
     password: hashedPassword,
     isAdmin: newUserDetails.isAdmin,

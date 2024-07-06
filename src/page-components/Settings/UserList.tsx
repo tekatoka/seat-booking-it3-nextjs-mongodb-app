@@ -7,7 +7,6 @@ import styles from './UserList.module.css'
 import { User } from '@/api-lib/types' // Ensure this import path is correct
 import AddUser from './AddUser/AddUser'
 import { EditUser } from './EditUser/EditUser'
-import { mutate } from 'swr'
 import { useCallback, useState } from 'react'
 import { Modal } from '@/components/Modal'
 
@@ -30,7 +29,7 @@ const sortUsersByUsername = (a: User, b: User) => {
   return 0
 }
 
-const UserList: React.FC<UserListProps> = ({ users, currentUser }) => {
+const UserList: React.FC<UserListProps> = ({ users, mutate, currentUser }) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
