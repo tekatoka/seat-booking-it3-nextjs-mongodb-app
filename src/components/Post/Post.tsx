@@ -30,7 +30,6 @@ const Post: React.FC<PostProps> = ({ post, className }) => {
               username={post.creator.username}
             />
             <Container column className={styles.meta}>
-              <p className={styles.name}>{post.creator.name}</p>
               <p className={styles.username}>{post.creator.username}</p>
             </Container>
           </Container>
