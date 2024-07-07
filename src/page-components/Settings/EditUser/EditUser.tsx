@@ -225,14 +225,17 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
           {absences.map((absence, index) => (
             <div
               key={index}
-              className='flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-2 max-w-full'
+              className='flex flex-col sm:flex-row sm:justify-between items-start space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-2 max-w-full'
             >
-              <div className='flex items-center space-x-2 sm:space-x-4 w-full sm:max-w-lg'>
-                <div className='flex items-center space-x-2 text-sm sm:text-base w-full'>
-                  <label htmlFor={`from-${index}`} className='w-12'>
+              <div className='flex flex-col sm:flex-row items-center sm:space-x-4 w-full'>
+                <div className='flex items-center space-x-2 w-full sm:w-auto'>
+                  <label
+                    htmlFor={`from-${index}`}
+                    className='text-sm sm:text-base'
+                  >
                     von:
                   </label>
-                  <div className='flex-1'>
+                  <div className='flex-1 min-w-[150px]'>
                     <CustomDatePicker
                       index={index}
                       date={absence.from}
@@ -242,11 +245,14 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
                     />
                   </div>
                 </div>
-                <div className='flex items-center space-x-2 text-sm sm:text-base w-full'>
-                  <label htmlFor={`till-${index}`} className='w-12'>
+                <div className='flex items-center space-x-2 w-full sm:w-auto mt-2 sm:mt-0'>
+                  <label
+                    htmlFor={`till-${index}`}
+                    className='text-sm sm:text-base'
+                  >
                     bis:
                   </label>
-                  <div className='flex-1'>
+                  <div className='flex-1 min-w-[150px]'>
                     <CustomDatePicker
                       index={index}
                       date={absence.till}
@@ -257,11 +263,11 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
                   </div>
                 </div>
               </div>
-              <div className='w-full sm:w-auto'>
+              <div className='w-full sm:w-auto mt-2 sm:mt-0'>
                 <button
                   type='button'
                   onClick={() => removeAbsence(index)}
-                  className='flex items-center justify-center h-full px-3 py-2 border rounded-md text-gray-500 hover:text-red-500 transition-colors duration-200'
+                  className='w-full sm:w-auto flex items-center justify-center h-full px-3 py-2 border rounded-md text-gray-500 hover:text-red-500 transition-colors duration-200'
                 >
                   <LuTrash2 />
                 </button>

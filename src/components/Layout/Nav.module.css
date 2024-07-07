@@ -95,6 +95,5 @@
 .text {
   margin-left: 15px; /* Adjust the margin as needed */
   display: inline-block;
-  text-transform: uppercase;
   letter-spacing: 2px;
 }
