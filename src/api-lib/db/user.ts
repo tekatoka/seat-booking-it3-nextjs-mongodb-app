@@ -148,6 +148,10 @@ export async function UNSAFE_updateUserPassword(
     .updateOne({ _id: new ObjectId(id) }, { $set: { password } })
 }
 
+export async function deleteUserById(db: Db, userId: string) {
+  return db.collection('users').deleteOne({ _id: new ObjectId(userId) })
+}
+
 // Returns a projection object for user queries
 export function dbProjectionUsers(prefix: string = ''): Record<string, number> {
   return {

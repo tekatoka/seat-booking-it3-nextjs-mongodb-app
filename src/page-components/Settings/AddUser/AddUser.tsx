@@ -32,7 +32,6 @@ const AddUserInner: React.FC = () => {
             isAdmin: false
           })
         })
-
         toast.success('Benutzer erfolgreich gespeichert')
         if (usernameRef.current) {
           usernameRef.current.value = ''

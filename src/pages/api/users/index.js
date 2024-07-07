@@ -37,11 +37,13 @@ handler.post(
       })
       return
     }
-    await insertUser(db, {
+    const user = await insertUser(db, {
       originalPassword: password,
       username,
       isAdmin
     })
+
+    return res.json({ user })
     // req.logIn(user, err => {
     //   if (err) throw err
     //   res.status(201).json({

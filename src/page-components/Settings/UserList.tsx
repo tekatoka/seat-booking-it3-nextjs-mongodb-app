@@ -1,14 +1,14 @@
-import { Button } from '@/components/Button'
 import { Container, Spacer } from '@/components/Layout'
 import Wrapper from '@/components/Layout/Wrapper'
 import { CardUser as CardUserComponent } from '@/components/CardUser'
-import Link from 'next/link'
 import styles from './UserList.module.css'
 import { User } from '@/api-lib/types' // Ensure this import path is correct
 import AddUser from './AddUser/AddUser'
 import { EditUser } from './EditUser/EditUser'
 import { useCallback, useState } from 'react'
 import { Modal } from '@/components/Modal'
+import { fetcher } from '@/lib/fetch'
+import toast from 'react-hot-toast'
 
 interface UserListProps {
   currentUser: User
@@ -32,6 +32,7 @@ const sortUsersByUsername = (a: User, b: User) => {
 const UserList: React.FC<UserListProps> = ({ users, mutate, currentUser }) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleEditClick = useCallback((user: User) => {
     setSelectedUser(user)
@@ -41,6 +42,33 @@ const UserList: React.FC<UserListProps> = ({ users, mutate, currentUser }) => {
   const handleCloseModal = () => {
     setModalOpen(false)
   }
+
+  const onDelete = useCallback(
+    async (user: User) => {
+      try {
+        setIsLoading(true)
+        const response = await fetch(`/api/users/${user._id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' }
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Something went wrong')
+        }
+
+        toast.success(`${user.username} erfolgreich gelöscht`)
+        // refresh user list
+        mutate()
+      } catch (e: any) {
+        toast.error(e.message || 'Something went wrong')
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [mutate]
+  )
+
   return (
     <div className={styles.root}>
       <Spacer axis='vertical' size={1} />
@@ -56,6 +84,7 @@ const UserList: React.FC<UserListProps> = ({ users, mutate, currentUser }) => {
               currentUser={currentUser}
               user={user}
               handleEditClick={() => handleEditClick(user)}
+              handleDeleteClick={() => onDelete(user)}
             />
           </div>
         ))}

@@ -50,13 +50,36 @@
   color: var(--accents-5);
 }
 
-.edit-button {
+.editButton {
   background: none;
   border: none;
   cursor: pointer;
   color: var(--foreground);
 }
 
-.edit-button:hover {
+.editButton:hover {
   color: var(--highlight);
+}
+
+.deleteButton {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  transition: color 0.2s ease-in-out; /* transition-colors duration-200 */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  color: #ef4444; /* hover:text-red-500 */
+}
+
+@media (min-width: 640px) {
+  .deleteButton {
+    width: auto; /* sm:w-auto */
+  }
 }
