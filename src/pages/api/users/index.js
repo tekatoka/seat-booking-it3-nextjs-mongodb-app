@@ -32,24 +32,22 @@ handler.post(
     let { username, password, isAdmin } = req.body
     username = capitalizeUsername(req.body.username)
     if (await findUserByUsername(db, username)) {
-      res
-        .status(403)
-        .json({
-          error: { message: 'Ein Benutzer mit diesem Namen existiert bereits.' }
-        })
+      res.status(403).json({
+        error: { message: 'Ein Benutzer mit diesem Namen existiert bereits.' }
+      })
       return
     }
-    const user = await insertUser(db, {
+    await insertUser(db, {
       originalPassword: password,
       username,
       isAdmin
     })
-    req.logIn(user, err => {
-      if (err) throw err
-      res.status(201).json({
-        user
-      })
-    })
+    // req.logIn(user, err => {
+    //   if (err) throw err
+    //   res.status(201).json({
+    //     user
+    //   })
+    // })
   }
 )
 

@@ -16,3 +16,7 @@ export const formatDateAsString = (date: Date): string => {
   const year = date.getFullYear()
   return `${day}.${month}.${year}`
 }
+
+export const stripTime = (date: Date): Date => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}

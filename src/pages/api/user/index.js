@@ -1,13 +1,11 @@
-import { findUserByUsername, updateUserById } from '@/api-lib/db'
+import { updateUserById } from '@/api-lib/db'
 import { auths, validateBody } from '@/api-lib/middlewares'
 import { getMongoDb } from '@/api-lib/mongodb'
 import { ncOpts } from '@/api-lib/nc'
-import { slugUsername } from '@/lib/user'
 import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer'
 import nc from 'next-connect'
 import { ValidateProps } from '@/api-lib/constants'
-import { ObjectId } from 'mongodb'
 
 const upload = multer({ dest: '/tmp' })
 const handler = nc(ncOpts)

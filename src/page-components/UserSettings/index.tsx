@@ -74,7 +74,6 @@ const Auth: React.FC = () => {
 export const UserSettings: React.FC = () => {
   const { data, error, mutate } = useCurrentUser()
   const router = useRouter()
-
   useEffect(() => {
     if (!data && !error) return
     if (!data?.user) {

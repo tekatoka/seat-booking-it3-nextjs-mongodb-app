@@ -10,13 +10,9 @@ import { useCallback, useRef, useState, FormEvent } from 'react'
 import toast from 'react-hot-toast'
 import styles from './AddUser.module.css'
 
-interface PosterInnerProps {
-  user: User
-}
-
 const startPassword = 'password123'
 
-const AddUserInner: React.FC<PosterInnerProps> = ({ user }) => {
+const AddUserInner: React.FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -74,17 +70,13 @@ const AddUserInner: React.FC<PosterInnerProps> = ({ user }) => {
 }
 
 const AddUser: React.FC = () => {
-  const { data, error } = useCurrentUser()
+  const { data, error } = useUsers()
   const loading = !data && !error
 
   return (
     <div className={styles.root}>
       <h3 className={styles.heading}>Benutzer hinzufügen</h3>
-      {loading ? (
-        <LoadingDots>Loading</LoadingDots>
-      ) : (
-        <AddUserInner user={data.user} />
-      )}
+      {loading ? <LoadingDots>Loading</LoadingDots> : <AddUserInner />}
     </div>
   )
 }

@@ -23,7 +23,6 @@ const UserPage: React.FC<UserPageProps> = ({ user }) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const db = await getMongoDb()
-
   const user = await findUserByUsername(db, context.params?.username as string)
   if (!user) {
     return {

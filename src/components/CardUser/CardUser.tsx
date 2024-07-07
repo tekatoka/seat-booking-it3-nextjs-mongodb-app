@@ -4,10 +4,6 @@ import Link from 'next/link'
 import styles from './CardUser.module.css'
 import { User } from '@/api-lib/types'
 import { LuFileEdit } from 'react-icons/lu'
-import { useState } from 'react'
-import { Modal } from '../Modal'
-import { EditUser } from '@/page-components/Settings/EditUser/EditUser'
-import { mutate } from 'swr'
 
 interface CardUserProps {
   user: User

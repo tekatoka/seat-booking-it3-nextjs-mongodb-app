@@ -14,6 +14,7 @@ import Spacer from './Spacer'
 import Wrapper from './Wrapper'
 import Image from 'next/image'
 import { LuUser } from 'react-icons/lu'
+import { LoadingDots } from '../LoadingDots'
 
 type UserMenuProps = {
   user: User
@@ -124,9 +125,11 @@ const Nav: React.FC = () => {
                 height={35}
               />
               <span className={styles.text}>IT-3 Sitzplatz App</span>
+              <span>{user && user.username}</span>
             </div>
           </Link>
-          {!loading && (
+          {loading && <LoadingDots>Lade...</LoadingDots>}
+          {!loading && !error && (
             <Container>
               {user ? (
                 <UserMenu user={user} mutate={mutate} />
@@ -141,13 +144,6 @@ const Nav: React.FC = () => {
                   >
                     Log in
                   </ButtonLink>
-
-                  <Spacer axis='horizontal' size={0.25} />
-                  <Link href='/sign-up'>
-                    <Button size='small' type='button'>
-                      Sign Up
-                    </Button>
-                  </Link>
                 </>
               )}
               <ThemeSwitcher />

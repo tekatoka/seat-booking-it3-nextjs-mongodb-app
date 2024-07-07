@@ -10,20 +10,22 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './EditUser.module.css'
 import { LuPlus, LuTrash2 } from 'react-icons/lu'
-import { formatDateAsString } from '@/lib/default'
+import { formatDateAsString, stripTime } from '@/lib/default'
 
 interface CustomDatePickerProps {
   index: number
   date: Date | string | undefined
   field: keyof Absence
   onChange: (index: number, field: keyof Absence, date: Date | null) => void
+  id: string
 }
 
 const CustomDatePicker = ({
   index,
   date,
   field,
-  onChange
+  onChange,
+  id
 }: CustomDatePickerProps) => {
   const parsedDate = date ? new Date(date) : null
   return (
@@ -33,6 +35,7 @@ const CustomDatePicker = ({
       dateFormat='dd.MM.yyyy'
       className='ml-1'
       placeholderText={formatDateAsString(new Date())}
+      id={id}
     />
   )
 }
@@ -51,7 +54,7 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
   const [absences, setAbsences] = useState<Absence[]>([])
 
   useEffect(() => {
-    const today = new Date()
+    const today = stripTime(new Date())
     const filteredAndSortedAbsences = (user.absences || [])
       .filter(absence => {
         const tillDate = absence.till ? new Date(absence.till) : null
@@ -188,7 +191,7 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
   }
 
   const addAbsence = () => {
-    setAbsences([...absences, { from: new Date() }])
+    setAbsences([...absences, { from: stripTime(new Date()) }])
   }
 
   const removeAbsence = (index: number) => {
@@ -218,38 +221,55 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
         </div>
         <Spacer size={1.5} axis='vertical' />
         <span className={styles.label}>Abwesenheiten</span>
-        <div className='my-4 '>
+        <div className='my-4 space-y-4 max-w-full'>
           {absences.map((absence, index) => (
-            <div key={index} className='flex items-center'>
-              <label className='flex'>
-                von:{' '}
-                <CustomDatePicker
-                  index={index}
-                  date={absence.from}
-                  field={'from'}
-                  onChange={handleAbsenceChange}
-                />
-              </label>
-              <label className='flex'>
-                bis:{' '}
-                <CustomDatePicker
-                  index={index}
-                  date={absence.till}
-                  field={'till'}
-                  onChange={handleAbsenceChange}
-                />
-              </label>
-              <button
-                type='button'
-                onClick={() => removeAbsence(index)}
-                className='flex items-center justify-center h-full px-3'
-                style={{ height: '36px' }} // Ensure the button has a fixed height matching the inputs
-              >
-                <LuTrash2 className='text-gray-500 hover:text-red-500 transition-colors duration-200' />
-              </button>
+            <div
+              key={index}
+              className='flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-2 max-w-full'
+            >
+              <div className='flex items-center space-x-2 sm:space-x-4 w-full sm:max-w-lg'>
+                <div className='flex items-center space-x-2 text-sm sm:text-base w-full'>
+                  <label htmlFor={`from-${index}`} className='w-12'>
+                    von:
+                  </label>
+                  <div className='flex-1'>
+                    <CustomDatePicker
+                      index={index}
+                      date={absence.from}
+                      field={'from'}
+                      onChange={handleAbsenceChange}
+                      id={`from-${index}`}
+                    />
+                  </div>
+                </div>
+                <div className='flex items-center space-x-2 text-sm sm:text-base w-full'>
+                  <label htmlFor={`till-${index}`} className='w-12'>
+                    bis:
+                  </label>
+                  <div className='flex-1'>
+                    <CustomDatePicker
+                      index={index}
+                      date={absence.till}
+                      field={'till'}
+                      onChange={handleAbsenceChange}
+                      id={`till-${index}`}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className='w-full sm:w-auto'>
+                <button
+                  type='button'
+                  onClick={() => removeAbsence(index)}
+                  className='flex items-center justify-center h-full px-3 py-2 border rounded-md text-gray-500 hover:text-red-500 transition-colors duration-200'
+                >
+                  <LuTrash2 />
+                </button>
+              </div>
             </div>
           ))}
         </div>
+
         <Button
           type='button'
           onClick={addAbsence}

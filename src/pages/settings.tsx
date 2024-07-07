@@ -6,9 +6,8 @@ import { useCurrentUser } from '@/lib/user'
 import { useRouter } from 'next/router'
 
 const SettingsPage: FC = () => {
-  const { data, error, mutate } = useCurrentUser()
+  const { data, error } = useCurrentUser()
   const router = useRouter()
-
   useEffect(() => {
     if (!data && !error) return
     if (!data?.user) {
@@ -25,10 +24,6 @@ const SettingsPage: FC = () => {
       <Head>
         <title>Settings</title>
       </Head>
-      {/* <Container alignItems='center'>
-            <p className={styles.subtitle}>Your login</p>
-            <div className={styles.seperator} />
-          </Container> */}
       <Settings currentUser={data.user} />
     </>
   )
