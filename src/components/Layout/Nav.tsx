@@ -72,7 +72,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
         onClick={() => setVisible(!visible)}
       >
         <LuUser className='text-lg' />
-        <span className='sr-only'>Settings</span>
+        <span className='sr-only'>Einstellungen</span>
       </Button>
       <div
         ref={menuRef}
@@ -83,13 +83,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
         {visible && (
           <div className={styles.menu}>
             <Link href={`/user/${user.username}`} className={styles.item}>
-              Profile
+              Profil - <span>{user && user.username}</span>
             </Link>
             <Link href='/settings' className={styles.item}>
-              Settings
+              Einstellungen
             </Link>
             <button onClick={onSignOut} className={styles.item}>
-              Sign out
+              Abmelden
             </button>
           </div>
         )}
@@ -125,10 +125,9 @@ const Nav: React.FC = () => {
                 height={35}
               />
               <span className={styles.text}>IT-3 Sitzplatz App</span>
-              <span>{user && user.username}</span>
             </div>
           </Link>
-          {loading && <LoadingDots>Lade...</LoadingDots>}
+          {loading && <LoadingDots />}
           {!loading && !error && (
             <Container>
               {user ? (

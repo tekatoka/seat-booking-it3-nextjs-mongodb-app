@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Next.js MongoDB App</title>
+        <title>IT-3 Sitzplatz App</title>
         <meta
           key='viewport'
           name='viewport'
