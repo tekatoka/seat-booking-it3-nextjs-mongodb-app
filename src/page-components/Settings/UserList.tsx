@@ -85,6 +85,7 @@ const UserList: React.FC<UserListProps> = ({ users, mutate, currentUser }) => {
               user={user}
               handleEditClick={() => handleEditClick(user)}
               handleDeleteClick={() => onDelete(user)}
+              isLoading={isLoading}
             />
           </div>
         ))}

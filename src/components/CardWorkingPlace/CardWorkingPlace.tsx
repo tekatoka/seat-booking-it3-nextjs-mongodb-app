@@ -1,13 +1,13 @@
 import { Container } from '@/components/Layout'
 import clsx from 'clsx'
 import Link from 'next/link'
-import styles from './CardUser.module.css'
-import { User } from '@/api-lib/types'
+import styles from './CardWorkingPlace.module.css'
+import { User, WorkingPlace } from '@/api-lib/types'
 import { LuFileEdit, LuTrash2 } from 'react-icons/lu'
 import { LoadingDots } from '../LoadingDots'
 
-interface CardUserProps {
-  user: User
+interface CardWorkingPlaceProps {
+  place: WorkingPlace
   className?: string
   currentUser: User
   handleEditClick: () => void
@@ -15,8 +15,8 @@ interface CardUserProps {
   isLoading: boolean
 }
 
-const CardUser: React.FC<CardUserProps> = ({
-  user,
+const CardUser: React.FC<CardWorkingPlaceProps> = ({
+  place,
   currentUser,
   className,
   handleEditClick,
@@ -25,13 +25,13 @@ const CardUser: React.FC<CardUserProps> = ({
 }) => {
   return (
     <div className={clsx(styles.root, className)}>
-      {user && (
+      {place && (
         <Link href='#'>
           <Container column>
             <div className='flex justify-between items-center'>
-              <p className='username'>{user.username}</p>
+              <p className='username'>{place.name}</p>
               <div className='flex justify-between items-center space-x-1'>
-                {isLoading ? (
+                {/* {isLoading ? (
                   <LoadingDots />
                 ) : (
                   <>
@@ -53,11 +53,9 @@ const CardUser: React.FC<CardUserProps> = ({
                       </button>
                     ) : null}
                   </>
-                )}
+                )} */}
               </div>
             </div>
-            <p className={styles.meta}>Lieblingsplätze:</p>
-            <p className={styles.meta}>Abwesend:</p>
           </Container>
         </Link>
       )}

@@ -11,12 +11,19 @@ import toast from 'react-hot-toast'
 import styles from './Settings.module.css'
 import { User } from '@/api-lib/types'
 import UserList from './UserList'
+import { useWorkingPlaces } from '@/lib/workingPlace'
+import WorkingPlaceList from './WorkingPlaceList'
 
 interface SettingsProps {
   currentUser: User
 }
 export const Settings: React.FC<SettingsProps> = ({ currentUser }) => {
   const { data, error, mutate } = useUsers()
+  const {
+    data: workingPlacesData,
+    error: workingPlacesError,
+    mutate: workingPlacesMutate
+  } = useWorkingPlaces()
   const router = useRouter()
 
   useEffect(() => {
@@ -35,15 +42,13 @@ export const Settings: React.FC<SettingsProps> = ({ currentUser }) => {
           />
         </div>
       )}
-      {data?.users && (
-        <div className='w-full lg:w-1/2'>
-          <UserList
-            currentUser={currentUser}
-            users={data.users}
-            mutate={mutate}
-          />
-        </div>
-      )}
+      <div className='w-full lg:w-1/2'>
+        <WorkingPlaceList
+          currentUser={currentUser}
+          workingPlaces={workingPlacesData?.workingPlaces}
+          mutate={mutate}
+        />
+      </div>
     </Wrapper>
   )
 }

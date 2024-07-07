@@ -27,5 +27,10 @@ export const ValidateProps = {
   },
   comment: {
     content: { type: 'string', minLength: 1, maxLength: 280 }
+  },
+  workingPlace: {
+    name: { type: 'string', minLength: 3, maxLength: 20 },
+    pcName: { type: 'string', minLength: 4, maxLength: 50 },
+    createdAt: { type: 'Date' }
   }
 }
