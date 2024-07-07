@@ -26,11 +26,13 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   )
 
   useEffect(() => {
-    document.addEventListener('keydown', handleEscapePress)
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscapePress)
+    }
     return () => {
       document.removeEventListener('keydown', handleEscapePress)
     }
-  }, [handleEscapePress])
+  }, [isOpen, handleEscapePress])
 
   if (!isOpen) return null
 
@@ -39,9 +41,9 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
       className='fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto modal-overlay'
       onClick={handleOutsideClick}
       onKeyDown={handleEscapePress}
-      role='dialog'
-      aria-modal='true'
-      tabIndex={-1}
+      role='button'
+      aria-label='Close modal'
+      tabIndex={0}
     >
       <div className='bg-white rounded-lg shadow-lg relative w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-3xl mx-auto my-6 sm:my-10'>
         <div className='sticky top-0 bg-white p-4 rounded-t-lg'>
