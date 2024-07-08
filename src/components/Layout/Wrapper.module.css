@@ -4,3 +4,9 @@
   max-width: 100%;
   width: 1048px;
 }
+
+@media (max-width: 834px) {
+  .wrapper {
+    padding: 10px;
+  }
+}

@@ -5,6 +5,7 @@ import styles from './CardWorkingPlace.module.css'
 import { User, WorkingPlace } from '@/api-lib/types'
 import { LuFileEdit, LuTrash2 } from 'react-icons/lu'
 import { LoadingDots } from '../LoadingDots'
+import { Avatar } from '../Avatar'
 
 interface CardWorkingPlaceProps {
   place: WorkingPlace
@@ -27,36 +28,40 @@ const CardUser: React.FC<CardWorkingPlaceProps> = ({
     <div className={clsx(styles.root, className)}>
       {place && (
         <Link href='#'>
-          <Container column>
-            <div className='flex justify-between items-center'>
-              <p className='username'>{place.name}</p>
-              <div className='flex justify-between items-center space-x-1'>
-                {/* {isLoading ? (
-                  <LoadingDots />
-                ) : (
-                  <>
-                    {currentUser.isAdmin ||
-                    currentUser.username === user.username ? (
-                      <button
-                        onClick={handleEditClick}
-                        className={styles.editButton}
-                      >
-                        <LuFileEdit />
-                      </button>
-                    ) : null}
-                    {currentUser.isAdmin ? (
-                      <button
-                        onClick={handleDeleteClick}
-                        className={styles.deleteButton}
-                      >
-                        <LuTrash2 />
-                      </button>
-                    ) : null}
-                  </>
-                )} */}
+          <div className='flex space-x-4 items-start'>
+            <Avatar size={64} url={place.image} username={place.name} />
+            <div className='flex-1'>
+              <div className='flex justify-between items-center'>
+                <p className='username'>{place.name}</p>
+                <div className='flex items-center space-x-1'>
+                  {isLoading ? (
+                    <LoadingDots />
+                  ) : (
+                    <>
+                      {currentUser.isAdmin && (
+                        <>
+                          <button
+                            onClick={handleEditClick}
+                            className={styles.editButton}
+                          >
+                            <LuFileEdit />
+                          </button>
+                          <button
+                            onClick={handleDeleteClick}
+                            className={styles.deleteButton}
+                          >
+                            <LuTrash2 />
+                          </button>
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
+              <p className={styles.meta}>{place.pcName}</p>
+              <p className={styles.placeholder}>-</p>
             </div>
-          </Container>
+          </div>
         </Link>
       )}
     </div>

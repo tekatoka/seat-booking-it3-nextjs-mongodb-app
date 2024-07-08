@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
-import { Container, Wrapper } from '@/components/Layout'
+import { Container, Spacer, Wrapper } from '@/components/Layout'
 import { LoadingDots } from '@/components/LoadingDots'
 import { fetcher } from '@/lib/fetch'
 import { useWorkingPlaces } from '@/lib/workingPlace'
@@ -55,6 +55,7 @@ const AddWorkingPlaceInner: React.FC = () => {
             className={styles.input}
             placeholder={`Arbeitsplatzname`}
           />
+          <Spacer size={0.15} axis='vertical' />
           <Input
             ref={pcNameRef}
             className={styles.input}

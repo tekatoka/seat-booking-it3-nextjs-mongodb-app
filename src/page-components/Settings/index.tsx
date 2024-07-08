@@ -1,29 +1,20 @@
-import { Avatar } from '@/components/Avatar'
-import { Button } from '@/components/Button'
-import { Input, Textarea } from '@/components/Input'
 import { Container, Spacer } from '@/components/Layout'
 import Wrapper from '@/components/Layout/Wrapper'
-import { fetcher } from '@/lib/fetch'
-import { useCurrentUser, useUsers } from '@/lib/user'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState, FormEvent } from 'react'
-import toast from 'react-hot-toast'
-import styles from './Settings.module.css'
 import { User } from '@/api-lib/types'
 import UserList from './UserList'
 import { useWorkingPlaces } from '@/lib/workingPlace'
 import WorkingPlaceList from './WorkingPlaceList'
+import { useUsers } from '@/lib/user'
 
 interface SettingsProps {
   currentUser: User
 }
 export const Settings: React.FC<SettingsProps> = ({ currentUser }) => {
   const { data, error, mutate } = useUsers()
-  const {
-    data: workingPlacesData,
-    error: workingPlacesError,
-    mutate: workingPlacesMutate
-  } = useWorkingPlaces()
+  const { data: workingPlacesData, mutate: workingPlacesMutate } =
+    useWorkingPlaces()
   const router = useRouter()
 
   useEffect(() => {
@@ -42,13 +33,15 @@ export const Settings: React.FC<SettingsProps> = ({ currentUser }) => {
           />
         </div>
       )}
-      <div className='w-full lg:w-1/2'>
-        <WorkingPlaceList
-          currentUser={currentUser}
-          workingPlaces={workingPlacesData?.workingPlaces}
-          mutate={mutate}
-        />
-      </div>
+      {workingPlacesData?.workingPlaces && (
+        <div className='w-full lg:w-1/2'>
+          <WorkingPlaceList
+            currentUser={currentUser}
+            workingPlaces={workingPlacesData?.workingPlaces}
+            mutate={workingPlacesMutate}
+          />
+        </div>
+      )}
     </Wrapper>
   )
 }

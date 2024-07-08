@@ -57,6 +57,19 @@ body {
   background-color: var(--background);
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#\__next,
+.main-content-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .react-datepicker__tab-loop {
   display: inline-block;
 }

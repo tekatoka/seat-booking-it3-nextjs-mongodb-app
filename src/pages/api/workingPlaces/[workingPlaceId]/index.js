@@ -1,17 +1,32 @@
 import {
+  updateWorkingPlaceById,
   findWorkingPlaceById,
-  deleteWorkingPlaceById,
-  updateWorkingPlaceById
+  deleteWorkingPlaceById
 } from '@/api-lib/db'
 import { getMongoDb } from '@/api-lib/mongodb'
 import { ncOpts } from '@/api-lib/nc'
-import nc from 'next-connect'
-import multer from 'multer'
 import { v2 as cloudinary } from 'cloudinary'
-
-const handler = nc(ncOpts)
+import multer from 'multer'
+import nc from 'next-connect'
+import { ValidateProps } from '@/api-lib/constants'
+import { validateBody } from '@/api-lib/middlewares'
 
 const upload = multer({ dest: '/tmp' })
+const handler = nc(ncOpts)
+
+if (process.env.CLOUDINARY_URL) {
+  const {
+    hostname: cloud_name,
+    username: api_key,
+    password: api_secret
+  } = new URL(process.env.CLOUDINARY_URL)
+
+  cloudinary.config({
+    cloud_name,
+    api_key,
+    api_secret
+  })
+}
 
 if (process.env.CLOUDINARY_URL) {
   const {
@@ -52,42 +67,59 @@ handler.delete(async (req, res) => {
   res.status(200).json({ message: 'Working Place deleted successfully' })
 })
 
-handler.patch(upload.single('image'), async (req, res) => {
-  const db = await getMongoDb()
-  const { workingPlaceId } = req.query
+handler.patch(
+  upload.single('image'),
+  validateBody({
+    type: 'object',
+    properties: {
+      name: ValidateProps.workingPlace.name,
+      pcName: ValidateProps.workingPlace.pcName
+    },
+    additionalProperties: true
+  }),
+  async (req, res) => {
+    const db = await getMongoDb()
+    const { workingPlaceId } = req.query
 
-  if (!workingPlaceId) {
-    res.status(400).json({ error: 'Working Place ID is required' })
-    return
+    if (!workingPlaceId) {
+      res.status(400).json({ error: 'Working Place ID is required' })
+      return
+    }
+
+    let image
+    if (req.file) {
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+        width: 512,
+        height: 512,
+        crop: 'fill'
+      })
+      image = uploadResult.secure_url
+    }
+
+    const updateData = {
+      ...req.body,
+      ...(image && { image })
+    }
+
+    const workingPlace = await updateWorkingPlaceById(
+      db,
+      workingPlaceId,
+      updateData
+    )
+
+    if (!workingPlace) {
+      res.status(404).json({ error: 'Working Place not found' })
+      return
+    }
+
+    res.json({ workingPlace })
   }
+)
 
-  let image
-  if (req.file) {
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      width: 512,
-      height: 512,
-      crop: 'fill'
-    })
-    image = uploadResult.secure_url
+export const config = {
+  api: {
+    bodyParser: false
   }
-
-  const updateData = {
-    ...req.body,
-    ...(image && { image })
-  }
-
-  const workingPlace = await updateWorkingPlaceById(
-    db,
-    workingPlaceId,
-    updateData
-  )
-
-  if (!workingPlace) {
-    res.status(404).json({ error: 'Working Place not found' })
-    return
-  }
-
-  res.json({ workingPlace })
-})
+}
 
 export default handler

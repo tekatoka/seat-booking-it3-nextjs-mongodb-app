@@ -1,0 +1,106 @@
+.card {
+  margin-bottom: 1rem;
+  background: var(--background);
+  border-radius: 5px;
+  border: 1px solid var(--accents-2);
+  padding: 24px;
+}
+
+.wrapper {
+  margin: 0 auto;
+  padding: 0 24px;
+  max-width: 100%;
+  width: 1048px;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.submit {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  max-width: 100%;
+}
+
+.avatar {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  transition: ease 0.2s opacity;
+}
+
+.avatar:hover {
+  opacity: 0.5;
+}
+
+.avatar input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.note {
+  padding: 7px 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid var(--accents-2);
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.note .link {
+  color: var(--link);
+}
+
+.seperator {
+  background-color: var(--accents-2);
+  height: 1px;
+  margin: 8px 0 8px 10px;
+  flex: 1 1;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 0.2rem;
+  color: var(--secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.delete-button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid transparent; /* Adjust if a specific border color is needed */
+  border-radius: 0.375rem; /* Adjust for different border-radius */
+  color: #6b7280; /* text-gray-500 */
+  transition: color 0.2s ease-in-out; /* transition-colors duration-200 */
+}
+
+.delete-button:hover {
+  color: #ef4444; /* hover:text-red-500 */
+}
+
+@media (min-width: 640px) {
+  .delete-button {
+    width: auto; /* sm:w-auto */
+  }
+}

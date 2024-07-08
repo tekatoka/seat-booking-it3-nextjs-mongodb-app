@@ -10,6 +10,8 @@ import { Modal } from '@/components/Modal'
 import { fetcher } from '@/lib/fetch'
 import toast from 'react-hot-toast'
 import AddWorkingPlace from './AddWorkingPlace/AddWorkingPlace'
+import { LoadingDots } from '@/components/LoadingDots'
+import { EditWorkingPlace } from './EditWorkingPlace/EditWorkingPlace'
 
 interface WorkingPlaceListProps {
   workingPlaces: WorkingPlace[]
@@ -95,12 +97,14 @@ const WorkingPlaceList: React.FC<WorkingPlaceListProps> = ({
             />
           </div>
         ))}
-        {/* {selectedWorkingPlace && (
+        {selectedWorkingPlace && (
           <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-            <EditWorkingPlace workingPlace={selectedWorkingPlace} mutate={mutate} />
+            <EditWorkingPlace
+              workingPlace={selectedWorkingPlace}
+              mutate={mutate}
+            />
           </Modal>
         )}
-        <AddWorkingPlace /> */}
         <AddWorkingPlace />
       </Wrapper>
     </div>

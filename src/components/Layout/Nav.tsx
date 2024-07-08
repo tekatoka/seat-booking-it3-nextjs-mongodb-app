@@ -119,12 +119,11 @@ const Nav: React.FC = () => {
             <div className={styles.logoContainer}>
               <Image
                 className={styles.avatar}
-                src={'/images/logo_ibb_plain.svg'}
+                src={'/images/logo_ibb_plain-svg.svg'}
                 alt={'IBB Logo'}
-                width={35}
+                width={175}
                 height={35}
               />
-              <span className={styles.text}>IT-3 Sitzplatz App</span>
             </div>
           </Link>
           {loading && <LoadingDots />}
