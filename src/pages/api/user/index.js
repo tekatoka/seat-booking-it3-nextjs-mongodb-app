@@ -59,8 +59,8 @@ handler.patch(
       profilePicture = image.secure_url
     }
     const { _id, username } = req.body
-    let absences
 
+    let absences
     if (req.body.absences) {
       absences = JSON.parse(req.body.absences)
       absences = absences.map(absence => ({
@@ -68,6 +68,11 @@ handler.patch(
         from: new Date(absence.from),
         till: absence.till ? new Date(absence.till) : null
       }))
+    }
+
+    let favouritePlaces
+    if (req.body.favouritePlaces) {
+      favouritePlaces = JSON.parse(req.body.favouritePlaces)
     }
 
     // if (req.body.username) {
@@ -85,8 +90,7 @@ handler.patch(
     const user = await updateUserById(db, _id, {
       ...(username && { username }),
       ...(absences && { absences }),
-      // ...(name && { name }),
-      // ...(typeof bio === 'string' && { bio }),
+      ...(favouritePlaces && { favouritePlaces }),
       ...(profilePicture && { profilePicture })
     })
 

@@ -1,4 +1,4 @@
-import { User, Absence } from '@/api-lib/types'
+import { User, Absence, WorkingPlace } from '@/api-lib/types'
 import { Avatar } from '@/components/Avatar'
 import { Button } from '@/components/Button'
 import { Spacer } from '@/components/Layout'
@@ -8,6 +8,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import Select from 'react-select'
 import styles from './EditUser.module.css'
 import { LuPlus, LuTrash2 } from 'react-icons/lu'
 import { formatDateAsString, stripTime } from '@/lib/default'
@@ -43,15 +44,23 @@ const CustomDatePicker = ({
 interface EditUserProps {
   user: User
   mutate: any
+  workingPlaces: WorkingPlace[]
 }
 
-export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
+export const EditUser: React.FC<EditUserProps> = ({
+  user,
+  workingPlaces,
+  mutate
+}) => {
   const usernameRef = useRef<HTMLInputElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const profilePictureRef = useRef<HTMLInputElement>(null)
 
   const [avatarHref, setAvatarHref] = useState(user.profilePicture)
   const [absences, setAbsences] = useState<Absence[]>([])
+  const [favouritePlaces, setFavouritePlaces] = useState<string[]>(
+    user.favouritePlaces || []
+  )
 
   useEffect(() => {
     const today = stripTime(new Date())
@@ -143,6 +152,7 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
         })
 
         formData.append('absences', JSON.stringify(validAbsences))
+        formData.append('favouritePlaces', JSON.stringify(favouritePlaces))
 
         const response = await fetcher('/api/user', {
           method: 'PATCH',
@@ -156,7 +166,7 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
         setIsLoading(false)
       }
     },
-    [mutate, absences, user._id]
+    [mutate, absences, favouritePlaces, user._id]
   )
 
   useEffect(() => {
@@ -199,6 +209,21 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
     setAbsences(updatedAbsences)
   }
 
+  const handleFavouritePlaceChange = (index: number, selectedOption: any) => {
+    const updatedFavouritePlaces = [...favouritePlaces]
+    if (selectedOption) {
+      updatedFavouritePlaces[index] = selectedOption.value
+    } else {
+      updatedFavouritePlaces[index] = ''
+    }
+    setFavouritePlaces(updatedFavouritePlaces)
+  }
+
+  const workingPlaceOptions = workingPlaces.map(wp => ({
+    value: wp.name,
+    label: wp.name
+  }))
+
   return (
     <section className={styles.card}>
       <h4 className={styles.sectionTitle}>About You</h4>
@@ -217,6 +242,30 @@ export const EditUser: React.FC<EditUserProps> = ({ user, mutate }) => {
             ref={profilePictureRef}
             onChange={onAvatarChange}
             style={{ display: 'block', zIndex: 10 }}
+          />
+        </div>
+        <Spacer size={1.5} axis='vertical' />
+        <span className={styles.label}>Lieblingsplätze</span>
+        <div className='my-4 space-y-4 max-w-full'>
+          <Select
+            options={workingPlaceOptions}
+            value={workingPlaceOptions.find(
+              option => option.value === favouritePlaces[0]
+            )}
+            onChange={option => handleFavouritePlaceChange(0, option)}
+            placeholder='1. Lieblingsplatz'
+            isClearable
+          />
+          <Select
+            options={workingPlaceOptions.filter(
+              option => option.value !== favouritePlaces[0]
+            )}
+            value={workingPlaceOptions.find(
+              option => option.value === favouritePlaces[1]
+            )}
+            onChange={option => handleFavouritePlaceChange(1, option)}
+            placeholder='2. Lieblingsplatz'
+            isClearable
           />
         </div>
         <Spacer size={1.5} axis='vertical' />

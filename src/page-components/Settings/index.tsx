@@ -30,6 +30,7 @@ export const Settings: React.FC<SettingsProps> = ({ currentUser }) => {
             currentUser={currentUser}
             users={data.users}
             mutate={mutate}
+            workingPlaces={workingPlacesData?.workingPlaces}
           />
         </div>
       )}

@@ -13,6 +13,7 @@ export interface User {
   password?: string
   profilePicture?: string
   absences?: Absence[]
+  favouritePlaces?: string[]
   isAdmin?: boolean
 }
 

@@ -2,17 +2,17 @@ import { Container, Spacer } from '@/components/Layout'
 import Wrapper from '@/components/Layout/Wrapper'
 import { CardUser as CardUserComponent } from '@/components/CardUser'
 import styles from './UserList.module.css'
-import { User } from '@/api-lib/types' // Ensure this import path is correct
+import { User, WorkingPlace } from '@/api-lib/types' // Ensure this import path is correct
 import AddUser from './AddUser/AddUser'
 import { EditUser } from './EditUser/EditUser'
 import { useCallback, useState } from 'react'
 import { Modal } from '@/components/Modal'
-import { fetcher } from '@/lib/fetch'
 import toast from 'react-hot-toast'
 
 interface UserListProps {
   currentUser: User
   users: User[]
+  workingPlaces: WorkingPlace[]
   mutate: any
 }
 
@@ -29,7 +29,12 @@ const sortUsersByUsername = (a: User, b: User) => {
   return 0
 }
 
-const UserList: React.FC<UserListProps> = ({ users, mutate, currentUser }) => {
+const UserList: React.FC<UserListProps> = ({
+  users,
+  mutate,
+  workingPlaces,
+  currentUser
+}) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -91,7 +96,11 @@ const UserList: React.FC<UserListProps> = ({ users, mutate, currentUser }) => {
         ))}
         {selectedUser && (
           <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-            <EditUser user={selectedUser} mutate={mutate} />
+            <EditUser
+              user={selectedUser}
+              mutate={mutate}
+              workingPlaces={workingPlaces}
+            />
           </Modal>
         )}
         {currentUser.isAdmin && <AddUser />}

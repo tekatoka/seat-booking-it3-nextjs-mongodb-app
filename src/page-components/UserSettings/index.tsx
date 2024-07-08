@@ -11,6 +11,7 @@ import toast from 'react-hot-toast'
 import styles from './UserSettings.module.css'
 import { User } from '@/api-lib/types'
 import { EditUser } from '../Settings/EditUser/EditUser'
+import { useWorkingPlaces } from '@/lib/workingPlace'
 
 const Auth: React.FC = () => {
   const oldPasswordRef = useRef<HTMLInputElement>(null)
@@ -73,6 +74,8 @@ const Auth: React.FC = () => {
 
 export const UserSettings: React.FC = () => {
   const { data, error, mutate } = useCurrentUser()
+  const { data: workingPlacesData, mutate: workingPlacesMutate } =
+    useWorkingPlaces()
   const router = useRouter()
   useEffect(() => {
     if (!data && !error) return
@@ -86,7 +89,11 @@ export const UserSettings: React.FC = () => {
       <Spacer size={2} axis='vertical' />
       {data?.user ? (
         <>
-          <EditUser user={data.user} mutate={mutate} />
+          <EditUser
+            user={data.user}
+            mutate={mutate}
+            workingPlaces={workingPlacesData?.workingPlaces}
+          />
           <Auth />
         </>
       ) : null}
