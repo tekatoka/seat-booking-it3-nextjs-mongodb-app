@@ -75,7 +75,7 @@ const AddUser: React.FC = () => {
   return (
     <div className={styles.root}>
       <h3 className={styles.heading}>Benutzer hinzufügen</h3>
-      {loading ? <LoadingDots>Loading</LoadingDots> : <AddUserInner />}
+      <AddUserInner />
     </div>
   )
 }

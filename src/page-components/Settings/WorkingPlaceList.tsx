@@ -17,6 +17,7 @@ interface WorkingPlaceListProps {
   workingPlaces: WorkingPlace[]
   mutate: any
   currentUser: User
+  error: any
 }
 
 const sortWorkingPlacesByName = (a: WorkingPlace, b: WorkingPlace) => {
@@ -35,7 +36,8 @@ const sortWorkingPlacesByName = (a: WorkingPlace, b: WorkingPlace) => {
 const WorkingPlaceList: React.FC<WorkingPlaceListProps> = ({
   workingPlaces,
   mutate,
-  currentUser
+  currentUser,
+  error
 }) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedWorkingPlace, setSelectedWorkingPlace] =
@@ -85,6 +87,7 @@ const WorkingPlaceList: React.FC<WorkingPlaceListProps> = ({
           <p className={styles.subtitle}>Arbeitsplätze</p>
           <div className={styles.seperator} />
         </Container>
+        {!workingPlaces && !error && <LoadingDots />}
         {workingPlaces?.sort(sortWorkingPlacesByName).map((workingPlace, i) => (
           <div className={styles.wrap} key={i}>
             <CardWorkingPlaceComponent
@@ -105,7 +108,7 @@ const WorkingPlaceList: React.FC<WorkingPlaceListProps> = ({
             />
           </Modal>
         )}
-        <AddWorkingPlace />
+        {!error && currentUser.isAdmin && <AddWorkingPlace />}
       </Wrapper>
     </div>
   )

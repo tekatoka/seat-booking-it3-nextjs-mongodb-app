@@ -8,12 +8,14 @@ import { EditUser } from './EditUser/EditUser'
 import { useCallback, useState } from 'react'
 import { Modal } from '@/components/Modal'
 import toast from 'react-hot-toast'
+import { LoadingDots } from '@/components/LoadingDots'
 
 interface UserListProps {
   currentUser: User
   users: User[]
   workingPlaces: WorkingPlace[]
   mutate: any
+  error: any
 }
 
 const sortUsersByUsername = (a: User, b: User) => {
@@ -33,7 +35,8 @@ const UserList: React.FC<UserListProps> = ({
   users,
   mutate,
   workingPlaces,
-  currentUser
+  currentUser,
+  error
 }) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
@@ -82,7 +85,8 @@ const UserList: React.FC<UserListProps> = ({
           <p className={styles.subtitle}>Benutzer</p>
           <div className={styles.seperator} />
         </Container>
-        {users.sort(sortUsersByUsername).map((user, i) => (
+        {!users && !error && <LoadingDots />}
+        {users?.sort(sortUsersByUsername).map((user, i) => (
           <div className={styles.wrap} key={i}>
             <CardUserComponent
               className={styles.post}
@@ -103,7 +107,7 @@ const UserList: React.FC<UserListProps> = ({
             />
           </Modal>
         )}
-        {currentUser.isAdmin && <AddUser />}
+        {!error && currentUser.isAdmin && <AddUser />}
       </Wrapper>
     </div>
   )

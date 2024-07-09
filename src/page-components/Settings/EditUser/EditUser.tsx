@@ -219,7 +219,7 @@ export const EditUser: React.FC<EditUserProps> = ({
     setFavouritePlaces(updatedFavouritePlaces)
   }
 
-  const workingPlaceOptions = workingPlaces.map(wp => ({
+  const workingPlaceOptions = workingPlaces?.map(wp => ({
     value: wp.name,
     label: wp.name
   }))

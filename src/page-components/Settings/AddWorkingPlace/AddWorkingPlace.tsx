@@ -77,7 +77,7 @@ const AddWorkingPlace: React.FC = () => {
   return (
     <div className={styles.root}>
       <h3 className={styles.heading}>Arbeitsplatz hinzufügen</h3>
-      {loading ? <LoadingDots>Loading</LoadingDots> : <AddWorkingPlaceInner />}
+      <AddWorkingPlaceInner />
     </div>
   )
 }
