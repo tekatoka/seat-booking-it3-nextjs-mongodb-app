@@ -73,6 +73,7 @@ handler.patch(
     type: 'object',
     properties: {
       name: ValidateProps.workingPlace.name,
+      displayName: ValidateProps.workingPlace.displayName,
       pcName: ValidateProps.workingPlace.pcName
     },
     additionalProperties: true

@@ -4,7 +4,7 @@ import { Input } from '@/components/Input'
 import { Spacer, Wrapper } from '@/components/Layout'
 import { TextLink } from '@/components/Text'
 import { fetcher } from '@/lib/fetch'
-import { capitalizeUsername, useCurrentUser } from '@/lib/user'
+import { capitalizeString, useCurrentUser } from '@/lib/user'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState, FormEvent } from 'react'
 import toast from 'react-hot-toast'
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             username: usernameRef.current
-              ? capitalizeUsername(usernameRef.current?.value)
+              ? capitalizeString(usernameRef.current?.value)
               : '',
             password: passwordRef.current?.value
           })

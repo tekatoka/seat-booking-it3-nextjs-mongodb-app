@@ -21,7 +21,13 @@ async function createIndexes(client: MongoClient): Promise<MongoClient> {
       .createIndexes([{ key: { createdAt: -1 } }, { key: { postId: -1 } }]),
     db
       .collection('users')
-      .createIndexes([{ key: { username: 1 }, unique: true }])
+      .createIndexes([{ key: { username: 1 }, unique: true }]),
+    db
+      .collection('workingPlaces')
+      .createIndexes([{ key: { name: 1 }, unique: true }]),
+    db
+      .collection('dayBookings')
+      .createIndexes([{ key: { date: 1 }, unique: true }])
   ])
   indexesCreated = true
   return client

@@ -133,7 +133,7 @@ export const EditUser: React.FC<EditUserProps> = ({
         }
 
         // Convert absences to valid date strings
-        const validAbsences = absences.map(absence => {
+        const validAbsences = absences?.map(absence => {
           const fromDate = new Date(absence.from)
           const tillDate = absence.till ? new Date(absence.till) : null
 
@@ -221,7 +221,7 @@ export const EditUser: React.FC<EditUserProps> = ({
 
   const workingPlaceOptions = workingPlaces?.map(wp => ({
     value: wp.name,
-    label: wp.name
+    label: wp.displayName
   }))
 
   return (
@@ -271,7 +271,7 @@ export const EditUser: React.FC<EditUserProps> = ({
         <Spacer size={1.5} axis='vertical' />
         <span className={styles.label}>Abwesenheiten</span>
         <div className='my-4 space-y-4 max-w-full'>
-          {absences.map((absence, index) => (
+          {absences?.map((absence, index) => (
             <div
               key={index}
               className='flex flex-col sm:flex-row sm:justify-between items-start space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-2 max-w-full'

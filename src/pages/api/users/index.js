@@ -3,7 +3,7 @@ import { findAllUsers, findUserByUsername, insertUser } from '@/api-lib/db'
 import { auths, validateBody } from '@/api-lib/middlewares'
 import { getMongoDb } from '@/api-lib/mongodb'
 import { ncOpts } from '@/api-lib/nc'
-import { capitalizeUsername, slugUsername } from '@/lib/user'
+import { capitalizeString, slugUsername } from '@/lib/user'
 import nc from 'next-connect'
 
 const handler = nc(ncOpts)
@@ -30,7 +30,7 @@ handler.post(
     const db = await getMongoDb()
 
     let { username, password, isAdmin } = req.body
-    username = capitalizeUsername(req.body.username)
+    username = capitalizeString(req.body.username)
     if (await findUserByUsername(db, username)) {
       res.status(403).json({
         error: { message: 'Ein Benutzer mit diesem Namen existiert bereits.' }

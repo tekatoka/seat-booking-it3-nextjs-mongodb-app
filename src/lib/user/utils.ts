@@ -2,7 +2,7 @@ import slug from 'slug'
 
 export const slugUsername = (username: string): string => slug(username, '_')
 
-export const capitalizeUsername = (username: string): string => {
-  if (!username) return ''
-  return username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()
+export const capitalizeString = (name: string): string => {
+  if (!name) return ''
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
 }

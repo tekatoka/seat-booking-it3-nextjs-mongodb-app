@@ -32,7 +32,7 @@ const CardUser: React.FC<CardWorkingPlaceProps> = ({
             <Avatar size={64} url={place.image} username={place.name} />
             <div className='flex-1'>
               <div className='flex justify-between items-center'>
-                <p className='username'>{place.name}</p>
+                <p className='username'>{place.displayName}</p>
                 <div className='flex items-center space-x-1'>
                   {isLoading ? (
                     <LoadingDots />

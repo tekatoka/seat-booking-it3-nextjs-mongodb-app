@@ -18,6 +18,7 @@ handler.post(
     type: 'object',
     properties: {
       name: ValidateProps.workingPlace.name,
+      displayName: ValidateProps.workingPlace.displayName,
       pcName: ValidateProps.workingPlace.pcName
     },
     required: ['name', 'pcName'],
@@ -26,10 +27,11 @@ handler.post(
   ...auths,
   async (req, res) => {
     const db = await getMongoDb()
-    const { name, pcName, image } = req.body
+    const { name, pcName, displayName, image } = req.body
 
     const workingPlace = await addWorkingPlace(db, {
       name,
+      displayName,
       pcName,
       image
     })

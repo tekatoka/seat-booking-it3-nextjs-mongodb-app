@@ -8,6 +8,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './EditWorkingPlace.module.css'
+import { capitalizeString } from '@/lib/user'
 
 interface EditWorkingPlaceProps {
   workingPlace: WorkingPlace
@@ -49,8 +50,14 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
       try {
         setIsLoading(true)
         const formData = new FormData()
-        if (placenameRef.current)
-          formData.append('name', placenameRef.current.value)
+        if (placenameRef.current) {
+          formData.append('name', placenameRef.current.value?.toLowerCase())
+          formData.append(
+            'displayName',
+            capitalizeString(placenameRef.current.value)
+          )
+        }
+
         if (pcnameRef.current)
           formData.append('pcName', pcnameRef.current.value)
         if (
@@ -73,7 +80,7 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
         }
 
         mutate()
-        toast.success(`${workingPlace.name} erfolgreich aktualisiert`)
+        toast.success(`${workingPlace.displayName} erfolgreich aktualisiert`)
       } catch (e: any) {
         toast.error(e.message)
       } finally {
@@ -84,7 +91,8 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
   )
 
   useEffect(() => {
-    if (placenameRef.current) placenameRef.current.value = workingPlace.name
+    if (placenameRef.current)
+      placenameRef.current.value = capitalizeString(workingPlace.name)
     if (pcnameRef.current) pcnameRef.current.value = workingPlace.pcName
     if (imageRef.current) imageRef.current.value = ''
     setImageHref(workingPlace.image)

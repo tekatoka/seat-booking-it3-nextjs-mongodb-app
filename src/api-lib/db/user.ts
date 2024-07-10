@@ -2,7 +2,7 @@ import { Db, ObjectId } from 'mongodb'
 import { NewUser, User, Absence } from '../types/User'
 import bcrypt from 'bcryptjs'
 import normalizeEmail from 'validator/lib/normalizeEmail'
-import { capitalizeUsername } from '@/lib/user'
+import { capitalizeString } from '@/lib/user'
 
 //finds all users
 export async function findAllUsers(db: Db): Promise<Omit<User, 'password'>[]> {
@@ -60,7 +60,7 @@ export async function findUserByUsername(
   db: Db,
   username: string
 ): Promise<User | null> {
-  username = capitalizeUsername(username)
+  username = capitalizeString(username)
   return db
     .collection<User>('users')
     .findOne({ username }, { projection: dbProjectionUsers() })

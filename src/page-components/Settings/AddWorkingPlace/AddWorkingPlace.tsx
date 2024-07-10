@@ -3,6 +3,7 @@ import { Input } from '@/components/Input'
 import { Container, Spacer, Wrapper } from '@/components/Layout'
 import { LoadingDots } from '@/components/LoadingDots'
 import { fetcher } from '@/lib/fetch'
+import { capitalizeString } from '@/lib/user'
 import { useWorkingPlaces } from '@/lib/workingPlace'
 import { useCallback, useRef, useState, FormEvent } from 'react'
 import toast from 'react-hot-toast'
@@ -24,7 +25,10 @@ const AddWorkingPlaceInner: React.FC = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: nameRef.current?.value,
+            name: nameRef.current?.value?.toLowerCase(),
+            displayName:
+              nameRef.current?.value &&
+              capitalizeString(nameRef.current?.value),
             pcName: pcNameRef.current?.value
           })
         })
