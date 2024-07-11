@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
 
       const dayBooking = daybookingData?.dayBooking
       if (dayBooking) {
-        const availableUsers = await getUsersNotAbsentAndNoBooking(dayBooking, {
+        const availableUsers = getUsersNotAbsentAndNoBooking(dayBooking, {
           users: usersData?.users
         })
         setAvailableUsers(availableUsers)
@@ -68,10 +68,9 @@ const Hero: React.FC = () => {
       } else {
         const newDayBooking = await createDayBooking(today)
         setTodayBooking(newDayBooking)
-        const availableUsers = await getUsersNotAbsentAndNoBooking(
-          newDayBooking,
-          { users: usersData?.users }
-        )
+        const availableUsers = getUsersNotAbsentAndNoBooking(newDayBooking, {
+          users: usersData?.users
+        })
         setAvailableUsers(availableUsers)
       }
       setAbsentUsers(
