@@ -52,18 +52,18 @@ export const getUsersNotAbsentAndNoBooking = (
   return usersWithNoBookingToday
 }
 
-export const getNewBooking = async (
+export const getNewBooking = (
   selectedUser: string,
   todayBooking: DayBooking,
   workingPlacesData: { workingPlaces: WorkingPlace[] },
   userData: any
-): Promise<Booking | null> => {
+): Booking | null => {
   if (!todayBooking) return null
 
   const today = new Date()
   today.setHours(0, 0, 0, 0) // Normalize to midnight
 
-  const user = await getUserByUsername(selectedUser, userData)
+  const user = getUserByUsername(selectedUser, userData)
   if (!user) {
     throw new Error(`User ${selectedUser} not found`)
   }
