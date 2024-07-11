@@ -2,10 +2,10 @@ import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
 import { useUsers } from '@/lib/user' // Adjust the import path as needed
 import { useWorkingPlaces } from '@/lib/workingPlace' // Adjust the import path as needed
 
-export const getUserByUsername = async (
+export const getUserByUsername = (
   username: string,
   usersData: { users: User[] }
-): Promise<User | null> => {
+): User | null => {
   const user = usersData?.users.find(
     (user: User) =>
       user.username.toLocaleLowerCase() === username.toLocaleLowerCase()
@@ -34,10 +34,10 @@ export const isUserAbsentToday = (user: User, today: Date): boolean => {
   })
 }
 
-export const getUsersNotAbsentAndNoBooking = async (
+export const getUsersNotAbsentAndNoBooking = (
   dayBooking: DayBooking,
   usersData: { users: User[] }
-): Promise<User[]> => {
+): User[] => {
   const today = new Date()
   today.setHours(0, 0, 0, 0) // Normalize to midnight
 
