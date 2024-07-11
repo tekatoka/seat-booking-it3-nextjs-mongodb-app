@@ -1,6 +1,4 @@
 import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
-import { useUsers } from '@/lib/user' // Adjust the import path as needed
-import { useWorkingPlaces } from '@/lib/workingPlace' // Adjust the import path as needed
 
 export const getUserByUsername = (
   username: string,
@@ -56,7 +54,7 @@ export const getNewBooking = (
   selectedUser: string,
   todayBooking: DayBooking,
   workingPlacesData: { workingPlaces: WorkingPlace[] },
-  userData: any
+  userData: { users: User[] }
 ): Booking | null => {
   if (!todayBooking) return null
 
@@ -64,9 +62,6 @@ export const getNewBooking = (
   today.setHours(0, 0, 0, 0) // Normalize to midnight
 
   const user = getUserByUsername(selectedUser, userData)
-  if (!user) {
-    throw new Error(`User ${selectedUser} not found`)
-  }
   if (!user) {
     throw new Error(`User ${selectedUser} not found`)
   }
@@ -85,9 +80,6 @@ export const getNewBooking = (
   const allOtherPlacesTaken = workingPlacesData?.workingPlaces.map(
     (place: WorkingPlace) => place.name
   )
-  // TODO: Implement your logic for least preferred places
-  // .filter(placeName => !leastPreferredPlaces.includes(placeName))
-  // .every(placeName => takenPlaces.includes(placeName))
 
   let placeToBook =
     user.favouritePlaces?.find(place => !takenPlaces.includes(place)) ??

@@ -2,17 +2,13 @@ import { Button } from '@/components/Button'
 import { Wrapper } from '@/components/Layout'
 import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { DropdownSelect, Option } from '@/components/DropdownSelect'
-import { Modal } from '@/components/Modal'
 import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
 import { useUsers } from '@/lib/user'
 import { useWorkingPlaces } from '@/lib/workingPlace'
 import { useDayBooking, useDayBookings } from '@/lib/dayBooking'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
-import { fetcher } from '@/lib/fetch'
 import {
-  getUserByUsername,
-  getRandomPlace,
   isUserAbsentToday,
   getUsersNotAbsentAndNoBooking,
   getNewBooking,
@@ -101,12 +97,12 @@ const Hero: React.FC = () => {
   }
 
   const onSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
+    (event: FormEvent<HTMLFormElement>) => {
       setIsLoading(true)
       event.preventDefault()
       try {
         if (selectedUser) {
-          const newBooking = await getNewBooking(
+          const newBooking = getNewBooking(
             selectedUser,
             todayBooking,
             { workingPlaces: workingPlacesData?.workingPlaces || [] },
