@@ -1,5 +1,5 @@
+import React from 'react'
 import Select from 'react-select'
-import styles from './DropdownSelect.module.css'
 
 export interface Option {
   value: string
@@ -13,21 +13,21 @@ export interface DropdownSelectProps {
   value?: Option | null
 }
 
-export const DropdownSelect: React.FC<DropdownSelectProps> = ({
-  options,
-  onChange,
-  placeholder,
-  value
-}) => {
-  return (
-    <Select
-      options={options}
-      onChange={onChange}
-      placeholder={placeholder || 'Select...'}
-      className='w-full'
-      classNamePrefix='react-select'
-      isSearchable
-      value={value}
-    />
-  )
-}
+export const DropdownSelect = React.forwardRef<any, DropdownSelectProps>(
+  ({ options, onChange, placeholder, value, ...props }) => {
+    return (
+      <Select
+        options={options}
+        onChange={newValue => onChange(newValue as Option | null)}
+        placeholder={placeholder || 'Select...'}
+        className='w-full'
+        classNamePrefix='react-select'
+        isSearchable
+        value={value}
+        {...props}
+      />
+    )
+  }
+)
+
+DropdownSelect.displayName = 'DropdownSelect'

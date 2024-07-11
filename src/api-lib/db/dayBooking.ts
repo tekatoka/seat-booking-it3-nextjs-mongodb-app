@@ -11,7 +11,20 @@ export async function findDayBookingByDate(
   db: Db,
   date: Date
 ): Promise<DayBooking | null> {
-  return db.collection<DayBooking>('dayBookings').findOne({ date: date })
+  // Start of the day
+  const startOfDay = new Date(date)
+  startOfDay.setUTCHours(0, 0, 0, 0)
+
+  // End of the day
+  const endOfDay = new Date(date)
+  endOfDay.setUTCHours(23, 59, 59, 999)
+
+  return db.collection<DayBooking>('dayBookings').findOne({
+    date: {
+      $gte: startOfDay,
+      $lt: endOfDay
+    }
+  })
 }
 
 // Adds a new day booking

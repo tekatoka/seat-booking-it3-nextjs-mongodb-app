@@ -13,12 +13,15 @@ const handler = nc(ncOpts)
 
 handler.get(async (req, res) => {
   const db = await getMongoDb()
-  const dayBooking = await findDayBookingByDate(db, new Date(req.query.date))
-  if (!dayBooking) {
-    res.status(404).json({ error: 'Day Booking not found' })
-    return
+  const { dayBookingId } = req.query
+  if (dayBookingId) {
+    const dayBooking = await findDayBookingByDate(db, new Date(dayBookingId))
+    if (!dayBooking) {
+      res.status(404).json({ error: 'Day Booking not found' })
+      return
+    }
+    res.json({ dayBooking })
   }
-  res.json({ dayBooking })
 })
 
 handler.delete(async (req, res) => {

@@ -18,23 +18,19 @@ handler.get(async (req, res) => {
 })
 
 // Handler to add a new day booking
-handler.post(
-  ...auths,
-  validateBody(ValidateProps.dayBooking),
-  async (req, res) => {
-    if (!req.user) {
-      return res.status(401).end()
-    }
-
-    const db = await getMongoDb()
-
-    const dayBooking = await addDayBooking(db, {
-      date: new Date(req.body.date),
-      bookings: req.body.bookings
-    })
-
-    return res.json({ dayBooking })
+handler.post(...auths, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).end()
   }
-)
+
+  const db = await getMongoDb()
+
+  const dayBooking = await addDayBooking(db, {
+    date: new Date(req.body.date),
+    bookings: req.body.bookings
+  })
+
+  return res.json({ dayBooking })
+})
 
 export default handler
