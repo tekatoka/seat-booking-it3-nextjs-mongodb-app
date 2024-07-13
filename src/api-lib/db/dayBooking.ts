@@ -1,5 +1,6 @@
 import { Db, ObjectId } from 'mongodb'
 import { DayBooking } from '../types/DayBooking'
+import moment from 'moment-timezone'
 
 // Finds all day bookings
 export async function findAllDayBookings(db: Db): Promise<DayBooking[]> {
@@ -11,13 +12,28 @@ export async function findDayBookingByDate(
   db: Db,
   date: Date
 ): Promise<DayBooking | null> {
-  // Start of the day
-  const startOfDay = new Date(date)
-  startOfDay.setUTCHours(0, 0, 0, 0)
-
-  // End of the day
-  const endOfDay = new Date(date)
-  endOfDay.setUTCHours(23, 59, 59, 999)
+  const localDate = new Date(date)
+  const startOfDay = new Date(
+    Date.UTC(
+      localDate.getFullYear(),
+      localDate.getMonth(),
+      localDate.getDate(),
+      0,
+      0,
+      0
+    )
+  )
+  const endOfDay = new Date(
+    Date.UTC(
+      localDate.getFullYear(),
+      localDate.getMonth(),
+      localDate.getDate(),
+      23,
+      59,
+      59,
+      999
+    )
+  )
 
   return db.collection<DayBooking>('dayBookings').findOne({
     date: {
@@ -34,7 +50,7 @@ export async function addDayBooking(
 ): Promise<DayBooking> {
   const dayBooking: DayBooking = {
     ...newDayBooking,
-    date: new Date(newDayBooking.date) // ensure date is a Date object
+    date: newDayBooking.date // ensure date is a Date object
   }
 
   const { insertedId } = await db

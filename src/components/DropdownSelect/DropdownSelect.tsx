@@ -13,21 +13,25 @@ export interface DropdownSelectProps {
   value?: Option | null
 }
 
-export const DropdownSelect = React.forwardRef<any, DropdownSelectProps>(
-  ({ options, onChange, placeholder, value, ...props }) => {
-    return (
-      <Select
-        options={options}
-        onChange={newValue => onChange(newValue as Option | null)}
-        placeholder={placeholder || 'Select...'}
-        className='w-full'
-        classNamePrefix='react-select'
-        isSearchable
-        value={value}
-        {...props}
-      />
-    )
-  }
-)
+export const DropdownSelect: React.FC<DropdownSelectProps> = ({
+  options,
+  onChange,
+  placeholder,
+  value,
+  ...props
+}) => {
+  return (
+    <Select
+      options={options}
+      onChange={newValue => onChange(newValue as Option | null)}
+      placeholder={placeholder || 'Select...'}
+      className='w-full'
+      classNamePrefix='react-select'
+      isSearchable
+      value={value}
+      {...props}
+    />
+  )
+}
 
 DropdownSelect.displayName = 'DropdownSelect'

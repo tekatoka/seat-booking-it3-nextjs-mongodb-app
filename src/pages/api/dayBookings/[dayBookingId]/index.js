@@ -20,6 +20,7 @@ handler.get(async (req, res) => {
       res.status(404).json({ error: 'Day Booking not found' })
       return
     }
+    console.log(dayBooking)
     res.json({ dayBooking })
   }
 })
@@ -43,7 +44,8 @@ handler.delete(async (req, res) => {
   res.status(200).json({ message: 'Day Booking deleted successfully' })
 })
 
-handler.patch(validateBody(ValidateProps.dayBooking), async (req, res) => {
+handler.patch(async (req, res) => {
+  //handler.patch(validateBody(ValidateProps.dayBooking), async (req, res) => {
   const db = await getMongoDb()
   const { dayBookingId } = req.query
 

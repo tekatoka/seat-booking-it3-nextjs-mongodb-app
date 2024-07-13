@@ -6,6 +6,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer'
 import nc from 'next-connect'
 import { ValidateProps } from '@/api-lib/constants'
+import { normalizeDateUTC } from '@/lib/default'
 
 const upload = multer({ dest: '/tmp' })
 const handler = nc(ncOpts)
@@ -65,8 +66,8 @@ handler.patch(
       absences = JSON.parse(req.body.absences)
       absences = absences.map(absence => ({
         ...absence,
-        from: new Date(absence.from),
-        till: absence.till ? new Date(absence.till) : null
+        from: normalizeDateUTC(new Date(absence.from)),
+        till: absence.till ? normalizeDateUTC(new Date(absence.till)) : null
       }))
     }
 
@@ -75,18 +76,6 @@ handler.patch(
       favouritePlaces = JSON.parse(req.body.favouritePlaces)
     }
 
-    // if (req.body.username) {
-    //   username = slugUsername(req.body.username)
-    //   if (
-    //     username !== req.user.username &&
-    //     (await findUserByUsername(db, username))
-    //   ) {
-    //     res
-    //       .status(403)
-    //       .json({ error: { message: 'The username has already been taken.' } })
-    //     return
-    //   }
-    // }
     const user = await updateUserById(db, _id, {
       ...(username && { username }),
       ...(absences && { absences }),

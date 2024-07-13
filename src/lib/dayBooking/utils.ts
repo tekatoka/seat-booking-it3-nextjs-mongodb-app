@@ -1,4 +1,5 @@
 import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
+import { normalizeDateUTC } from '../default'
 
 export const getUserByUsername = (
   username: string,
@@ -21,29 +22,38 @@ export const getRandomPlace = (
   return availablePlaces[Math.floor(Math.random() * availablePlaces?.length)]
 }
 
-export const isUserAbsentToday = (user: User, today: Date): boolean => {
+export const isUserAbsentToday = (user: User): boolean => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0) // Normalize to midnight
+
   if (!user.absences) {
     return false
   }
   return user.absences.some(absence => {
-    const from = new Date(absence.from)
-    const till = absence.till ? new Date(absence.till) : null
+    const from = normalizeDateUTC(new Date(absence.from))
+    const till = absence.till ? normalizeDateUTC(new Date(absence.till)) : null
     return from <= today && (!till || till >= today)
   })
+}
+
+export const getUsersNotAbsent = (usersData: { users: User[] }): User[] => {
+  const presentUsers = usersData?.users?.filter((user: User) => {
+    const isAbsentToday = isUserAbsentToday(user)
+    return !isAbsentToday
+  })
+
+  return presentUsers
 }
 
 export const getUsersNotAbsentAndNoBooking = (
   dayBooking: DayBooking,
   usersData: { users: User[] }
 ): User[] => {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0) // Normalize to midnight
-
   const usersWithNoBookingToday = usersData?.users?.filter((user: User) => {
     const hasBookingToday = dayBooking?.bookings.some(
       booking => booking.user?.toLowerCase() === user.username?.toLowerCase()
     )
-    const isAbsentToday = isUserAbsentToday(user, today)
+    const isAbsentToday = isUserAbsentToday(user)
     return !hasBookingToday && !isAbsentToday
   })
 
@@ -57,9 +67,6 @@ export const getNewBooking = (
   userData: { users: User[] }
 ): Booking | null => {
   if (!todayBooking) return null
-
-  const today = new Date()
-  today.setHours(0, 0, 0, 0) // Normalize to midnight
 
   const user = getUserByUsername(selectedUser, userData)
   if (!user) {
@@ -113,3 +120,9 @@ export const formatDate = (date: Date) => {
     year: 'numeric'
   })
 }
+
+// export function normalizeDateUTC(date: string): Date {
+//   const normalizedDate = new Date(date)
+//   normalizedDate.setUTCHours(0, 0, 0, 0) // Normalize to UTC midnight
+//   return normalizedDate
+// }

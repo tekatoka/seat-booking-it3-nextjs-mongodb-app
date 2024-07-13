@@ -20,3 +20,14 @@ export const formatDateAsString = (date: Date): string => {
 export const stripTime = (date: Date): Date => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }
+
+export const normalizeDateUTC = (date: string | Date) => {
+  const localDate = new Date(date)
+  const utcDate = new Date(
+    Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate())
+  )
+  const timeOffset = utcDate.getTimezoneOffset()
+  utcDate.setHours(0, 0, 0, 0)
+  utcDate.setHours(utcDate.getHours() - timeOffset / 60)
+  return utcDate
+}

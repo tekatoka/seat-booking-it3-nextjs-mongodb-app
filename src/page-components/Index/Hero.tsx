@@ -12,7 +12,8 @@ import {
   isUserAbsentToday,
   getUsersNotAbsentAndNoBooking,
   getNewBooking,
-  formatDate
+  formatDate,
+  getUsersNotAbsent
 } from '@/lib/dayBooking/utils' // Adjust the import path as needed
 
 const Hero: React.FC = () => {
@@ -43,8 +44,28 @@ const Hero: React.FC = () => {
     if (!usersData && !usersError) return
   }, [router, usersData, usersError])
 
-  const createDayBooking = (date: Date): Promise<DayBooking> => {
-    return Promise.resolve({ date, bookings: [] })
+  const saveBooking = async (updatedTodayBooking: DayBooking) => {
+    const url = updatedTodayBooking._id
+      ? `/api/dayBookings/${updatedTodayBooking._id}`
+      : '/api/dayBookings'
+    const method = updatedTodayBooking._id ? 'PATCH' : 'POST'
+
+    const response = await fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        date: updatedTodayBooking.date,
+        bookings: updatedTodayBooking.bookings
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to ${method === 'POST' ? 'add' : 'update'} booking`
+      )
+    }
+
+    return response.json()
   }
 
   const updateDayBooking = async (dayBooking: DayBooking): Promise<void> => {
@@ -54,10 +75,7 @@ const Hero: React.FC = () => {
   }
 
   useEffect(() => {
-    const getAvailableUsers = async () => {
-      const today = new Date()
-      today.setHours(0, 0, 0, 0) // Normalize to midnight
-
+    const getAvailableUsers = () => {
       const dayBooking = daybookingData?.dayBooking
       if (dayBooking) {
         const availableUsers = getUsersNotAbsentAndNoBooking(dayBooking, {
@@ -66,17 +84,13 @@ const Hero: React.FC = () => {
         setAvailableUsers(availableUsers)
         setTodayBooking(dayBooking)
       } else {
-        const newDayBooking = await createDayBooking(today)
-        setTodayBooking(newDayBooking)
-        const availableUsers = getUsersNotAbsentAndNoBooking(newDayBooking, {
+        const availableUsers = getUsersNotAbsent({
           users: usersData?.users
         })
         setAvailableUsers(availableUsers)
       }
       setAbsentUsers(
-        usersData?.users.filter((user: User) =>
-          isUserAbsentToday(user, new Date())
-        )
+        usersData?.users.filter((user: User) => isUserAbsentToday(user))
       )
     }
     getAvailableUsers()
@@ -96,9 +110,10 @@ const Hero: React.FC = () => {
   }
 
   const onSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      setIsLoading(true)
+    async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
+      setIsLoading(true)
+
       try {
         if (selectedUser) {
           const newBooking = getNewBooking(
@@ -109,44 +124,24 @@ const Hero: React.FC = () => {
           )
 
           if (newBooking) {
-            setTodayBooking(prevTodayBooking => {
-              const updatedBookings = [...prevTodayBooking.bookings, newBooking]
-              const updatedTodayBooking = {
-                ...prevTodayBooking,
-                bookings: updatedBookings
-              }
+            const updatedTodayBooking = {
+              ...todayBooking,
+              bookings: [...todayBooking.bookings, newBooking]
+            }
 
-              // Send the updated todayBooking to the server
-              fetch('/api/dayBookings', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  date: updatedTodayBooking.date,
-                  bookings: updatedTodayBooking.bookings
-                })
-              })
-                .then(async response => {
-                  if (!response.ok) {
-                    throw new Error('Failed to add booking')
-                  }
-                  return response.json()
-                })
-                .then(data => {
-                  toast.success('Booking successfully added.')
-                })
-                .catch(error => {
-                  console.error('Error adding booking:', error)
-                  toast.error('Failed to add booking.')
-                })
-                .finally(() => {
-                  setIsLoading(false)
-                })
-              return updatedTodayBooking
-            })
+            try {
+              await saveBooking(updatedTodayBooking)
+              setTodayBooking(updatedTodayBooking)
+              toast.success('Booking successfully added.')
+            } catch (error) {
+              console.error('Error adding booking:', error)
+              toast.error('Failed to add booking.')
+            }
           }
         }
       } catch (e) {
         toast.error('Failed to add booking.')
+      } finally {
         setIsLoading(false)
       }
     },

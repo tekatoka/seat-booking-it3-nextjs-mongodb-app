@@ -4,6 +4,7 @@ import { findAllDayBookings, addDayBooking } from '@/api-lib/db'
 import { auths, validateBody } from '@/api-lib/middlewares'
 import { getMongoDb } from '@/api-lib/mongodb'
 import { ncOpts } from '@/api-lib/nc'
+import { normalizeDateUTC } from '@/lib/default'
 import nc from 'next-connect'
 
 const handler = nc(ncOpts)
@@ -24,10 +25,11 @@ handler.post(...auths, async (req, res) => {
   }
 
   const db = await getMongoDb()
-
+  const { date, bookings } = req.body
+  const test = normalizeDateUTC(date)
   const dayBooking = await addDayBooking(db, {
-    date: new Date(req.body.date),
-    bookings: req.body.bookings
+    date: normalizeDateUTC(date),
+    bookings: bookings
   })
 
   return res.json({ dayBooking })
