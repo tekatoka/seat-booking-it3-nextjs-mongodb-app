@@ -20,7 +20,6 @@ handler.get(async (req, res) => {
       res.status(404).json({ error: 'Day Booking not found' })
       return
     }
-    console.log(dayBooking)
     res.json({ dayBooking })
   }
 })

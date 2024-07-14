@@ -11,6 +11,7 @@ export interface DropdownSelectProps {
   onChange: (selectedOption: Option | null) => void
   placeholder?: string
   value?: Option | null
+  noOptionsMessage?: string
 }
 
 export const DropdownSelect: React.FC<DropdownSelectProps> = ({
@@ -18,6 +19,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   onChange,
   placeholder,
   value,
+  noOptionsMessage,
   ...props
 }) => {
   return (
@@ -30,6 +32,9 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
       isSearchable
       value={value}
       {...props}
+      noOptionsMessage={({ inputValue }) =>
+        !inputValue ? noOptionsMessage : 'Keine Optionen verfügbar'
+      }
     />
   )
 }

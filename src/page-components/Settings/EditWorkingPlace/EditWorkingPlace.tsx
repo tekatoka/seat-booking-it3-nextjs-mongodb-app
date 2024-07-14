@@ -44,7 +44,6 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
 
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
-      console.log('Form submitted') // Add console log to verify submission
       e.preventDefault()
 
       try {
@@ -76,7 +75,8 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
 
         if (!response.ok) {
           const errorData = await response.json()
-          throw new Error(errorData.error || 'Something went wrong')
+          console.log(errorData.error)
+          throw new Error(errorData.error || 'Irgendwas ist schief gelaufen...')
         }
 
         mutate()
@@ -100,9 +100,9 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
 
   return (
     <section className={styles.card}>
-      <h4 className={styles.sectionTitle}>About You</h4>
+      <h4 className={styles.sectionTitle}>Arbeitsplatzinfo</h4>
       <form onSubmit={onSubmit}>
-        <Input ref={placenameRef} label='Sitzplatz-Name' />
+        <Input ref={placenameRef} label='Bezeichnung' />
         <Spacer size={0.5} axis='vertical' />
         <Input ref={pcnameRef} label='PC Name' />
         <Spacer size={0.5} axis='vertical' />

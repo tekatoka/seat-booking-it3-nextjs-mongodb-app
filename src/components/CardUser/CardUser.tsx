@@ -5,6 +5,10 @@ import styles from './CardUser.module.css'
 import { User } from '@/api-lib/types'
 import { LuFileEdit, LuTrash2 } from 'react-icons/lu'
 import { LoadingDots } from '../LoadingDots'
+import { capitalizeString } from '@/lib/user'
+import { formatDate, formatShortDate } from '@/lib/default'
+import FavouritePlaces from './FavouritePlaces'
+import Absences from './Absences'
 
 interface CardUserProps {
   user: User
@@ -56,8 +60,8 @@ const CardUser: React.FC<CardUserProps> = ({
                 )}
               </div>
             </div>
-            <p className={styles.meta}>Lieblingsplätze:</p>
-            <p className={styles.meta}>Abwesend:</p>
+            <FavouritePlaces user={user} />
+            <Absences user={user} />
           </Container>
         </Link>
       )}

@@ -1,9 +1,7 @@
 import { User, Absence, WorkingPlace } from '@/api-lib/types'
-import { Avatar } from '@/components/Avatar'
 import { Button } from '@/components/Button'
 import { Spacer } from '@/components/Layout'
 import { fetcher } from '@/lib/fetch'
-import { Input } from '@/components/Input'
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import DatePicker from 'react-datepicker'
@@ -56,7 +54,6 @@ export const EditUser: React.FC<EditUserProps> = ({
   const nameRef = useRef<HTMLInputElement>(null)
   const profilePictureRef = useRef<HTMLInputElement>(null)
 
-  const [avatarHref, setAvatarHref] = useState(user.profilePicture)
   const [absences, setAbsences] = useState<Absence[]>([])
   const [favouritePlaces, setFavouritePlaces] = useState<string[]>(
     user.favouritePlaces || []
@@ -73,21 +70,6 @@ export const EditUser: React.FC<EditUserProps> = ({
 
     setAbsences(filteredAndSortedAbsences)
   }, [user.absences])
-
-  const onAvatarChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.currentTarget.files?.[0]
-      if (!file) return
-      const reader = new FileReader()
-      reader.onload = (l: ProgressEvent<FileReader>) => {
-        if (l.target?.result) {
-          setAvatarHref(l.target.result as string)
-        }
-      }
-      reader.readAsDataURL(file)
-    },
-    []
-  )
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -107,7 +89,6 @@ export const EditUser: React.FC<EditUserProps> = ({
 
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
-      console.log('Form submitted') // Add console log to verify submission
       e.preventDefault()
 
       // Validate absences before submitting
@@ -169,12 +150,6 @@ export const EditUser: React.FC<EditUserProps> = ({
     [mutate, absences, favouritePlaces, user._id]
   )
 
-  useEffect(() => {
-    if (usernameRef.current) usernameRef.current.value = user.username
-    if (profilePictureRef.current) profilePictureRef.current.value = ''
-    setAvatarHref(user.profilePicture)
-  }, [user])
-
   const handleAbsenceChange = (
     index: number,
     field: keyof Absence,
@@ -226,25 +201,10 @@ export const EditUser: React.FC<EditUserProps> = ({
 
   return (
     <section className={styles.card}>
-      <h4 className={styles.sectionTitle}>About You</h4>
+      <h4 className={styles.sectionTitle}>{user.username}</h4>
+      <span className={styles.label}>Einstellungen</span>
+      <Spacer size={1} axis='vertical' />
       <form onSubmit={onSubmit}>
-        <Input ref={usernameRef} label='Your Username' />
-        <Spacer size={0.5} axis='vertical' />
-        <Input ref={nameRef} label='Your Name' />
-        <Spacer size={0.5} axis='vertical' />
-        <span className={styles.label}>Avatar</span>
-        <div className={styles.avatar}>
-          <Avatar size={96} username={user.username} url={avatarHref} />
-          <input
-            aria-label='Your Avatar'
-            type='file'
-            accept='image/*'
-            ref={profilePictureRef}
-            onChange={onAvatarChange}
-            style={{ display: 'block', zIndex: 10 }}
-          />
-        </div>
-        <Spacer size={1.5} axis='vertical' />
         <span className={styles.label}>Lieblingsplätze</span>
         <div className='my-4 space-y-4 max-w-full'>
           <Select

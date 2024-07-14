@@ -1,4 +1,3 @@
-import { Container } from '@/components/Layout'
 import clsx from 'clsx'
 import Link from 'next/link'
 import styles from './CardWorkingPlace.module.css'

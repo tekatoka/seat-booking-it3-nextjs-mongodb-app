@@ -1,5 +1,5 @@
 import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
-import { normalizeDateUTC } from '../default'
+import { getLocalDate, normalizeDateUTC } from '../default'
 
 export const getUserByUsername = (
   username: string,
@@ -107,22 +107,9 @@ export const getNewBooking = (
 
   const newBooking: Booking = {
     user: selectedUser,
-    workingPlace: placeToBook.toLowerCase()
+    workingPlace: placeToBook.toLowerCase(),
+    createdAt: getLocalDate(new Date())
   }
 
   return newBooking
 }
-
-export const formatDate = (date: Date) => {
-  return new Date(date).toLocaleDateString('de-DE', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  })
-}
-
-// export function normalizeDateUTC(date: string): Date {
-//   const normalizedDate = new Date(date)
-//   normalizedDate.setUTCHours(0, 0, 0, 0) // Normalize to UTC midnight
-//   return normalizedDate
-// }

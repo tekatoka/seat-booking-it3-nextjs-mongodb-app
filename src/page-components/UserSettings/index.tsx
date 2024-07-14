@@ -16,11 +16,16 @@ import { useWorkingPlaces } from '@/lib/workingPlace'
 const Auth: React.FC = () => {
   const oldPasswordRef = useRef<HTMLInputElement>(null)
   const newPasswordRef = useRef<HTMLInputElement>(null)
+  const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
   const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (newPasswordRef.current?.value !== confirmPasswordRef.current?.value) {
+      toast.error('Die Passwörter stimmen nicht überein')
+      return
+    }
     try {
       setIsLoading(true)
       await fetcher('/api/user/password', {
@@ -31,32 +36,40 @@ const Auth: React.FC = () => {
           newPassword: newPasswordRef.current?.value
         })
       })
-      toast.success('Your password has been updated')
+      toast.success('Dein Passwort wurde aktualisiert!')
     } catch (e: any) {
       toast.error(e.message)
     } finally {
       setIsLoading(false)
       if (oldPasswordRef.current) oldPasswordRef.current.value = ''
       if (newPasswordRef.current) newPasswordRef.current.value = ''
+      if (confirmPasswordRef.current) confirmPasswordRef.current.value = ''
     }
   }, [])
 
   return (
     <section className={styles.card}>
-      <h4 className={styles.sectionTitle}>Password</h4>
+      <h4 className={styles.sectionTitle}>Passwort</h4>
       <form onSubmit={onSubmit}>
         <Input
           htmlType='password'
           autoComplete='current-password'
           ref={oldPasswordRef}
-          label='Old Password'
+          label='Altes Passwort'
         />
         <Spacer size={0.5} axis='vertical' />
         <Input
           htmlType='password'
           autoComplete='new-password'
           ref={newPasswordRef}
-          label='New Password'
+          label='Neues Passwort'
+        />
+        <Spacer size={0.5} axis='vertical' />
+        <Input
+          htmlType='password'
+          autoComplete='new-password'
+          ref={confirmPasswordRef}
+          label='Neues Passwort bestätigen'
         />
         <Spacer size={0.5} axis='vertical' />
         <Button
