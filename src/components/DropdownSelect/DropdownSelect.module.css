@@ -1,4 +1,5 @@
 .react-select__control {
+  height: 50px !important;
   @apply border border-gray-300 rounded-md shadow-sm;
 }
 
@@ -21,4 +22,12 @@
 
 .react-select__option--is-selected {
   @apply bg-blue-500 text-white;
+}
+
+.react-select-container {
+  height: 40px !important;
+}
+
+.react-select__control {
+  height: 40px !important;
 }

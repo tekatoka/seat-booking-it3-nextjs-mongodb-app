@@ -64,14 +64,14 @@ const WorkingPlaceList: React.FC<WorkingPlaceListProps> = ({
 
         if (!response.ok) {
           const errorData = await response.json()
-          throw new Error(errorData.error || 'Something went wrong')
+          throw new Error(errorData.error || 'Irgendwas ist schief gelaufen')
         }
 
         toast.success(`${workingPlace.name} erfolgreich gelöscht`)
         // refresh working place list
         mutate()
       } catch (e: any) {
-        toast.error(e.message || 'Something went wrong')
+        toast.error(e.message || 'Irgendwas ist schief gelaufen')
       } finally {
         setIsLoading(false)
       }
@@ -105,6 +105,7 @@ const WorkingPlaceList: React.FC<WorkingPlaceListProps> = ({
             <EditWorkingPlace
               workingPlace={selectedWorkingPlace}
               mutate={mutate}
+              handleCloseModal={handleCloseModal}
             />
           </Modal>
         )}

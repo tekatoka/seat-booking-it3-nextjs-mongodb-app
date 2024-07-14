@@ -2,7 +2,6 @@ import { WorkingPlace } from '@/api-lib/types'
 import { Avatar } from '@/components/Avatar'
 import { Button } from '@/components/Button'
 import { Spacer } from '@/components/Layout'
-import { fetcher } from '@/lib/fetch'
 import { Input } from '@/components/Input'
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -13,11 +12,13 @@ import { capitalizeString } from '@/lib/user'
 interface EditWorkingPlaceProps {
   workingPlace: WorkingPlace
   mutate: any
+  handleCloseModal: () => void
 }
 
 export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
   workingPlace,
-  mutate
+  mutate,
+  handleCloseModal
 }) => {
   const placenameRef = useRef<HTMLInputElement>(null)
   const pcnameRef = useRef<HTMLInputElement>(null)
@@ -81,6 +82,7 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
 
         mutate()
         toast.success(`${workingPlace.displayName} erfolgreich aktualisiert`)
+        handleCloseModal()
       } catch (e: any) {
         toast.error(e.message)
       } finally {

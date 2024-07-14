@@ -55,6 +55,20 @@ const UserList: React.FC<UserListProps> = ({
     async (user: User) => {
       try {
         setIsLoading(true)
+
+        if (user._id == currentUser._id) {
+          toast.error('Du kannst dich nicht selbst löschen!')
+          return
+        }
+
+        // Check if the user to be deleted is the last admin
+        const admins = users.filter(u => u.isAdmin)
+        if (user.isAdmin && admins.length === 1) {
+          toast.error(
+            `Der Benutzer ${user.username} kann nicht gelöscht werden, da er der letzte Administrator ist.`
+          )
+          return
+        }
         const response = await fetch(`/api/users/${user._id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' }
@@ -62,14 +76,14 @@ const UserList: React.FC<UserListProps> = ({
 
         if (!response.ok) {
           const errorData = await response.json()
-          throw new Error(errorData.error || 'Something went wrong')
+          throw new Error(errorData.error || 'Irgendwas ist schief gelaufen')
         }
 
         toast.success(`${user.username} erfolgreich gelöscht`)
         // refresh user list
         mutate()
       } catch (e: any) {
-        toast.error(e.message || 'Something went wrong')
+        toast.error(e.message || 'Irgendwas ist schief gelaufen')
       } finally {
         setIsLoading(false)
       }
@@ -104,6 +118,7 @@ const UserList: React.FC<UserListProps> = ({
               user={selectedUser}
               mutate={mutate}
               workingPlaces={workingPlaces}
+              handleCloseModal={handleCloseModal}
             />
           </Modal>
         )}

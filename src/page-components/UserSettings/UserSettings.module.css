@@ -63,3 +63,17 @@
 .note .link {
   color: var(--link);
 }
+
+.inputWithIcon {
+  position: relative;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  top: 70%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10; /* Ensure the icon appears above the input field */
+  color: #000; /* Change color as needed */
+}

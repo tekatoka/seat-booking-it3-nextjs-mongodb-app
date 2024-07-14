@@ -13,7 +13,9 @@ export const fetcher = (
     if (res.ok) {
       return payload
     } else {
-      const error = new Error(payload?.error?.message || 'Something went wrong')
+      const error = new Error(
+        payload?.error?.message || 'Irgendwas ist schief gelaufen'
+      )
       ;(error as any).response = payload
       throw error
     }

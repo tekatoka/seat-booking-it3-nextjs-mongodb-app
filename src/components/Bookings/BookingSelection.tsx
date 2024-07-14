@@ -1,5 +1,4 @@
 import { Button } from '@/components/Button'
-import { Wrapper } from '@/components/Layout'
 import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { DropdownSelect, Option } from '@/components/DropdownSelect'
 import { User, DayBooking } from '@/api-lib/types'
@@ -10,8 +9,9 @@ import {
   getUsersNotAbsent
 } from '@/lib/dayBooking/utils'
 import { Modal } from '@/components/Modal'
-import { formatDate } from '@/lib/default'
 import { capitalizeString } from '@/lib/user'
+import styles from './Booking.module.css'
+import { formatDateWithDay } from '@/lib/default'
 
 interface BookingSelectionProps {
   usersData: any
@@ -123,9 +123,12 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
               await saveBooking(updatedTodayBooking)
               setTodayBooking(updatedTodayBooking)
               toast.success(
-                `Du sitzt heute auf ${capitalizeString(
+                `${capitalizeString(
+                  newBooking.user
+                )} sitzt heute auf dem ${capitalizeString(
                   newBooking.workingPlace
-                )}-Platz!`
+                )}-Platz!`,
+                { duration: 20000 }
               )
             } catch (error) {
               console.error('Error adding booking:', error)
@@ -150,47 +153,65 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
     setIsModalOpen(false)
   }
 
+  function formatDateWithDate(arg0: Date): import('react').ReactNode {
+    throw new Error('Function not implemented.')
+  }
+
   return (
-    <Wrapper>
-      <div className='container mx-auto p-4'>
-        <br />
-        Heute ist der {formatDate(new Date())}
-        <br />
-        <h1 className='text-2xl font-bold mb-4'>Figur erfahren</h1>
-        <form onSubmit={onSubmit}>
-          <div className='flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0'>
-            <DropdownSelect
-              options={availableUserOptions}
-              onChange={handleChange}
-              placeholder='Wähle deinen Namen...'
-              value={
-                availableUserOptions.find(
-                  option => option.value === selectedUser
-                ) || null
-              }
-              noOptionsMessage={
-                'Alle Benutzer haben bereits ihre Plätze in der Zoogehege gefunden!'
-              }
-            />
+    <div className='container mx-auto p-0'>
+      <div className='grid gap-0 lg:grid-cols-8'>
+        <div className='col-span-4 lg:col-span-2 order-1 lg:order-1'>
+          <div className='p-4'>
+            <div className={styles.meta}>Heute ist...</div>
+            {formatDateWithDay(new Date())}
+          </div>
+        </div>
+
+        <div className='col-span-8 lg:col-span-4 order-3 lg:order-2'>
+          <div className='p-4'>
+            <form onSubmit={onSubmit}>
+              <div className='flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0'>
+                <DropdownSelect
+                  options={availableUserOptions}
+                  onChange={handleChange}
+                  placeholder='Wähle deinen Namen...'
+                  value={
+                    availableUserOptions.find(
+                      option => option.value === selectedUser
+                    ) || null
+                  }
+                  noOptionsMessage={
+                    'Alle Benutzer haben bereits ihre Plätze im Zoogehege gefunden!'
+                  }
+                />
+                <Button
+                  size='medium'
+                  variant='primary'
+                  type='submit'
+                  disabled={!selectedUser}
+                >
+                  Los!
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div className='col-span-4 lg:col-span-2 order-2 lg:order-3 text-right'>
+          <div className='p-4'>
             <Button
               size='medium'
               variant='primary'
-              type='submit'
-              disabled={!selectedUser}
+              type='button'
+              onClick={handleOpenModal}
+              style={{ display: 'inline' }}
             >
-              Los!
+              Zoogehege
             </Button>
           </div>
-        </form>
-        <Button
-          size='medium'
-          variant='primary'
-          type='button'
-          onClick={handleOpenModal}
-        >
-          Zoogehege
-        </Button>
+        </div>
       </div>
+
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
@@ -200,9 +221,10 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
           src='images/zoogehege.png'
           alt='Zoogehege'
           style={{ width: '100%' }}
+          title='Zoogehege'
         />
       </Modal>
-    </Wrapper>
+    </div>
   )
 }
 

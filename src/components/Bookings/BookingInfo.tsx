@@ -1,8 +1,8 @@
-import { Wrapper } from '@/components/Layout'
 import { useEffect, useState } from 'react'
-import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
+import { User, WorkingPlace, Booking } from '@/api-lib/types'
 import { isUserAbsentToday } from '@/lib/dayBooking/utils' // Adjust the import path as needed
-import { Modal } from '@/components/Modal'
+import styles from './Booking.module.css'
+import clsx from 'clsx'
 
 interface BookingInfoProps {
   usersData: any
@@ -36,27 +36,34 @@ const BookingInfo: React.FC<BookingInfoProps> = ({
   }, [workingPlacesData, todayBooking])
 
   return (
-    <Wrapper>
-      <div className='container mx-auto p-4'>
-        {absentUsers && (
-          <>
-            Heute nicht da:{' '}
-            {absentUsers?.map((u, i) => (
-              <span key={u.username}>
-                {`${u.username}${i < absentUsers.length - 1 ? ', ' : ''}`}
-              </span>
-            ))}
-          </>
-        )}
-
-        <h2 className='text-xl font-bold mt-6'>Verfügbare Plätze</h2>
-        <div className='list-disc list-inside'>
-          {availablePlaces?.map((place: WorkingPlace) => (
-            <span key={place.name}>{place.displayName}, </span>
+    <div className='container mx-auto p-4'>
+      {absentUsers && absentUsers.length > 0 && (
+        <>
+          <span className={styles.meta}>Heute nicht da: </span>
+          {absentUsers?.map((u, i) => (
+            <span key={u.username} className={clsx(styles.meta, 'italic')}>
+              {`${u.username}${i < absentUsers.length - 1 ? ', ' : ''}`}
+            </span>
           ))}
-        </div>
+        </>
+      )}
+
+      <div>
+        <span className={styles.meta}>
+          {availablePlaces && availablePlaces.length > 0
+            ? 'Noch verfügbare Plätze: '
+            : 'Alle Plätze sind heute ausgebucht!'}
+        </span>
+        {availablePlaces &&
+          availablePlaces.length > 0 &&
+          availablePlaces.map((place: WorkingPlace, i: number) => (
+            <span key={place.name} className={clsx(styles.meta, 'italic')}>
+              {place.displayName}
+              {i < availablePlaces.length - 1 ? ', ' : ''}
+            </span>
+          ))}
       </div>
-    </Wrapper>
+    </div>
   )
 }
 

@@ -13,6 +13,7 @@ type ButtonProps = {
   loading?: boolean
   disabled?: boolean
   icon?: JSX.Element
+  style?: React.CSSProperties | undefined
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -26,7 +27,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'invert',
       loading = false,
       disabled = false,
-      icon
+      icon,
+      style
     },
     ref
   ) {
@@ -43,6 +45,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         onClick={onClick}
         disabled={loading || disabled}
+        style={style}
       >
         {loading && <LoadingDots className={styles.loading} />}
         <span>

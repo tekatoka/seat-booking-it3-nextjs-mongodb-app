@@ -1,8 +1,6 @@
 import { Button } from '@/components/Button'
-import { ButtonLink } from '@/components/Button/Button'
 import { Input } from '@/components/Input'
 import { Spacer, Wrapper } from '@/components/Layout'
-import { TextLink } from '@/components/Text'
 import { fetcher } from '@/lib/fetch'
 import { capitalizeString, useCurrentUser } from '@/lib/user'
 import { useRouter } from 'next/router'
@@ -40,9 +38,9 @@ const Login: React.FC = () => {
           })
         })
         mutate({ user: response.user }, false)
-        toast.success('You have been logged in.')
+        toast.success('Du hast dich erfolgreich angemeldet')
       } catch (e) {
-        toast.error('Incorrect username or password.')
+        toast.error('Name oder Passwort ist falsch')
       } finally {
         setIsLoading(false)
       }
@@ -53,7 +51,7 @@ const Login: React.FC = () => {
   return (
     <Wrapper className={styles.root}>
       <div className={styles.main}>
-        <h1 className={styles.title}>Login to App</h1>
+        <h1 className={styles.title}>Anmeldung</h1>
         <form onSubmit={onSubmit}>
           <Input
             ref={usernameRef}
@@ -81,24 +79,24 @@ const Login: React.FC = () => {
             size='large'
             loading={isLoading}
           >
-            Log in
+            Einloggen
           </Button>
           <Spacer size={0.25} axis='vertical' />
-          <ButtonLink
+          {/* <ButtonLink
             href='/forget-password'
             type='success'
             size='large'
             variant='ghost'
           >
-            Forget password
-          </ButtonLink>
+            Forgot password
+          </ButtonLink> */}
         </form>
       </div>
-      <div className={styles.footer}>
+      {/* <div className={styles.footer}>
         <TextLink href='/sign-up' color='link' variant='highlight'>
           Don&apos;t have an account? Sign Up
         </TextLink>
-      </div>
+      </div> */}
     </Wrapper>
   )
 }

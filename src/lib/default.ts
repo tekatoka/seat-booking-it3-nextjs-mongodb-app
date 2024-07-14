@@ -10,6 +10,15 @@ export const formatDate = (date: Date) => {
   })
 }
 
+export const formatDateWithDay = (date: Date) => {
+  return new Date(date).toLocaleDateString('de-DE', {
+    weekday: 'short',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  })
+}
+
 export const formatShortDate = (date: Date) => {
   const d = new Date(date)
   const day = String(d.getDate()).padStart(2, '0')

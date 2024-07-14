@@ -1,5 +1,4 @@
 import { User } from '@/api-lib/types'
-import { Avatar } from '@/components/Avatar'
 import { Button, ButtonLink } from '@/components/Button'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { fetcher } from '@/lib/fetch'
@@ -13,7 +12,7 @@ import styles from './Nav.module.css'
 import Spacer from './Spacer'
 import Wrapper from './Wrapper'
 import Image from 'next/image'
-import { LuUser } from 'react-icons/lu'
+import { LuUser, LuSettings, LuLogOut } from 'react-icons/lu'
 import { LoadingDots } from '../LoadingDots'
 
 type UserMenuProps = {
@@ -83,13 +82,22 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
         {visible && (
           <div className={styles.menu}>
             <Link href={`/user/${user.username}`} className={styles.item}>
-              Profil - <span>{user && user.username}</span>
+              <div>
+                <LuUser className='text-lg inline' />
+                <span className='inline ml-4'>Profil</span>
+              </div>
             </Link>
             <Link href='/settings' className={styles.item}>
-              Einstellungen
+              <div>
+                <LuSettings className='text-lg inline' />
+                <span className='inline ml-4'>Einstellungen</span>
+              </div>
             </Link>
             <button onClick={onSignOut} className={styles.item}>
-              Abmelden
+              <div>
+                <LuLogOut className='text-lg inline' />
+                <span className='inline ml-4'>Abmelden</span>
+              </div>
             </button>
           </div>
         )}
@@ -140,7 +148,7 @@ const Nav: React.FC = () => {
                     color='link'
                     href='/login'
                   >
-                    Log in
+                    Einloggen
                   </ButtonLink>
                 </>
               )}

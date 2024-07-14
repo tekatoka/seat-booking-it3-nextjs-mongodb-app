@@ -43,12 +43,14 @@ interface EditUserProps {
   user: User
   mutate: any
   workingPlaces: WorkingPlace[]
+  handleCloseModal?: () => void
 }
 
 export const EditUser: React.FC<EditUserProps> = ({
   user,
   workingPlaces,
-  mutate
+  mutate,
+  handleCloseModal
 }) => {
   const usernameRef = useRef<HTMLInputElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
@@ -123,7 +125,7 @@ export const EditUser: React.FC<EditUserProps> = ({
             isNaN(fromDate.getTime()) ||
             (tillDate && isNaN(tillDate.getTime()))
           ) {
-            throw new Error('Invalid date format')
+            throw new Error('Falsches Datumsformat')
           }
 
           return {
@@ -141,6 +143,7 @@ export const EditUser: React.FC<EditUserProps> = ({
         })
         mutate()
         toast.success('Der Benutzer wurde erfolgreich aktualisiert')
+        handleCloseModal && handleCloseModal()
       } catch (e: any) {
         toast.error(e.message)
       } finally {

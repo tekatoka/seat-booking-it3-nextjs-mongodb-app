@@ -1,5 +1,5 @@
 import { Wrapper } from '@/components/Layout'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { DayBooking } from '@/api-lib/types'
 import { useUsers } from '@/lib/user'
 import { useWorkingPlaces } from '@/lib/workingPlace'
@@ -10,6 +10,7 @@ import {
   BookingList,
   BookingSelection
 } from '@/components/Bookings'
+import { LoadingDots } from '@/components/LoadingDots'
 
 const Hero: React.FC = () => {
   const today = new Date().toISOString().split('T')[0] // Format the date string
@@ -32,28 +33,41 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     if (!usersData && !usersError) return
-  }, [router, usersData, usersError])
+    if (!workingPlacesData && !workingPlacesError) return
+    if (!daybookingData && !daybookingError) return
+  }, [
+    router,
+    usersData,
+    workingPlacesData,
+    daybookingData,
+    usersError,
+    workingPlacesError,
+    daybookingError
+  ])
 
   return (
     <Wrapper>
+      {}
       <div className='container mx-auto p-4'>
-        <BookingSelection
-          usersData={usersData}
-          todayBooking={todayBooking}
-          workingPlacesData={workingPlacesData}
-          daybookingData={daybookingData}
-          setTodayBooking={setTodayBooking}
-          dayBookingMutate={dayBookingMutate}
-        />
-        <BookingInfo
-          usersData={usersData}
-          todayBooking={todayBooking}
-          workingPlacesData={workingPlacesData}
-        />
-        <BookingList
-          todayBooking={todayBooking}
-          workingPlacesData={workingPlacesData}
-        />
+        <Suspense fallback={<LoadingDots />}>
+          <BookingSelection
+            usersData={usersData}
+            todayBooking={todayBooking}
+            workingPlacesData={workingPlacesData}
+            daybookingData={daybookingData}
+            setTodayBooking={setTodayBooking}
+            dayBookingMutate={dayBookingMutate}
+          />
+          <BookingInfo
+            usersData={usersData}
+            todayBooking={todayBooking}
+            workingPlacesData={workingPlacesData}
+          />
+          <BookingList
+            todayBooking={todayBooking}
+            workingPlacesData={workingPlacesData}
+          />
+        </Suspense>
       </div>
     </Wrapper>
   )

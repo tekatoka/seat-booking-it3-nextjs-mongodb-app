@@ -1,4 +1,5 @@
 import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
+import { toast } from 'react-hot-toast'
 import { getLocalDate, normalizeDateUTC } from '../default'
 
 export const getUserByUsername = (
@@ -67,10 +68,19 @@ export const getNewBooking = (
   userData: { users: User[] }
 ): Booking | null => {
   if (!todayBooking) return null
+  if (
+    workingPlacesData.workingPlaces == null ||
+    workingPlacesData.workingPlaces?.length == 0
+  ) {
+    toast.error('Es wurden noch keine Arbeitzsplätze angelegt!', {
+      duration: 5000
+    })
+    return null
+  }
 
   const user = getUserByUsername(selectedUser, userData)
   if (!user) {
-    throw new Error(`User ${selectedUser} not found`)
+    throw new Error(`Benutzer ${selectedUser} nicht gefunden!`)
   }
 
   user.favouritePlaces = user.favouritePlaces?.filter(

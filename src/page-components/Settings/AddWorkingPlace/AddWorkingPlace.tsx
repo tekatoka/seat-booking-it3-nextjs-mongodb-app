@@ -1,7 +1,7 @@
+import { WorkingPlace } from '@/api-lib/types'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
-import { Container, Spacer, Wrapper } from '@/components/Layout'
-import { LoadingDots } from '@/components/LoadingDots'
+import { Container, Spacer } from '@/components/Layout'
 import { fetcher } from '@/lib/fetch'
 import { capitalizeString } from '@/lib/user'
 import { useWorkingPlaces } from '@/lib/workingPlace'
@@ -9,7 +9,11 @@ import { useCallback, useRef, useState, FormEvent } from 'react'
 import toast from 'react-hot-toast'
 import styles from './AddWorkingPlace.module.css'
 
-const AddWorkingPlaceInner: React.FC = () => {
+interface Props {
+  existingWorkingPlaces: WorkingPlace[]
+}
+
+const AddWorkingPlaceInner: React.FC<Props> = ({ existingWorkingPlaces }) => {
   const nameRef = useRef<HTMLInputElement>(null)
   const pcNameRef = useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -19,6 +23,15 @@ const AddWorkingPlaceInner: React.FC = () => {
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
+      if (
+        existingWorkingPlaces?.some(
+          place => place.name === nameRef.current?.value?.toLowerCase()
+        )
+      ) {
+        toast.error('Ein Arbeitsplatz mit diesem Namen existiert bereits')
+        return
+      }
+
       try {
         setIsLoading(true)
         await fetcher('/api/workingPlaces', {
@@ -81,7 +94,7 @@ const AddWorkingPlace: React.FC = () => {
   return (
     <div className={styles.root}>
       <h3 className={styles.heading}>Arbeitsplatz hinzufügen</h3>
-      <AddWorkingPlaceInner />
+      <AddWorkingPlaceInner existingWorkingPlaces={data?.workingPlaces} />
     </div>
   )
 }

@@ -1,0 +1,17 @@
+.meta {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--secondary);
+  margin: 0;
+  line-height: 20px;
+}
+
+.card {
+  position: relative;
+  box-sizing: border-box;
+  padding: 16px;
+  background: var(--background);
+  border: 1px solid var(--accents-2);
+  border-radius: 5px;
+  box-shadow: var(--shadow-smallest);
+}
