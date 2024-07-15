@@ -48,7 +48,9 @@ const BookingInfo: React.FC<BookingInfoProps> = ({
   return (
     <div className='container mx-auto p-4'>
       {!workingPlacesData || !usersData || !todayBooking ? (
-        <LoadingDots />
+        <div className='block w-full text-center'>
+          <LoadingDots />
+        </div>
       ) : (
         <>
           {usersData && absentUsers && absentUsers.length > 0 && (
