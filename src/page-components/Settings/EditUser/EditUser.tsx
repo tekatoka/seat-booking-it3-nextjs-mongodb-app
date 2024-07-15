@@ -145,7 +145,12 @@ export const EditUser: React.FC<EditUserProps> = ({
 
         formData.append('absences', JSON.stringify(validAbsences))
         formData.append('favouritePlaces', JSON.stringify(favouritePlaces))
-        formData.append('isAdmin', JSON.stringify(isAdminRef.current?.checked))
+
+        if (isAdminRef.current)
+          formData.append(
+            'isAdmin',
+            JSON.stringify(isAdminRef.current?.checked)
+          )
 
         const response = await fetcher('/api/user', {
           method: 'PATCH',
