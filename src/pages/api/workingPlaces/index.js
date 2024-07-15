@@ -14,7 +14,7 @@ handler.get(async (req, res) => {
 })
 
 handler.post(
-  async (req, res, next) => {
+  (req, res, next) => {
     if (req.body.isActive) {
       req.body.isActive = JSON.parse(req.body.isActive)
     }

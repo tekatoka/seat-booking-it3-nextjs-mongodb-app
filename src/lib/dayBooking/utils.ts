@@ -27,7 +27,6 @@ export const getRandomPlace = (
         place.displayName != RESERVED_PLACE
     )
     .map((place: WorkingPlace) => place.name)
-  debugger
   return availablePlaces[Math.floor(Math.random() * availablePlaces?.length)]
 }
 

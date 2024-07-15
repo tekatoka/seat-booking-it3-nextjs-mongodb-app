@@ -125,7 +125,17 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
 
               toast.success(
                 t => (
-                  <div onClick={() => toast.dismiss(t.id)}>
+                  <div
+                    onClick={() => toast.dismiss(t.id)}
+                    role='button'
+                    tabIndex={0}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        toast.dismiss(t.id)
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                  >
                     {capitalizeString(newBooking.user)} sitzt heute auf dem{' '}
                     {capitalizeString(newBooking.workingPlace)}-Platz!
                   </div>

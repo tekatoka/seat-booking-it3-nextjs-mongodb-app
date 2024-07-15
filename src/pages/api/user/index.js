@@ -34,7 +34,7 @@ handler.get((req, res) => {
 //todo: favourite places, absence times
 handler.patch(
   upload.single('profilePicture'),
-  async (req, res, next) => {
+  (req, res, next) => {
     if (req.body.isAdmin) {
       req.body.isAdmin = JSON.parse(req.body.isAdmin)
     }

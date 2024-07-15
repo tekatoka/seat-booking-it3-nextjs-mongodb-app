@@ -69,7 +69,7 @@ handler.delete(async (req, res) => {
 
 handler.patch(
   upload.single('image'),
-  async (req, res, next) => {
+  (req, res, next) => {
     if (req.body.isActive) {
       req.body.isActive = JSON.parse(req.body.isActive)
     }
