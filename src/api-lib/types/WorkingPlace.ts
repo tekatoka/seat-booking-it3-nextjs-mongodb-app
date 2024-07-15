@@ -7,4 +7,5 @@ export interface WorkingPlace {
   pcName: string
   image?: string
   createdAt: Date
+  isActive?: boolean
 }

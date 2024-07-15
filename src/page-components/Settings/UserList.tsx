@@ -115,6 +115,7 @@ const UserList: React.FC<UserListProps> = ({
         {selectedUser && (
           <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
             <EditUser
+              currentUser={currentUser}
               user={selectedUser}
               mutate={mutate}
               workingPlaces={workingPlaces}

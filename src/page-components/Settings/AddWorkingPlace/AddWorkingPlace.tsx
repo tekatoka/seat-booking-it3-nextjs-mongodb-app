@@ -42,7 +42,8 @@ const AddWorkingPlaceInner: React.FC<Props> = ({ existingWorkingPlaces }) => {
             displayName:
               nameRef.current?.value &&
               capitalizeString(nameRef.current?.value),
-            pcName: pcNameRef.current?.value
+            pcName: pcNameRef.current?.value,
+            isActive: 'true'
           })
         })
         toast.success('Arbeitsplatz erfolgreich gespeichert')

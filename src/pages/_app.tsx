@@ -9,7 +9,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <CustomThemeProviderWrapper>
       <Layout>
         <Component {...pageProps} />
-        <Toaster />
+        <Toaster position='top-center' />
       </Layout>
     </CustomThemeProviderWrapper>
   )

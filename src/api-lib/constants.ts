@@ -41,7 +41,8 @@ export const ValidateProps = {
     name: { type: 'string', minLength: 3, maxLength: 20 },
     displayName: { type: 'string', minLength: 3, maxLength: 20 },
     pcName: { type: 'string', minLength: 4, maxLength: 50 },
-    createdAt: { type: 'string', format: 'Date' }
+    createdAt: { type: 'string', format: 'Date' },
+    isActive: { type: 'boolean' }
   },
   dayBooking: {
     // date: { type: 'string', format: 'Date' },

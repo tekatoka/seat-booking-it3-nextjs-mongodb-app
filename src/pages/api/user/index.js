@@ -34,10 +34,17 @@ handler.get((req, res) => {
 //todo: favourite places, absence times
 handler.patch(
   upload.single('profilePicture'),
+  async (req, res, next) => {
+    if (req.body.isAdmin) {
+      req.body.isAdmin = JSON.parse(req.body.isAdmin)
+    }
+    next()
+  },
   validateBody({
     type: 'object',
     properties: {
-      username: ValidateProps.user.username
+      username: ValidateProps.user.username,
+      isAdmin: ValidateProps.user.isAdmin
       //absences: ValidateProps.user.absences
     },
     additionalProperties: true
@@ -59,7 +66,7 @@ handler.patch(
       })
       profilePicture = image.secure_url
     }
-    const { _id, username } = req.body
+    const { _id, username, isAdmin } = req.body
 
     let absences
     if (req.body.absences) {
@@ -80,7 +87,8 @@ handler.patch(
       ...(username && { username }),
       ...(absences && { absences }),
       ...(favouritePlaces && { favouritePlaces }),
-      ...(profilePicture && { profilePicture })
+      ...(profilePicture && { profilePicture }),
+      isAdmin
     })
 
     res.json({ user })

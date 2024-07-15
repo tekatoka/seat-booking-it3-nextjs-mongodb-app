@@ -5,8 +5,6 @@ import styles from './CardUser.module.css'
 import { User } from '@/api-lib/types'
 import { LuFileEdit, LuTrash2 } from 'react-icons/lu'
 import { LoadingDots } from '../LoadingDots'
-import { capitalizeString } from '@/lib/user'
-import { formatDate, formatShortDate } from '@/lib/default'
 import FavouritePlaces from './FavouritePlaces'
 import Absences from './Absences'
 
@@ -33,7 +31,9 @@ const CardUser: React.FC<CardUserProps> = ({
         <Link href='#'>
           <Container column>
             <div className='flex justify-between items-center'>
-              <p className='username'>{user.username}</p>
+              <p className='username'>
+                {user.username} {user.isAdmin && ' (Admin)'}
+              </p>
               <div className='flex justify-between items-center space-x-1'>
                 {isLoading ? (
                   <LoadingDots />

@@ -5,6 +5,7 @@ import { User, WorkingPlace } from '@/api-lib/types'
 import { LuFileEdit, LuTrash2 } from 'react-icons/lu'
 import { LoadingDots } from '../LoadingDots'
 import { Avatar } from '../Avatar'
+import Checkbox from '../Input/Checkbox'
 
 interface CardWorkingPlaceProps {
   place: WorkingPlace
@@ -58,7 +59,15 @@ const CardUser: React.FC<CardWorkingPlaceProps> = ({
                 </div>
               </div>
               <p className={styles.meta}>{place.pcName}</p>
-              <p className={styles.placeholder}>-</p>
+              <p className={styles.meta}>
+                <Checkbox
+                  isChecked={place.isActive}
+                  ariaLabel='isActive'
+                  label={place.isActive ? 'aktiv' : 'inaktiv'}
+                  isDisabled={true}
+                  smallLabel={true}
+                />
+              </p>
             </div>
           </div>
         </Link>

@@ -69,12 +69,19 @@ handler.delete(async (req, res) => {
 
 handler.patch(
   upload.single('image'),
+  async (req, res, next) => {
+    if (req.body.isActive) {
+      req.body.isActive = JSON.parse(req.body.isActive)
+    }
+    next()
+  },
   validateBody({
     type: 'object',
     properties: {
       name: ValidateProps.workingPlace.name,
       displayName: ValidateProps.workingPlace.displayName,
-      pcName: ValidateProps.workingPlace.pcName
+      pcName: ValidateProps.workingPlace.pcName,
+      isActive: ValidateProps.workingPlace.isActive
     },
     additionalProperties: true
   }),

@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './EditWorkingPlace.module.css'
 import { capitalizeString } from '@/lib/user'
+import Checkbox from '@/components/Input/Checkbox'
 
 interface EditWorkingPlaceProps {
   workingPlace: WorkingPlace
@@ -23,6 +24,7 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
   const placenameRef = useRef<HTMLInputElement>(null)
   const pcnameRef = useRef<HTMLInputElement>(null)
   const imageRef = useRef<HTMLInputElement>(null)
+  const isActiveRef = useRef<HTMLInputElement>(null)
 
   const [imageHref, setImageHref] = useState(workingPlace.image)
 
@@ -42,6 +44,11 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
   )
 
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (workingPlace.isActive != null && isActiveRef.current)
+      isActiveRef.current.checked = workingPlace.isActive
+  }, [workingPlace])
 
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -67,6 +74,11 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
         ) {
           formData.append('image', imageRef.current.files[0])
         }
+
+        formData.append(
+          'isActive',
+          JSON.stringify(isActiveRef.current?.checked)
+        )
 
         // Ensure the correct URL is used with the workingPlaceId
         const response = await fetch(`/api/workingPlaces/${workingPlace._id}`, {
@@ -121,6 +133,8 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
           />
         </div>
         <Spacer size={0.5} axis='vertical' />
+        <Checkbox ref={isActiveRef} ariaLabel='isActive' label='Platz aktiv?' />
+        <div className={styles.seperator} />
         <div className={styles.seperator} />
         <Button
           className={styles.submit}

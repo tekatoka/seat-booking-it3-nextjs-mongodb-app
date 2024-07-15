@@ -122,13 +122,17 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
             try {
               await saveBooking(updatedTodayBooking)
               setTodayBooking(updatedTodayBooking)
+
               toast.success(
-                `${capitalizeString(
-                  newBooking.user
-                )} sitzt heute auf dem ${capitalizeString(
-                  newBooking.workingPlace
-                )}-Platz!`,
-                { duration: 20000 }
+                t => (
+                  <div onClick={() => toast.dismiss(t.id)}>
+                    {capitalizeString(newBooking.user)} sitzt heute auf dem{' '}
+                    {capitalizeString(newBooking.workingPlace)}-Platz!
+                  </div>
+                ),
+                {
+                  duration: 5000
+                }
               )
             } catch (error) {
               console.error('Error adding booking:', error)

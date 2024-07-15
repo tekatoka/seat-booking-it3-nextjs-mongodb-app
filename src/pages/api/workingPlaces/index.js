@@ -14,12 +14,19 @@ handler.get(async (req, res) => {
 })
 
 handler.post(
+  async (req, res, next) => {
+    if (req.body.isActive) {
+      req.body.isActive = JSON.parse(req.body.isActive)
+    }
+    next()
+  },
   validateBody({
     type: 'object',
     properties: {
       name: ValidateProps.workingPlace.name,
       displayName: ValidateProps.workingPlace.displayName,
-      pcName: ValidateProps.workingPlace.pcName
+      pcName: ValidateProps.workingPlace.pcName,
+      isActive: ValidateProps.workingPlace.isActive
     },
     required: ['name', 'pcName'],
     additionalProperties: false
@@ -27,13 +34,14 @@ handler.post(
   ...auths,
   async (req, res) => {
     const db = await getMongoDb()
-    const { name, pcName, displayName, image } = req.body
+    const { name, pcName, displayName, image, isActive } = req.body
 
     const workingPlace = await addWorkingPlace(db, {
       name,
       displayName,
       pcName,
-      image
+      image,
+      isActive
     })
 
     return res.json({ workingPlace })

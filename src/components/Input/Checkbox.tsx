@@ -6,17 +6,27 @@ interface CheckboxProps {
   label?: string
   isChecked?: boolean
   isRequired?: boolean
+  isDisabled?: boolean
   className?: string
   ariaLabel?: string
+  smallLabel?: boolean
 }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, isChecked, isRequired, className, ariaLabel },
+  {
+    label,
+    isChecked,
+    isRequired,
+    isDisabled,
+    className,
+    ariaLabel,
+    smallLabel
+  },
   ref
 ) {
   return (
     <div className={clsx(styles.root, className)}>
-      <label className={styles.label}>
+      <label className={smallLabel ? styles.smallLabel : styles.label}>
         <input
           type='checkbox'
           checked={isChecked}
@@ -24,8 +34,15 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
           className={styles.checkbox}
           aria-label={ariaLabel}
           required={isRequired}
+          disabled={isDisabled}
         />
-        {label && <span className={styles.textLabel}>{label}</span>}
+        {label && (
+          <span
+            className={smallLabel ? styles.smallTextLabel : styles.textLabel}
+          >
+            {label}
+          </span>
+        )}
       </label>
     </div>
   )

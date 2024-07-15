@@ -3,6 +3,7 @@ import { User, WorkingPlace, Booking } from '@/api-lib/types'
 import { isUserAbsentToday } from '@/lib/dayBooking/utils' // Adjust the import path as needed
 import styles from './Booking.module.css'
 import clsx from 'clsx'
+import { LoadingDots } from '../LoadingDots'
 
 interface BookingInfoProps {
   usersData: any
@@ -19,50 +20,74 @@ const BookingInfo: React.FC<BookingInfoProps> = ({
   const [availablePlaces, setAvailablePlaces] = useState<WorkingPlace[]>()
 
   useEffect(() => {
-    setAbsentUsers(
-      usersData?.users.filter((user: User) => isUserAbsentToday(user))
-    )
+    usersData &&
+      usersData.users?.length > 0 &&
+      setAbsentUsers(
+        usersData?.users.filter((user: User) => isUserAbsentToday(user))
+      )
   }, [usersData])
 
   useEffect(() => {
     setAvailablePlaces(
-      workingPlacesData?.workingPlaces.filter(
-        (place: WorkingPlace) =>
-          !todayBooking?.bookings.some(
-            (booking: Booking) => booking.workingPlace === place.name
-          )
-      )
+      workingPlacesData &&
+        workingPlacesData.workingPlaces?.length > 0 &&
+        workingPlacesData?.workingPlaces.filter(
+          (place: WorkingPlace) =>
+            place.isActive &&
+            !todayBooking?.bookings.some(
+              (booking: Booking) => booking.workingPlace === place.name
+            )
+        )
     )
   }, [workingPlacesData, todayBooking])
 
+  if (!workingPlacesData || !usersData || !todayBooking) {
+    return <LoadingDots />
+  }
+
   return (
     <div className='container mx-auto p-4'>
-      {absentUsers && absentUsers.length > 0 && (
+      {!workingPlacesData || !usersData || !todayBooking ? (
+        <LoadingDots />
+      ) : (
         <>
-          <span className={styles.meta}>Heute nicht da: </span>
-          {absentUsers?.map((u, i) => (
-            <span key={u.username} className={clsx(styles.meta, 'italic')}>
-              {`${u.username}${i < absentUsers.length - 1 ? ', ' : ''}`}
-            </span>
-          ))}
+          {usersData && absentUsers && absentUsers.length > 0 && (
+            <>
+              <span className={styles.meta}>Heute nicht da: </span>
+              {absentUsers?.map((u, i) => (
+                <span key={u.username} className={clsx(styles.meta, 'italic')}>
+                  {`${u.username}${i < absentUsers.length - 1 ? ', ' : ''}`}
+                </span>
+              ))}
+            </>
+          )}
+
+          {workingPlacesData && workingPlacesData.workingPlaces?.length > 0 ? (
+            <div>
+              <span className={styles.meta}>
+                {availablePlaces && availablePlaces.length > 0
+                  ? 'Noch verfügbare Plätze: '
+                  : 'Alle Plätze sind heute ausgebucht!'}
+              </span>
+              {availablePlaces &&
+                availablePlaces.length > 0 &&
+                availablePlaces.map((place: WorkingPlace, i: number) => (
+                  <span
+                    key={place.name}
+                    className={clsx(styles.meta, 'italic')}
+                  >
+                    {place.displayName}
+                    {i < availablePlaces.length - 1 ? ', ' : ''}
+                  </span>
+                ))}
+            </div>
+          ) : (
+            <div className={styles.meta}>
+              Es wurden noch keine Arbeitsplätze angelegt
+            </div>
+          )}
         </>
       )}
-
-      <div>
-        <span className={styles.meta}>
-          {availablePlaces && availablePlaces.length > 0
-            ? 'Noch verfügbare Plätze: '
-            : 'Alle Plätze sind heute ausgebucht!'}
-        </span>
-        {availablePlaces &&
-          availablePlaces.length > 0 &&
-          availablePlaces.map((place: WorkingPlace, i: number) => (
-            <span key={place.name} className={clsx(styles.meta, 'italic')}>
-              {place.displayName}
-              {i < availablePlaces.length - 1 ? ', ' : ''}
-            </span>
-          ))}
-      </div>
     </div>
   )
 }

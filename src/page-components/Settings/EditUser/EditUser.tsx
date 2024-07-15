@@ -10,6 +10,7 @@ import Select from 'react-select'
 import styles from './EditUser.module.css'
 import { LuPlus, LuTrash2 } from 'react-icons/lu'
 import { formatDateAsString, stripTime } from '@/lib/default'
+import Checkbox from '@/components/Input/Checkbox'
 
 interface CustomDatePickerProps {
   index: number
@@ -41,6 +42,7 @@ const CustomDatePicker = ({
 
 interface EditUserProps {
   user: User
+  currentUser: User
   mutate: any
   workingPlaces: WorkingPlace[]
   handleCloseModal?: () => void
@@ -48,6 +50,7 @@ interface EditUserProps {
 
 export const EditUser: React.FC<EditUserProps> = ({
   user,
+  currentUser,
   workingPlaces,
   mutate,
   handleCloseModal
@@ -55,11 +58,17 @@ export const EditUser: React.FC<EditUserProps> = ({
   const usernameRef = useRef<HTMLInputElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const profilePictureRef = useRef<HTMLInputElement>(null)
+  const isAdminRef = useRef<HTMLInputElement>(null)
 
   const [absences, setAbsences] = useState<Absence[]>([])
   const [favouritePlaces, setFavouritePlaces] = useState<string[]>(
     user.favouritePlaces || []
   )
+
+  useEffect(() => {
+    if (user.isAdmin != null && isAdminRef.current)
+      isAdminRef.current.checked = user.isAdmin
+  }, [user])
 
   useEffect(() => {
     const today = stripTime(new Date())
@@ -136,6 +145,7 @@ export const EditUser: React.FC<EditUserProps> = ({
 
         formData.append('absences', JSON.stringify(validAbsences))
         formData.append('favouritePlaces', JSON.stringify(favouritePlaces))
+        formData.append('isAdmin', JSON.stringify(isAdminRef.current?.checked))
 
         const response = await fetcher('/api/user', {
           method: 'PATCH',
@@ -298,6 +308,17 @@ export const EditUser: React.FC<EditUserProps> = ({
         </Button>
         <Spacer size={0.5} axis='vertical' />
         <div className={styles.seperator} />
+        {currentUser.isAdmin && (
+          <>
+            <Checkbox
+              ref={isAdminRef}
+              ariaLabel='isAdmin'
+              label='Administrator?'
+            />
+            <div className={styles.seperator} />
+          </>
+        )}
+
         <Button
           className={styles.submit}
           type='submit'

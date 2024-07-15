@@ -2,6 +2,8 @@ import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
 import { toast } from 'react-hot-toast'
 import { getLocalDate, normalizeDateUTC } from '../default'
 
+const RESERVED_PLACE = 'Eichhörnchen'
+
 export const getUserByUsername = (
   username: string,
   usersData: { users: User[] }
@@ -18,8 +20,14 @@ export const getRandomPlace = (
   workingPlacesData: { workingPlaces: WorkingPlace[] }
 ): string => {
   const availablePlaces = workingPlacesData?.workingPlaces
-    .filter((place: WorkingPlace) => !excludedPlaces.includes(place.name))
+    .filter(
+      (place: WorkingPlace) =>
+        place.isActive &&
+        !excludedPlaces.includes(place.name) &&
+        place.displayName != RESERVED_PLACE
+    )
     .map((place: WorkingPlace) => place.name)
+  debugger
   return availablePlaces[Math.floor(Math.random() * availablePlaces?.length)]
 }
 
@@ -102,16 +110,20 @@ export const getNewBooking = (
     user.favouritePlaces?.find(place => !takenPlaces.includes(place)) ??
     getRandomPlace(takenPlaces, workingPlacesData)
 
-  if (allOtherPlacesTaken) {
-    placeToBook =
-      user.favouritePlaces?.find(place => !takenPlaces.includes(place)) ??
-      getRandomPlace(takenPlaces, workingPlacesData)
+  if (user.username == 'Dana') {
+    placeToBook = RESERVED_PLACE
   } else {
-    while (
-      takenPlaces.includes(placeToBook) ||
-      leastPreferredPlaces.includes(placeToBook)
-    ) {
-      placeToBook = getRandomPlace(takenPlaces, workingPlacesData)
+    if (allOtherPlacesTaken) {
+      placeToBook =
+        user.favouritePlaces?.find(place => !takenPlaces.includes(place)) ??
+        getRandomPlace(takenPlaces, workingPlacesData)
+    } else {
+      while (
+        takenPlaces.includes(placeToBook) ||
+        leastPreferredPlaces.includes(placeToBook)
+      ) {
+        placeToBook = getRandomPlace(takenPlaces, workingPlacesData)
+      }
     }
   }
 

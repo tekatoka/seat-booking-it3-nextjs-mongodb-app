@@ -157,6 +157,7 @@ export const UserSettings: React.FC = () => {
       {data?.user ? (
         <>
           <EditUser
+            currentUser={data.user}
             user={data.user}
             mutate={mutate}
             workingPlaces={workingPlacesData?.workingPlaces}

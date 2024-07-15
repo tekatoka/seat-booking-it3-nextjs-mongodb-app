@@ -58,6 +58,18 @@
   max-width: 100%;
 }
 
+.smallLabel {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-transform: none;
+  margin-bottom: 8px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .large {
   height: 48px;
   font-size: 1rem;
@@ -80,4 +92,8 @@
 
 .textLabel {
   margin-left: 8px;
+}
+
+.smallTextLabel {
+  margin-left: 2px;
 }
