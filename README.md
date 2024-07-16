@@ -70,7 +70,7 @@ This project uses the following dependencies:
 Environmental variables in this project include:
 
 - `MONGODB_URI` The MongoDB Connection String (with credentials and database name)
-- `WEB_URI` The _URL_ of your web app.
+- `WEB_URI` The _URL_ of the app.
 - `CLOUDINARY_URL` (optional, Cloudinary **only**) Cloudinary environment variable for configuration. See [this](https://cloudinary.com/documentation/node_integration#configuration).
 
 <h3 align="center">Development</h3>
