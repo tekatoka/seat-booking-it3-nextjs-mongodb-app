@@ -75,7 +75,7 @@ Environmental variables in this project include:
 
 <h3 align="center">Development</h3>
 
-Start the development server by running `yarn dev` or `npm run dev`. Getting started by create a `.env.local` file with the above variables. See [Environment Variables](https://nextjs.org/docs/basic-features/environment-variables).
+Make sure you have Node.js at least v.18.20.4 (or better 20.12.2) installed. After cloning the project, go to the root directory and run `npm i`. Then start the development server by running `npm run dev`. Getting started by create a `.env.local` file with the above variables. See [Environment Variables](https://nextjs.org/docs/basic-features/environment-variables).
 
 <h2 align="center">Deployment</h2>
 
