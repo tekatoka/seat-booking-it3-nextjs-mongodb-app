@@ -33,6 +33,10 @@ handler.post(
   }),
   ...auths,
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).end()
+    }
+
     const db = await getMongoDb()
     const { name, pcName, displayName, image, isActive } = req.body
 
