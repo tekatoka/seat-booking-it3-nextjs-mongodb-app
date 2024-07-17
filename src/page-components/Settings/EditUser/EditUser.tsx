@@ -11,6 +11,8 @@ import styles from './EditUser.module.css'
 import { LuPlus, LuTrash2 } from 'react-icons/lu'
 import { formatDateAsString, stripTime } from '@/lib/default'
 import Checkbox from '@/components/Input/Checkbox'
+import HomeOfficeDays from './HomeOfficeDays'
+import Absences from './Absences'
 
 interface CustomDatePickerProps {
   index: number
@@ -63,6 +65,9 @@ export const EditUser: React.FC<EditUserProps> = ({
   const [absences, setAbsences] = useState<Absence[]>([])
   const [favouritePlaces, setFavouritePlaces] = useState<string[]>(
     user.favouritePlaces || []
+  )
+  const [homeOfficeDays, setHomeOfficeDays] = useState<string[]>(
+    user.homeOfficeDays || []
   )
 
   useEffect(() => {
@@ -145,6 +150,7 @@ export const EditUser: React.FC<EditUserProps> = ({
 
         formData.append('absences', JSON.stringify(validAbsences))
         formData.append('favouritePlaces', JSON.stringify(favouritePlaces))
+        formData.append('homeOfficeDays', JSON.stringify(homeOfficeDays))
 
         if (isAdminRef.current)
           formData.append(
@@ -165,7 +171,7 @@ export const EditUser: React.FC<EditUserProps> = ({
         setIsLoading(false)
       }
     },
-    [mutate, absences, favouritePlaces, user._id]
+    [mutate, absences, favouritePlaces, homeOfficeDays, user._id]
   )
 
   const handleAbsenceChange = (
@@ -246,73 +252,22 @@ export const EditUser: React.FC<EditUserProps> = ({
             isClearable
           />
         </div>
-        <Spacer size={1.5} axis='vertical' />
-        <span className={styles.label}>Abwesenheiten</span>
-        <div className='my-4 space-y-4 max-w-full'>
-          {absences?.map((absence, index) => (
-            <div
-              key={index}
-              className='flex flex-col sm:flex-row sm:justify-between items-start space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-2 max-w-full'
-            >
-              <div className='flex flex-col sm:flex-row items-center sm:space-x-4 w-full'>
-                <div className='flex items-center space-x-2 w-full sm:w-auto'>
-                  <label
-                    htmlFor={`from-${index}`}
-                    className='text-sm sm:text-base'
-                  >
-                    von:
-                  </label>
-                  <div className='flex-1 min-w-[150px]'>
-                    <CustomDatePicker
-                      index={index}
-                      date={absence.from}
-                      field={'from'}
-                      onChange={handleAbsenceChange}
-                      id={`from-${index}`}
-                    />
-                  </div>
-                </div>
-                <div className='flex items-center space-x-2 w-full sm:w-auto mt-2 sm:mt-0'>
-                  <label
-                    htmlFor={`till-${index}`}
-                    className='text-sm sm:text-base'
-                  >
-                    bis:
-                  </label>
-                  <div className='flex-1 min-w-[150px]'>
-                    <CustomDatePicker
-                      index={index}
-                      date={absence.till}
-                      field={'till'}
-                      onChange={handleAbsenceChange}
-                      id={`till-${index}`}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className='w-full sm:w-auto mt-2 sm:mt-0'>
-                <button
-                  type='button'
-                  onClick={() => removeAbsence(index)}
-                  className='w-full sm:w-auto flex items-center justify-center h-full px-3 py-2 border rounded-md text-gray-500 hover:text-red-500 transition-colors duration-200'
-                >
-                  <LuTrash2 />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
 
-        <Button
-          type='button'
-          onClick={addAbsence}
-          variant='invert'
-          icon={<LuPlus className='inline-block' />}
-        >
-          <span>Abwesenheit hinzufügen</span>
-        </Button>
+        <Spacer size={1} axis='vertical' />
+        <HomeOfficeDays
+          selectedDays={homeOfficeDays}
+          setSelectedDays={setHomeOfficeDays}
+        />
+        <div className={styles.seperator} />
+        <Absences
+          absences={absences}
+          handleAbsenceChange={handleAbsenceChange}
+          addAbsence={addAbsence}
+          removeAbsence={removeAbsence}
+        />
         <Spacer size={0.5} axis='vertical' />
         <div className={styles.seperator} />
+
         {currentUser.isAdmin && (
           <>
             <Checkbox

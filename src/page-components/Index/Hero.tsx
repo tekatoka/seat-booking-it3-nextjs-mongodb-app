@@ -1,7 +1,7 @@
 import { Wrapper } from '@/components/Layout'
 import { Suspense, useEffect, useState } from 'react'
 import { DayBooking } from '@/api-lib/types'
-import { useUsers } from '@/lib/user'
+import { useCurrentUser, useUsers } from '@/lib/user'
 import { useWorkingPlaces } from '@/lib/workingPlace'
 import { useDayBooking, useDayBookings } from '@/lib/dayBooking'
 import { useRouter } from 'next/router'
@@ -24,6 +24,10 @@ const Hero: React.FC = () => {
   const { data: workingPlacesData, error: workingPlacesError } =
     useWorkingPlaces()
 
+  const { data: dataCurrentUser, error: errorCurrentUser } = useCurrentUser()
+
+  const loadingCurrentUser = !dataCurrentUser && !errorCurrentUser
+
   const {
     data: daybookingData,
     error: daybookingError,
@@ -45,6 +49,8 @@ const Hero: React.FC = () => {
     daybookingError
   ])
 
+  if (loadingCurrentUser && !errorCurrentUser) return <LoadingDots />
+
   return (
     <Wrapper>
       {}
@@ -57,6 +63,7 @@ const Hero: React.FC = () => {
             daybookingData={daybookingData}
             setTodayBooking={setTodayBooking}
             dayBookingMutate={dayBookingMutate}
+            dataCurrentUser={dataCurrentUser}
           />
           <BookingInfo
             usersData={usersData}

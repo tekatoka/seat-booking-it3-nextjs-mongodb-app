@@ -6,12 +6,15 @@ import toast from 'react-hot-toast'
 import {
   getUsersNotAbsentAndNoBooking,
   getNewBooking,
-  getUsersNotAbsent
+  getUsersNotAbsent,
+  isUserAbsentToday,
+  isUserInHomeOffice
 } from '@/lib/dayBooking/utils'
 import { Modal } from '@/components/Modal'
-import { capitalizeString } from '@/lib/user'
+import { capitalizeString, useCurrentUser } from '@/lib/user'
 import styles from './Booking.module.css'
 import { formatDateWithDay } from '@/lib/default'
+import clsx from 'clsx'
 
 interface BookingSelectionProps {
   usersData: any
@@ -20,6 +23,7 @@ interface BookingSelectionProps {
   daybookingData: any
   setTodayBooking: any
   dayBookingMutate: any
+  dataCurrentUser: any
 }
 
 const BookingSelection: React.FC<BookingSelectionProps> = ({
@@ -28,7 +32,8 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
   workingPlacesData,
   daybookingData,
   setTodayBooking,
-  dayBookingMutate
+  dayBookingMutate,
+  dataCurrentUser
 }) => {
   const [availableUsers, setAvailableUsers] = useState<User[]>()
   const [selectedUser, setSelectedUser] = useState<string | undefined>()
@@ -37,24 +42,30 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    setCurrentUser(dataCurrentUser?.user || null)
+  }, [dataCurrentUser])
+
   useEffect(() => {
     const getAvailableUsers = () => {
       const dayBooking = daybookingData?.dayBooking
       if (dayBooking) {
         const availableUsers = getUsersNotAbsentAndNoBooking(dayBooking, {
-          users: usersData?.users
+          users: currentUser ? [currentUser] : usersData?.users
         })
         setAvailableUsers(availableUsers)
         setTodayBooking(dayBooking)
       } else {
         const availableUsers = getUsersNotAbsent({
-          users: usersData?.users
+          users: currentUser ? [currentUser] : usersData?.users
         })
         setAvailableUsers(availableUsers)
       }
     }
     getAvailableUsers()
-  }, [usersData, daybookingData])
+  }, [usersData, daybookingData, currentUser])
 
   useEffect(() => {
     const options: Option[] =
@@ -167,8 +178,21 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
     setIsModalOpen(false)
   }
 
-  function formatDateWithDate(arg0: Date): import('react').ReactNode {
-    throw new Error('Function not implemented.')
+  const getNoOptionsMessage = (currentUser: User | null) => {
+    if (!currentUser)
+      return 'Alle Benutzer haben bereits ihre Plätze im Zoogehege gefunden!'
+
+    if (isUserAbsentToday(currentUser)) {
+      return 'Du bist heute als Abwesend gemeldet. Du kannst das in den Profil-Einstellungen ändern'
+    }
+
+    if (isUserInHomeOffice(currentUser)) {
+      return 'Heute ist Dein MA-Tag. Falsch? Du kannst das in den Profil-Einstellungen ändern'
+    }
+
+    if (currentUser) return 'Du hast heute bereits einen Arbeitsplatz gebucht!'
+
+    return 'Alle Benutzer haben bereits ihre Plätze im Zoogehege gefunden!'
   }
 
   return (
@@ -176,7 +200,9 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
       <div className='grid gap-0 lg:grid-cols-8'>
         <div className='col-span-4 lg:col-span-2 order-1 lg:order-1'>
           <div className='p-4'>
-            <div className={styles.meta}>Heute ist...</div>
+            <div className={clsx(styles.meta, styles.metaLabel)}>
+              Heute ist...
+            </div>
             {formatDateWithDay(new Date())}
           </div>
         </div>
@@ -194,9 +220,7 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
                       option => option.value === selectedUser
                     ) || null
                   }
-                  noOptionsMessage={
-                    'Alle Benutzer haben bereits ihre Plätze im Zoogehege gefunden!'
-                  }
+                  noOptionsMessage={getNoOptionsMessage(currentUser)}
                 />
                 <Button
                   size='medium'

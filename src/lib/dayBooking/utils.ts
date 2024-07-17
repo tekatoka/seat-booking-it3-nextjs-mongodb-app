@@ -44,10 +44,23 @@ export const isUserAbsentToday = (user: User): boolean => {
   })
 }
 
+export const isUserInHomeOffice = (user: User): boolean => {
+  if (!user.homeOfficeDays) {
+    return false
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0) // Normalize to midnight
+  const weekday = today.toLocaleDateString('de-DE', { weekday: 'short' }) + '.'
+
+  return user.homeOfficeDays.includes(weekday)
+}
+
 export const getUsersNotAbsent = (usersData: { users: User[] }): User[] => {
   const presentUsers = usersData?.users?.filter((user: User) => {
     const isAbsentToday = isUserAbsentToday(user)
-    return !isAbsentToday
+    const isInHomeOfficeToday = isUserInHomeOffice(user)
+    return !isAbsentToday && !isInHomeOfficeToday
   })
 
   return presentUsers
@@ -94,6 +107,9 @@ export const getNewBooking = (
     p => p !== null && p !== ''
   )
   if (todayBooking.bookings.some(booking => booking.user === selectedUser)) {
+    toast.error('Du hast heute bereits einen Arbeitsplatz gezogen!', {
+      duration: 5000
+    })
     console.log(`User ${selectedUser} already has a booking for today`)
     return null
   }
