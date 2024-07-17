@@ -6,6 +6,10 @@
   line-height: 20px;
 }
 
+.metaLabel {
+  font-weight: 600;
+}
+
 .card {
   position: relative;
   box-sizing: border-box;

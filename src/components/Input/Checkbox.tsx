@@ -10,6 +10,7 @@ interface CheckboxProps {
   className?: string
   ariaLabel?: string
   smallLabel?: boolean
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
@@ -20,7 +21,8 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
     isDisabled,
     className,
     ariaLabel,
-    smallLabel
+    smallLabel,
+    onChange
   },
   ref
 ) {
@@ -35,6 +37,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
           aria-label={ariaLabel}
           required={isRequired}
           disabled={isDisabled}
+          onChange={onChange}
         />
         {label && (
           <span

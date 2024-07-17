@@ -14,6 +14,7 @@ export interface User {
   profilePicture?: string
   absences?: Absence[]
   favouritePlaces?: string[]
+  homeOfficeDays?: string[]
   isAdmin?: boolean
 }
 

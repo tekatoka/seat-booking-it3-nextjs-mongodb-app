@@ -1,0 +1,34 @@
+.root {
+  display: flex;
+  font-size: 0.875rem;
+  align-items: center;
+  max-width: 100%;
+}
+
+.root label {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-transform: none;
+  margin-bottom: 20px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.textLabel {
+  margin-left: 4px;
+}
+
+.active {
+  color: limegreen;
+}
+
+.inactive {
+  color: lightgray;
+}

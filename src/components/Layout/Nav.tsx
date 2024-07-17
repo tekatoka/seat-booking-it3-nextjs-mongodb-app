@@ -55,7 +55,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
       await fetcher('/api/auth', {
         method: 'DELETE'
       })
-      toast.success('You have been signed out')
+      toast.success('Du hast dich erfolgreich abgemeldet')
       await mutate({ user: null })
     } catch (e: any) {
       toast.error(e.message)
@@ -127,7 +127,7 @@ const Nav: React.FC = () => {
             <div className={styles.logoContainer}>
               <Image
                 className={styles.avatar}
-                src={'/images/logo_ibb_plain-svg.svg'}
+                src={'/images/logo-booking-app.svg'}
                 alt={'IBB Logo'}
                 width={175}
                 height={35}

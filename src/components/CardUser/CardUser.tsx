@@ -7,6 +7,7 @@ import { LuFileEdit, LuTrash2 } from 'react-icons/lu'
 import { LoadingDots } from '../LoadingDots'
 import FavouritePlaces from './FavouritePlaces'
 import Absences from './Absences'
+import HomeOfficeDays from './HomeOfficeDays'
 
 interface CardUserProps {
   user: User
@@ -61,6 +62,7 @@ const CardUser: React.FC<CardUserProps> = ({
               </div>
             </div>
             <FavouritePlaces user={user} />
+            <HomeOfficeDays user={user} />
             <Absences user={user} />
           </Container>
         </Link>

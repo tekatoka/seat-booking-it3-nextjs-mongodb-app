@@ -83,10 +83,16 @@ handler.patch(
       favouritePlaces = JSON.parse(req.body.favouritePlaces)
     }
 
+    let homeOfficeDays
+    if (req.body.homeOfficeDays) {
+      homeOfficeDays = JSON.parse(req.body.homeOfficeDays)
+    }
+
     const user = await updateUserById(db, _id, {
       ...(username && { username }),
       ...(absences && { absences }),
       ...(favouritePlaces && { favouritePlaces }),
+      ...(homeOfficeDays && { homeOfficeDays }),
       ...(profilePicture && { profilePicture }),
       isAdmin
     })
