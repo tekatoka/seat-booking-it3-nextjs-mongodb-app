@@ -26,7 +26,7 @@ const HomeOfficeDays: React.FC<HomeOfficeDaysProps> = ({ user }) => {
           )
         })()
       ) : (
-        <p>&nbsp;</p> // Empty line
+        <p>MA-Tage: n/a</p>
       )}
     </p>
   )
