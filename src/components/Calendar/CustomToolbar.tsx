@@ -35,7 +35,7 @@ const CustomToolbar = (toolbar: any) => {
       <span className='rbc-btn-group'>
         {renderButton(goToBack, FaArrowLeft, 'Zurück')}
         {renderButton(goToToday, FaCalendarAlt, 'Heute')}
-        {renderButton(goToNext, FaArrowRight, 'Nächste', 'right')}
+        {renderButton(goToNext, FaArrowRight, 'Weiter', 'right')}
       </span>
       <span className='rbc-toolbar-label'>{toolbar.label}</span>
       <span className='rbc-btn-group'>
