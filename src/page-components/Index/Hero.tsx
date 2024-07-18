@@ -51,34 +51,36 @@ const Hero: React.FC = () => {
     daybookingError
   ])
 
-  if (loadingCurrentUser && !errorCurrentUser) return <LoadingDots />
-
   return (
     <Wrapper>
       {}
       <div className='container mx-auto p-4'>
-        <Suspense fallback={<LoadingDots />}>
-          <BookingSelection
-            usersData={usersData}
-            todayBooking={todayBooking}
-            workingPlacesData={workingPlacesData}
-            daybookingData={daybookingData}
-            setTodayBooking={setTodayBooking}
-            dayBookingMutate={dayBookingMutate}
-            dataCurrentUser={dataCurrentUser}
-          />
-          <BookingInfo
-            usersData={usersData}
-            todayBooking={todayBooking}
-            workingPlacesData={workingPlacesData}
-          />
-          <BookingList
-            todayBooking={todayBooking}
-            workingPlacesData={workingPlacesData}
-          />
+        {loadingCurrentUser && !errorCurrentUser ? (
+          <LoadingDots />
+        ) : (
+          <Suspense fallback={<LoadingDots />}>
+            <BookingSelection
+              usersData={usersData}
+              todayBooking={todayBooking}
+              workingPlacesData={workingPlacesData}
+              daybookingData={daybookingData}
+              setTodayBooking={setTodayBooking}
+              dayBookingMutate={dayBookingMutate}
+              dataCurrentUser={dataCurrentUser}
+            />
+            <BookingInfo
+              usersData={usersData}
+              todayBooking={todayBooking}
+              workingPlacesData={workingPlacesData}
+            />
+            <BookingList
+              todayBooking={todayBooking}
+              workingPlacesData={workingPlacesData}
+            />
 
-          <CalendarComponent userData={usersData?.users} />
-        </Suspense>
+            <CalendarComponent userData={usersData?.users} />
+          </Suspense>
+        )}
       </div>
     </Wrapper>
   )
