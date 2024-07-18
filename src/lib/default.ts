@@ -10,6 +10,10 @@ export const formatDate = (date: Date) => {
   })
 }
 
+export const formatDateISOString = (date: Date) => {
+  return new Date(date).toISOString().split('T')[0]
+}
+
 export const formatDateWithDay = (date: Date) => {
   return new Date(date).toLocaleDateString('de-DE', {
     weekday: 'short',

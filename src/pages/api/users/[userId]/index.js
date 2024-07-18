@@ -6,6 +6,10 @@ import nc from 'next-connect'
 const handler = nc(ncOpts)
 
 handler.get(async (req, res) => {
+  if (!req.user) {
+    return res.status(401).end()
+  }
+
   const db = await getMongoDb()
   const user = await findUserById(db, req.query.userId)
   res.json({ user })

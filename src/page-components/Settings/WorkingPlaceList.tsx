@@ -85,7 +85,7 @@ const WorkingPlaceList: React.FC<WorkingPlaceListProps> = ({
       <Wrapper>
         <Container alignItems='center' className='mb-4'>
           <p className={styles.subtitle}>Arbeitsplätze</p>
-          <div className={styles.seperator} />
+          <div className={styles.separator} />
         </Container>
         {!workingPlaces && !error && <LoadingDots />}
         {workingPlaces?.sort(sortWorkingPlacesByName).map((workingPlace, i) => (

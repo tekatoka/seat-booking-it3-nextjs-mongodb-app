@@ -49,6 +49,10 @@ handler.get(async (req, res) => {
 })
 
 handler.delete(async (req, res) => {
+  if (!req.user) {
+    return res.status(401).end()
+  }
+
   const db = await getMongoDb()
   const { workingPlaceId } = req.query
 

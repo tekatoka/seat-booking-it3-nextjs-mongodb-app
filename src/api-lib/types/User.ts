@@ -29,3 +29,21 @@ export interface NewUser {
 }
 
 export type SafeUser = Omit<User, 'password'>
+
+export interface CalendarAbsence {
+  user: string
+  from: string
+  till?: string
+  color?: string
+}
+
+export interface CalendarHomeOfficeDay {
+  user: string
+  date: string
+  color?: string
+}
+
+export interface UserAbsencesAndHomeOfficeDays {
+  absences: CalendarAbsence[]
+  homeOfficeDays: CalendarHomeOfficeDay[]
+}

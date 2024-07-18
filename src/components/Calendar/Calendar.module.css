@@ -1,0 +1,32 @@
+.wrap {
+  background: var(--background);
+  padding: 24px 16px;
+  box-shadow: var(--shadow-smallest);
+  border-radius: 8px;
+  transition: ease 0.2s box-shadow;
+  height: 100%; /* Ensure it takes the full available height */
+  display: flex;
+  flex-direction: column;
+  overflow: scroll; /* Hide any overflow */
+}
+
+.separator {
+  background-color: var(--accents-2);
+  height: 1px;
+  margin: 8px 0 8px 10px;
+  flex: 1 1;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 0.2rem;
+  color: var(--secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.rbc-toolbar-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+}

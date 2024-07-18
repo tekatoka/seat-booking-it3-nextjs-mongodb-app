@@ -134,8 +134,8 @@ export const EditWorkingPlace: React.FC<EditWorkingPlaceProps> = ({
         </div>
         <Spacer size={0.5} axis='vertical' />
         <Checkbox ref={isActiveRef} ariaLabel='isActive' label='Platz aktiv?' />
-        <div className={styles.seperator} />
-        <div className={styles.seperator} />
+        <div className={styles.separator} />
+        <div className={styles.separator} />
         <Button
           className={styles.submit}
           type='submit'

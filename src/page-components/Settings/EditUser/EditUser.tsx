@@ -258,7 +258,7 @@ export const EditUser: React.FC<EditUserProps> = ({
           selectedDays={homeOfficeDays}
           setSelectedDays={setHomeOfficeDays}
         />
-        <div className={styles.seperator} />
+        <div className={styles.separator} />
         <Absences
           absences={absences}
           handleAbsenceChange={handleAbsenceChange}
@@ -266,7 +266,7 @@ export const EditUser: React.FC<EditUserProps> = ({
           removeAbsence={removeAbsence}
         />
         <Spacer size={0.5} axis='vertical' />
-        <div className={styles.seperator} />
+        <div className={styles.separator} />
 
         {currentUser.isAdmin && (
           <>
@@ -275,7 +275,7 @@ export const EditUser: React.FC<EditUserProps> = ({
               ariaLabel='isAdmin'
               label='Administrator?'
             />
-            <div className={styles.seperator} />
+            <div className={styles.separator} />
           </>
         )}
 

@@ -97,7 +97,7 @@ const UserList: React.FC<UserListProps> = ({
       <Wrapper>
         <Container alignItems='center' className='mb-4'>
           <p className={styles.subtitle}>Benutzer</p>
-          <div className={styles.seperator} />
+          <div className={styles.separator} />
         </Container>
         {!users && !error && <LoadingDots />}
         {users?.sort(sortUsersByUsername).map((user, i) => (

@@ -67,7 +67,7 @@
   color: var(--link);
 }
 
-.seperator {
+.separator {
   background-color: var(--accents-2);
   height: 1px;
   margin: 8px 0 8px 10px;
