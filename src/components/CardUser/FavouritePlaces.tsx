@@ -16,18 +16,18 @@ const FavouritePlaces: React.FC<FavouritePlacesProps> = ({ user }) => {
             <span>
               Lieblingsplätze:{' '}
               {validPlaces.map((p, i) => (
-                <span className='italic' key={i}>
+                <span className='font-semibold' key={i}>
                   {capitalizeString(p)}
                   {i < validPlaces.length - 1 && ', '}
                 </span>
               ))}
             </span>
           ) : (
-            <p>&nbsp;</p> // Empty line
+            <p>Lieblingsplätze: n/a</p> // Empty line
           )
         })()
       ) : (
-        <p>&nbsp;</p> // Empty line
+        <p>Lieblingsplätze: n/a</p> // Empty line
       )}
     </p>
   )

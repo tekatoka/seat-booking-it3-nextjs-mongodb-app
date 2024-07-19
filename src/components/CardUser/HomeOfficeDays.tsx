@@ -16,7 +16,7 @@ const HomeOfficeDays: React.FC<HomeOfficeDaysProps> = ({ user }) => {
               MA-Tage:{' '}
               {user.homeOfficeDays.map((day, i) => {
                 return (
-                  <span className='italic' key={i}>
+                  <span className='font-semibold' key={i}>
                     {day}
                     {i < count - 1 && ', '}
                   </span>
@@ -26,7 +26,7 @@ const HomeOfficeDays: React.FC<HomeOfficeDaysProps> = ({ user }) => {
           )
         })()
       ) : (
-        <p>MA-Days: n/a</p> // Empty line
+        <p>MA-Tage: n/a</p> // Empty line
       )}
     </p>
   )

@@ -27,7 +27,7 @@ const Absences: React.FC<AbsencesProps> = ({ user }) => {
                   : 'n/a'
 
                 return (
-                  <span className='italic' key={i}>
+                  <span className='font-semibold' key={i}>
                     {tillDate && fromDate.getTime() === tillDate.getTime()
                       ? `am ${fromFormatted}`
                       : `von ${
@@ -44,7 +44,7 @@ const Absences: React.FC<AbsencesProps> = ({ user }) => {
           )
         })()
       ) : (
-        <p>&nbsp;</p> // Empty line
+        <p>Abwesend: n/a</p> // Empty line
       )}
     </p>
   )
