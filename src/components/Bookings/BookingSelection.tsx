@@ -15,6 +15,7 @@ import { capitalizeString, useCurrentUser } from '@/lib/user'
 import styles from './Booking.module.css'
 import { formatDateWithDay } from '@/lib/default'
 import clsx from 'clsx'
+import RoomPlan from '../RoomPlan/RoomPlan'
 
 interface BookingSelectionProps {
   usersData: any
@@ -255,12 +256,13 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
         onClose={handleCloseModal}
         title='IT-3 Zoogehege'
       >
-        <img
+        <RoomPlan workingPlaces={workingPlacesData?.workingPlaces} />
+        {/* <img
           src='images/zoogehege.png'
           alt='Zoogehege'
           style={{ width: '100%' }}
           title='Zoogehege'
-        />
+        /> */}
       </Modal>
     </div>
   )

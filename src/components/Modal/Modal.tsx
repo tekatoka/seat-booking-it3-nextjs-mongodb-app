@@ -1,4 +1,5 @@
 import { FC, ReactNode, useEffect, useCallback } from 'react'
+import styles from './Modal.module.css'
 
 interface ModalProps {
   isOpen: boolean
@@ -10,7 +11,7 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   const handleOutsideClick = useCallback(
     (event: any) => {
-      if (event.target.classList.contains('modal-overlay')) {
+      if (event.target.classList.contains(styles.modalOverlay)) {
         onClose()
       }
     },
@@ -39,19 +40,21 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
   return (
     <div
-      className='fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto modal-overlay'
+      className={`${styles.modalOverlay} fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto`}
       onClick={handleOutsideClick}
       onKeyDown={handleEscapePress}
       role='button'
       aria-label='Close modal'
       tabIndex={0}
     >
-      <div className='bg-white rounded-lg shadow-lg relative w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-3xl mx-auto my-6 sm:my-10'>
+      <div
+        className={`${styles.modalContainer} bg-white rounded-lg shadow-lg relative w-full mx-auto my-6 sm:my-10`}
+      >
         <div className='sticky top-0 bg-white p-4 rounded-t-lg'>
           {title && <h2 className='text-lg font-semibold mb-4'>{title}</h2>}
           <button
             onClick={onClose}
-            className='absolute top-2 right-2 text-gray-600 hover:text-gray-900'
+            className={`${styles.closeButton} absolute top-2 right-2 text-gray-600 hover:text-gray-900`}
             aria-label='Close modal'
           >
             &times;

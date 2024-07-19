@@ -1,0 +1,183 @@
+.room {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  background-color: white; /* Background color for the entire room */
+  padding: 5px; /* Padding around the entire room */
+  position: relative; /* To allow absolute positioning of the label */
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; /* Include padding in width and height */
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: white;
+  padding: 5px; /* Padding inside each column */
+  border-left: 2px solid grey; /* Grey separating lines */
+  box-sizing: border-box; /* Include padding in width and height */
+}
+
+.columnTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: white;
+  padding: 5px; /* Padding inside each column */
+  border-left: 2px solid grey; /* Grey separating lines */
+  box-sizing: border-box; /* Include padding in width and height */
+}
+
+.columnBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: white;
+  padding: 5px; /* Padding inside each column */
+  border-left: 2px solid grey; /* Grey separating lines */
+  box-sizing: border-box; /* Include padding in width and height */
+}
+
+.columnBottomNoBorder {
+  border-left: none; /* Remove border for the first element */
+}
+
+.columnWhite {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: white;
+  padding: 5px; /* Padding inside each column */
+  border-left: 2px solid grey; /* Grey separating lines */
+  box-sizing: border-box; /* Include padding in width and height */
+}
+
+.row {
+  display: flex;
+  justify-content: flex-start; /* Align items to the start of the row */
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width and height */
+}
+
+.table {
+  background-color: lightblue;
+  border: 1px solid #000;
+  margin: 5px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box; /* Include padding in width and height */
+  width: 60px;
+  height: 130px;
+}
+
+.horizontalTable {
+  width: 130px; /* Full width of the column */
+  height: 60px; /* Adjust height as needed */
+  font-size: 1em; /* Responsive font size */
+}
+
+.verticalTable {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  width: 60px; /* Adjust width as needed */
+  height: 130px; /* Adjust height as needed */
+  font-size: 1em; /* Responsive font size */
+}
+
+.greyRectangle {
+  background-color: grey;
+  width: 60px; /* Adjust width as needed */
+  height: 130px; /* Adjust height as needed */
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.label {
+  position: absolute;
+  top: 0; /* Place the label at the top */
+  left: calc(30% + 1px); /* Move to the left of the second column */
+  width: calc(
+    40% - 10px
+  ); /* Width covering the second and third columns minus 5px margin left and right */
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 5px;
+  border: 1px solid grey;
+  text-align: center;
+  z-index: 1; /* Ensure it overlays other elements */
+  font-size: 0.8em; /* Smaller font size for the label */
+}
+
+.space {
+  height: 20px; /* Adjust space height as needed */
+}
+
+.smallSpace {
+  height: 40px; /* Reduced space height as needed */
+}
+
+.largeSpace {
+  height: 80px; /* Adjust space height as needed to move Kaktus and Katze to the top */
+}
+
+.emptySpace {
+  width: 60px;
+  height: 130px; /* Same height as other vertical tables */
+}
+
+@media (max-width: 768px) {
+  .table,
+  .label {
+    font-size: 0.6em; /* Adjust font size for smaller screens */
+  }
+
+  .table,
+  .emptySpace {
+    width: 36px;
+    height: 88px;
+  }
+
+  .horizontalTable {
+    width: 88px;
+    height: 36px;
+  }
+
+  .greyRectangle {
+    width: 24px;
+    height: 76px;
+  }
+
+  .label {
+    left: calc(40% + 1px);
+  }
+}
+
+@media (max-width: 480px) {
+  .table,
+  .label {
+    font-size: 0.35em; /* Adjust font size for smaller screens */
+  }
+
+  .table {
+    width: 28px;
+    height: 62px;
+  }
+
+  .horizontalTable {
+    width: 62px;
+    height: 28px;
+  }
+
+  .greyRectangle {
+    width: 30px;
+    height: 65px;
+  }
+}

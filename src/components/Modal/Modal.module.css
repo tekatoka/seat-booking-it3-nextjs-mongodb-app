@@ -1,0 +1,39 @@
+.modalOverlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modalContainer {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 100%;
+  max-width: 95%;
+  margin: 1.5rem auto;
+}
+
+@media (min-width: 992px) and (max-width: 1279px) {
+  .modalContainer {
+    width: 80%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .modalContainer {
+    max-width: 48rem; /* Adjust this value to match md:max-w-xl */
+  }
+}
+
+@media (min-width: 1536px) {
+  .modalContainer {
+    max-width: 64rem; /* Adjust this value to match lg:max-w-3xl */
+  }
+}
+
+.closeButton {
+  top: 0.5rem;
+  right: 0.5rem;
+}

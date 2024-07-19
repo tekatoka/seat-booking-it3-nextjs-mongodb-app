@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <Head>
-        <title>IT-3 Sitzplatz App</title>
+        <title>IT-3 Sitzplatzbuchung-App</title>
         <meta
           key='viewport'
           name='viewport'
@@ -20,17 +20,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         />
         <meta
           name='description'
-          content='nextjs-mongodb-app is a continuously developed app built with Next.JS and MongoDB. This project goes further and attempts to integrate top features as seen in real-life apps.'
+          content='Wir verlosen unsere Plätz jeden Tag neu! :)'
         />
-        <meta property='og:title' content='Next.js + MongoDB App' />
+        <meta property='og:title' content='IT-3 Sitzplatzbuchung-App' />
         <meta
           property='og:description'
-          content='nextjs-mongodb-app is a continuously developed app built with Next.JS and MongoDB. This project goes further and attempts to integrate top features as seen in real-life apps.'
+          content='Wir verlosen unsere Plätz jeden Tag neu! :)'
         />
-        <meta
-          property='og:image'
-          content='https://repository-images.githubusercontent.com/201392697/5d392300-eef3-11e9-8e20-53310193fbfd'
-        />
+        <meta property='og:image' content='/images/logo-booking-app.svg' />
       </Head>
       <Nav />
       <main className={styles.main}>{children}</main>
