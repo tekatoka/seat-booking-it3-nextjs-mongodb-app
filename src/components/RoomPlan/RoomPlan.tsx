@@ -1,35 +1,26 @@
-import { WorkingPlace } from '@/api-lib/types'
+import { Booking, WorkingPlace } from '@/api-lib/types'
+import { capitalizeString } from '@/lib/user'
 import clsx from 'clsx'
 import React from 'react'
 import styles from './RoomPlan.module.css'
-
-interface TableProps {
-  name: string
-  workingPlace: WorkingPlace[]
-  className?: string
-}
-
-const Table: React.FC<TableProps> = ({ name, workingPlace, className }) => {
-  const place = workingPlace.find(place => place.displayName === name) || {
-    displayName: '',
-    pcName: ''
-  }
-  return (
-    <div className={clsx(styles.table, className)}>
-      {place.displayName}
-      {place.pcName && <div>({place.pcName})</div>}
-    </div>
-  )
-}
+import Table from './Table'
 
 interface RoomProps {
   workingPlaces: WorkingPlace[]
+  todayBooking?: Booking[]
 }
 
-const RoomPlan: React.FC<RoomProps> = ({ workingPlaces }) => {
+const RoomPlan: React.FC<RoomProps> = ({ workingPlaces, todayBooking }) => {
+  const findBooking = (name: string) =>
+    todayBooking?.find(
+      booking =>
+        capitalizeString(booking.workingPlace) === capitalizeString(name)
+    )
+
   const wombat = workingPlaces.find(
     place => place.displayName === 'Wombat'
   ) || { displayName: '', pcName: '' }
+
   const yoda = workingPlaces.find(place => place.displayName === 'Yoda') || {
     displayName: '',
     pcName: ''
@@ -47,11 +38,13 @@ const RoomPlan: React.FC<RoomProps> = ({ workingPlaces }) => {
           <Table
             name='Bär'
             workingPlace={workingPlaces}
+            booking={findBooking('Bär')}
             className={styles.verticalTable}
           />
           <Table
             name='Eichhörnchen'
             workingPlace={workingPlaces}
+            booking={findBooking('Eichhörnchen')}
             className={styles.verticalTable}
           />
         </div>
@@ -59,6 +52,7 @@ const RoomPlan: React.FC<RoomProps> = ({ workingPlaces }) => {
           <Table
             name='Bowser'
             workingPlace={workingPlaces}
+            booking={findBooking('Bowser')}
             className={styles.verticalTable}
           />
           <div className={styles.emptySpace}></div>
@@ -68,17 +62,20 @@ const RoomPlan: React.FC<RoomProps> = ({ workingPlaces }) => {
         <Table
           name='Eule'
           workingPlace={workingPlaces}
+          booking={findBooking('Eule')}
           className={styles.horizontalTable}
         />
         <div className={styles.row}>
           <Table
             name='Einhorn'
             workingPlace={workingPlaces}
+            booking={findBooking('Einhorn')}
             className={styles.verticalTable}
           />
           <Table
             name='Fuchs'
             workingPlace={workingPlaces}
+            booking={findBooking('Fuchs')}
             className={styles.verticalTable}
           />
         </div>
@@ -91,11 +88,13 @@ const RoomPlan: React.FC<RoomProps> = ({ workingPlaces }) => {
           <Table
             name='Kaktus'
             workingPlace={workingPlaces}
+            booking={findBooking('Kaktus')}
             className={styles.verticalTable}
           />
           <Table
             name='Katze'
             workingPlace={workingPlaces}
+            booking={findBooking('Katze')}
             className={styles.verticalTable}
           />
         </div>
@@ -104,11 +103,13 @@ const RoomPlan: React.FC<RoomProps> = ({ workingPlaces }) => {
           <Table
             name='Giraffe'
             workingPlace={workingPlaces}
+            booking={findBooking('Giraffe')}
             className={styles.verticalTable}
           />
           <Table
             name='Hund'
             workingPlace={workingPlaces}
+            booking={findBooking('Hund')}
             className={styles.verticalTable}
           />
         </div>
@@ -118,17 +119,20 @@ const RoomPlan: React.FC<RoomProps> = ({ workingPlaces }) => {
           <Table
             name='Pikachu'
             workingPlace={workingPlaces}
+            booking={findBooking('Pikachu')}
             className={styles.verticalTable}
           />
           <Table
             name='Schiggy'
             workingPlace={workingPlaces}
+            booking={findBooking('Schiggy')}
             className={styles.verticalTable}
           />
         </div>
         <Table
           name='Koala'
           workingPlace={workingPlaces}
+          booking={findBooking('Koala')}
           className={styles.horizontalTable}
         />
       </div>

@@ -77,6 +77,10 @@
   height: 130px;
 }
 
+.table.hasBooking {
+  background-color: lightcoral;
+}
+
 .horizontalTable {
   width: 130px; /* Full width of the column */
   height: 60px; /* Adjust height as needed */
@@ -129,7 +133,7 @@
 }
 
 .emptySpace {
-  width: 60px;
+  width: 0px;
   height: 130px; /* Same height as other vertical tables */
 }
 
@@ -143,11 +147,13 @@
   .emptySpace {
     width: 36px;
     height: 88px;
+    padding: 4px;
   }
 
   .horizontalTable {
     width: 88px;
     height: 36px;
+    padding: 2px;
   }
 
   .greyRectangle {
@@ -166,14 +172,17 @@
     font-size: 0.35em; /* Adjust font size for smaller screens */
   }
 
-  .table {
+  .table,
+  .emptySpace {
     width: 28px;
     height: 62px;
+    padding: 0;
   }
 
   .horizontalTable {
     width: 62px;
     height: 28px;
+    padding: 0;
   }
 
   .greyRectangle {

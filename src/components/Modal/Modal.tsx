@@ -60,7 +60,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
             &times;
           </button>
         </div>
-        <div className='px-6 py-2 overflow-y-auto max-h-[calc(100vh-8rem)]'>
+        <div className='p-2 overflow-y-auto max-h-[calc(100vh-8rem)]'>
           {children}
         </div>
       </div>

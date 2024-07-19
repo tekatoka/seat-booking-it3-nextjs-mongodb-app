@@ -256,7 +256,10 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
         onClose={handleCloseModal}
         title='IT-3 Zoogehege'
       >
-        <RoomPlan workingPlaces={workingPlacesData?.workingPlaces} />
+        <RoomPlan
+          workingPlaces={workingPlacesData?.workingPlaces}
+          todayBooking={todayBooking?.bookings}
+        />
         {/* <img
           src='images/zoogehege.png'
           alt='Zoogehege'
