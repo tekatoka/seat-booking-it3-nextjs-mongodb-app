@@ -6,13 +6,13 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { CalendarAbsence, CalendarHomeOfficeDay } from '@/api-lib/types'
 import CustomToolbar from './CustomToolbar'
 import styles from './Calendar.module.css'
-import { formatDate } from '@/lib/default'
+import { formatDate, normalizeDateUTC } from '@/lib/default'
 
 interface UserCalendarProps {
   absences: CalendarAbsence[]
   homeOfficeDays: CalendarHomeOfficeDay[]
   onRangeChange: (start: Date, end: Date) => void
-  endDate: string
+  endDate: Date
 }
 
 const locales = {
@@ -68,7 +68,7 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
         absence.till ? 'bis ' + formatDate(new Date(absence.till)) : ''
       }`,
       start: new Date(absence.from),
-      end: new Date(absence.till || endDate),
+      end: absence.till ? new Date(absence.till) : normalizeDateUTC(endDate),
       color: absence.color
     })),
     ...homeOfficeDays.map(day => ({

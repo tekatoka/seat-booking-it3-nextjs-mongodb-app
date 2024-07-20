@@ -17,7 +17,6 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({
     start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
   })
-
   const { absences, homeOfficeDays } = useUserAbsencesAndHomeOfficeDays(
     userData,
     dateRange.start,
@@ -40,7 +39,7 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({
           absences={absences}
           homeOfficeDays={homeOfficeDays}
           onRangeChange={handleRangeChange}
-          endDate={formatDateISOString(dateRange.end)}
+          endDate={dateRange.end}
         />
       </Wrapper>
       <Spacer axis='vertical' size={2} />

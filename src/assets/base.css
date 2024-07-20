@@ -127,7 +127,7 @@ main {
   display: none;
 }
 .rbc-time-view .rbc-allday-cell {
-  height: calc(100vh - 98px);
+  /* height: calc(100vh - 98px); */
   max-height: unset;
 }
 .rbc-time-view .rbc-time-content {
