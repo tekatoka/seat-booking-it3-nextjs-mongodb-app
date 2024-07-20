@@ -80,6 +80,8 @@ main {
   display: inline-block;
 }
 
+/* Calendar.module.css */
+
 .rbc-toolbar-label {
   font-weight: 600;
   text-transform: uppercase;
@@ -89,4 +91,54 @@ main {
   display: inline-table !important;
   flex: 0 0 0 !important;
   min-height: 50px !important;
+}
+
+.rbc-month-view {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns for weekdays */
+  border: none !important;
+}
+
+.rbc-month-row {
+  display: contents; /* Make each row contents to align correctly */
+}
+.rbc-month-view {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns for weekdays */
+}
+
+.rbc-month-header {
+  border: 1px solid #ddd;
+}
+
+/* Hide Saturday and Sunday */
+/* .rbc-header:nth-child(7),
+.rbc-header:nth-child(6),
+.rbc-day-bg:nth-child(7),
+.rbc-day-bg:nth-child(6),
+.rbc-date-cell:nth-child(7),
+.rbc-date-cell:nth-child(6),
+.rbc-event-cell:nth-child(7),
+.rbc-event-cell:nth-child(6) {
+  display: none; 
+} */
+
+.rbc-time-view .rbc-label {
+  display: none;
+}
+.rbc-time-view .rbc-allday-cell {
+  height: calc(100vh - 98px);
+  max-height: unset;
+}
+.rbc-time-view .rbc-time-content {
+  display: none;
+}
+
+.rbc-time-header-content {
+  min-height: 450px;
+}
+
+.rbc-btn-group button.active {
+  background-color: black !important;
+  color: white !important;
 }

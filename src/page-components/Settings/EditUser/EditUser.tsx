@@ -1,18 +1,24 @@
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { User, Absence, WorkingPlace } from '@/api-lib/types'
 import { Button } from '@/components/Button'
 import { Spacer } from '@/components/Layout'
 import { fetcher } from '@/lib/fetch'
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import Select from 'react-select'
-import styles from './EditUser.module.css'
-import { LuPlus, LuTrash2 } from 'react-icons/lu'
+import { SketchPicker } from 'react-color'
 import { formatDateAsString, stripTime } from '@/lib/default'
 import Checkbox from '@/components/Input/Checkbox'
 import HomeOfficeDays from './HomeOfficeDays'
 import Absences from './Absences'
+import styles from './EditUser.module.css'
 
 interface CustomDatePickerProps {
   index: number
@@ -69,6 +75,8 @@ export const EditUser: React.FC<EditUserProps> = ({
   const [homeOfficeDays, setHomeOfficeDays] = useState<string[]>(
     user.homeOfficeDays || []
   )
+  const [color, setColor] = useState<string>(user.color || '#000000')
+  const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false)
 
   useEffect(() => {
     if (user.isAdmin != null && isAdminRef.current)
@@ -151,6 +159,7 @@ export const EditUser: React.FC<EditUserProps> = ({
         formData.append('absences', JSON.stringify(validAbsences))
         formData.append('favouritePlaces', JSON.stringify(favouritePlaces))
         formData.append('homeOfficeDays', JSON.stringify(homeOfficeDays))
+        formData.append('color', JSON.stringify(color))
 
         if (isAdminRef.current)
           formData.append(
@@ -171,7 +180,7 @@ export const EditUser: React.FC<EditUserProps> = ({
         setIsLoading(false)
       }
     },
-    [mutate, absences, favouritePlaces, homeOfficeDays, user._id]
+    [mutate, absences, favouritePlaces, homeOfficeDays, color, user._id]
   )
 
   const handleAbsenceChange = (
@@ -223,6 +232,10 @@ export const EditUser: React.FC<EditUserProps> = ({
     label: wp.displayName
   }))
 
+  const handleColorChange = (color: any) => {
+    setColor(color.hex)
+  }
+
   return (
     <section className={styles.card}>
       <h4 className={styles.sectionTitle}>{user.username}</h4>
@@ -259,11 +272,16 @@ export const EditUser: React.FC<EditUserProps> = ({
           setSelectedDays={setHomeOfficeDays}
         />
         <div className={styles.separator} />
+
         <Absences
           absences={absences}
           handleAbsenceChange={handleAbsenceChange}
           addAbsence={addAbsence}
           removeAbsence={removeAbsence}
+          color={color}
+          displayColorPicker={displayColorPicker}
+          setDisplayColorPicker={setDisplayColorPicker}
+          handleColorChange={handleColorChange}
         />
         <Spacer size={0.5} axis='vertical' />
         <div className={styles.separator} />

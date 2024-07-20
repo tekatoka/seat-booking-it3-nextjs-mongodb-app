@@ -16,6 +16,7 @@ export interface User {
   favouritePlaces?: string[]
   homeOfficeDays?: string[]
   isAdmin?: boolean
+  color?: string
 }
 
 export interface NewUser {

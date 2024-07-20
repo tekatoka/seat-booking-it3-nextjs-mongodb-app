@@ -39,18 +39,30 @@ const CustomToolbar = (toolbar: any) => {
       </span>
       <span className='rbc-toolbar-label'>{toolbar.label}</span>
       <span className='rbc-btn-group'>
-        <button type='button' onClick={() => toolbar.onView('month')}>
+        <button
+          type='button'
+          onClick={() => toolbar.onView('month')}
+          className={toolbar.view === 'month' ? 'active' : ''}
+        >
           Monat
         </button>
-        <button type='button' onClick={() => toolbar.onView('week')}>
+        <button
+          type='button'
+          onClick={() => toolbar.onView('work_week')}
+          className={toolbar.view === 'work_week' ? 'active' : ''}
+        >
           Woche
         </button>
-        <button type='button' onClick={() => toolbar.onView('day')}>
+        <button
+          type='button'
+          onClick={() => toolbar.onView('day')}
+          className={toolbar.view === 'day' ? 'active' : ''}
+        >
           Tag
         </button>
-        <button type='button' onClick={() => toolbar.onView('agenda')}>
+        {/* <button type='button' onClick={() => toolbar.onView('agenda')}>
           Agenda
-        </button>
+        </button> */}
       </span>
     </div>
   )

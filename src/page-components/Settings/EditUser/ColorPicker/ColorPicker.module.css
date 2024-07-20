@@ -1,0 +1,26 @@
+.colorPickerContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.colorButton {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.colorPickerPopover {
+  position: absolute;
+  z-index: 2;
+  top: -160px;
+  left: 25px;
+}
+
+.colorPickerCover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

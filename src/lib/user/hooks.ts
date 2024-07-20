@@ -1,12 +1,4 @@
-import {
-  CalendarAbsence,
-  CalendarHomeOfficeDay,
-  User,
-  UserAbsencesAndHomeOfficeDays
-} from '@/api-lib/types'
 import { fetcher } from '@/lib/fetch'
-import { useEffect, useState } from 'react'
-import { formatDate, formatDateISOString } from '../default'
 import useSWR from 'swr'
 
 export function useCurrentUser() {

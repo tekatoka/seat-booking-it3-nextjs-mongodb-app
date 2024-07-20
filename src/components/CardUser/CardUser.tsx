@@ -8,6 +8,7 @@ import { LoadingDots } from '../LoadingDots'
 import FavouritePlaces from './FavouritePlaces'
 import Absences from './Absences'
 import HomeOfficeDays from './HomeOfficeDays'
+import { ColorIndicator } from '../Indicator'
 
 interface CardUserProps {
   user: User
@@ -34,6 +35,13 @@ const CardUser: React.FC<CardUserProps> = ({
             <div className='flex justify-between items-center'>
               <p className='username'>
                 {user.username} {user.isAdmin && ' (Admin)'}
+                {user.color && (
+                  <ColorIndicator
+                    color={user.color}
+                    size={'small'}
+                    style={{ marginLeft: '5px' }}
+                  />
+                )}
               </p>
               <div className='flex justify-between items-center space-x-1'>
                 {isLoading ? (

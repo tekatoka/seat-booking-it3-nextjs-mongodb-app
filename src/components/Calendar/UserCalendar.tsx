@@ -6,6 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { CalendarAbsence, CalendarHomeOfficeDay } from '@/api-lib/types'
 import CustomToolbar from './CustomToolbar'
 import styles from './Calendar.module.css'
+import { formatDate } from '@/lib/default'
 
 interface UserCalendarProps {
   absences: CalendarAbsence[]
@@ -29,16 +30,15 @@ const localizer = dateFnsLocalizer({
 })
 
 const eventStyleGetter = (
-  event: { title: string; start: Date; end: Date },
+  event: { title: string; start: Date; end: Date; color?: string },
   start: Date,
   end: Date,
   isSelected: boolean
 ) => {
   let backgroundColor = '#3174ad' // default color
 
-  // Customize the color based on the event title or other properties
   if (event.title.includes('abwesend')) {
-    backgroundColor = '#f56c6c' // red for absence
+    backgroundColor = event.color || '#f56c6c' // red for absence
   } else if (event.title.includes('Home Office')) {
     backgroundColor = '#67c23a' // green for home office
   }
@@ -53,9 +53,7 @@ const eventStyleGetter = (
     fontSize: '14px'
   }
 
-  return {
-    style
-  }
+  return { style }
 }
 
 const UserCalendar: React.FC<UserCalendarProps> = ({
@@ -66,9 +64,12 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
 }) => {
   const events = [
     ...absences.map(absence => ({
-      title: `${absence.user} abwesend`,
+      title: `${absence.user} abwesend ${
+        absence.till ? 'bis ' + formatDate(new Date(absence.till)) : ''
+      }`,
       start: new Date(absence.from),
-      end: new Date(absence.till || endDate)
+      end: new Date(absence.till || endDate),
+      color: absence.color
     })),
     ...homeOfficeDays.map(day => ({
       title: `${day.user} MA`,
@@ -85,9 +86,7 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
     }
   }
 
-  const formats = {
-    dayHeaderFormat: 'E dd. MMMM'
-  }
+  const formats = { dayHeaderFormat: 'E dd. MMMM' }
 
   return (
     <div className={styles.wrap}>
@@ -99,9 +98,7 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
         style={{ height: 500 }}
         onRangeChange={handleRangeChange}
         eventPropGetter={eventStyleGetter}
-        components={{
-          toolbar: CustomToolbar
-        }}
+        components={{ toolbar: CustomToolbar }}
         messages={{
           allDay: 'Ganztägig',
           previous: 'Zurück',
@@ -121,6 +118,12 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
         formats={formats}
         dayLayoutAlgorithm='no-overlap'
         showAllEvents
+        views={{
+          month: true,
+          work_week: true,
+          day: true,
+          agenda: false
+        }}
       />
     </div>
   )

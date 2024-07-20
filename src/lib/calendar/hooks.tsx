@@ -50,7 +50,8 @@ export const useUserAbsencesAndHomeOfficeDays = (
           userAbsences.push({
             user: user.username,
             from: formatDateISOString(absence.from),
-            till: absence.till ? formatDateISOString(absence.till) : undefined
+            till: absence.till ? formatDateISOString(absence.till) : undefined,
+            color: user.color || '#f56c6c' //red = default
           })
         })
 

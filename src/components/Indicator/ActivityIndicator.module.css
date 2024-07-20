@@ -1,5 +1,5 @@
 .root {
-  display: flex;
+  display: inline-block;
   font-size: 0.875rem;
   align-items: center;
   max-width: 100%;

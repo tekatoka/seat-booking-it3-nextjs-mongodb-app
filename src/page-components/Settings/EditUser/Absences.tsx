@@ -5,6 +5,7 @@ import { formatDateAsString, stripTime } from '@/lib/default'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './EditUser.module.css'
+import ColorPicker from './ColorPicker/ColorPicker'
 
 interface AbsencesProps {
   absences: Absence[]
@@ -15,6 +16,10 @@ interface AbsencesProps {
   ) => void
   addAbsence: () => void
   removeAbsence: (index: number) => void
+  color: string
+  displayColorPicker: boolean
+  setDisplayColorPicker: (display: boolean) => void
+  handleColorChange: (color: any) => void
 }
 
 const CustomDatePicker = ({
@@ -47,12 +52,22 @@ const Absences: React.FC<AbsencesProps> = ({
   absences,
   handleAbsenceChange,
   addAbsence,
-  removeAbsence
+  removeAbsence,
+  color,
+  displayColorPicker,
+  setDisplayColorPicker,
+  handleColorChange
 }) => {
   return (
     <div>
       <span className={styles.label}>Abwesenheiten</span>
-      <div className='my-4 space-y-4 max-w-full'>
+      <ColorPicker
+        color={color}
+        displayColorPicker={displayColorPicker}
+        setDisplayColorPicker={setDisplayColorPicker}
+        handleColorChange={handleColorChange}
+      />
+      <div className='mt-0 mb-4 space-y-4 max-w-full'>
         {absences?.map((absence, index) => (
           <div
             key={index}

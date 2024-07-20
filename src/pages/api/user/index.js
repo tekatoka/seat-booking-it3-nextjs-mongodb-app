@@ -88,12 +88,18 @@ handler.patch(
       homeOfficeDays = JSON.parse(req.body.homeOfficeDays)
     }
 
+    let color
+    if (req.body.color) {
+      color = JSON.parse(req.body.color)
+    }
+
     const user = await updateUserById(db, _id, {
       ...(username && { username }),
       ...(absences && { absences }),
       ...(favouritePlaces && { favouritePlaces }),
       ...(homeOfficeDays && { homeOfficeDays }),
       ...(profilePicture && { profilePicture }),
+      ...(color && { color }),
       isAdmin
     })
 

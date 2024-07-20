@@ -9,7 +9,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import Container from './Container'
 import styles from './Nav.module.css'
-import Spacer from './Spacer'
 import Wrapper from './Wrapper'
 import Image from 'next/image'
 import { LuUser, LuSettings, LuLogOut } from 'react-icons/lu'
@@ -138,7 +137,10 @@ const Nav: React.FC = () => {
           {!loading && !error && (
             <Container>
               {user ? (
-                <UserMenu user={user} mutate={mutate} />
+                <>
+                  <div className={styles.username}>Hallo {user.username}!</div>
+                  <UserMenu user={user} mutate={mutate} />
+                </>
               ) : (
                 <>
                   <ButtonLink
