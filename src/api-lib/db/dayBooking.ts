@@ -1,6 +1,5 @@
 import { Db, ObjectId } from 'mongodb'
 import { DayBooking } from '../types/DayBooking'
-import moment from 'moment-timezone'
 
 // Finds all day bookings
 export async function findAllDayBookings(db: Db): Promise<DayBooking[]> {

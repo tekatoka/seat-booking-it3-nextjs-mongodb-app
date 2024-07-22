@@ -118,7 +118,6 @@ export const getNewBooking = (
   const leastPreferredPlaces = ['wombat', 'yoda']
 
   let placeToBook = ''
-  debugger
   if (user.username === 'Dana') {
     placeToBook = RESERVED_PLACE
   } else {
