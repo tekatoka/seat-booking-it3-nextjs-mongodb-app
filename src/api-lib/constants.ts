@@ -8,15 +8,6 @@ const absenceSchema = {
   additionalProperties: false
 }
 
-const bookingSchema = {
-  type: 'object',
-  properties: {
-    user: { type: 'string' },
-    workingPlace: { type: 'string' }
-  },
-  required: ['user', 'workingPlace']
-}
-
 export const ValidateProps = {
   user: {
     username: { type: 'string', minLength: 3, maxLength: 20 },
