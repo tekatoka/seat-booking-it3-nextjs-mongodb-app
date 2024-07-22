@@ -77,14 +77,15 @@
   height: 130px;
 }
 
-.table.hasBooking {
+.table.hasBooking,
+div.hasBooking {
   background-color: lightcoral;
 }
 
 .horizontalTable {
   width: 130px; /* Full width of the column */
   height: 60px; /* Adjust height as needed */
-  font-size: 1em; /* Responsive font size */
+  font-size: 0.85em; /* Responsive font size */
 }
 
 .verticalTable {
@@ -93,7 +94,7 @@
   transform: rotate(180deg);
   width: 60px; /* Adjust width as needed */
   height: 130px; /* Adjust height as needed */
-  font-size: 1em; /* Responsive font size */
+  font-size: 0.85em; /* Responsive font size */
 }
 
 .greyRectangle {
@@ -140,7 +141,7 @@
 @media (max-width: 768px) {
   .table,
   .label {
-    font-size: 0.6em; /* Adjust font size for smaller screens */
+    font-size: 0.5em; /* Adjust font size for smaller screens */
   }
 
   .table,
@@ -169,7 +170,7 @@
 @media (max-width: 480px) {
   .table,
   .label {
-    font-size: 0.35em; /* Adjust font size for smaller screens */
+    font-size: 0.25em; /* Adjust font size for smaller screens */
   }
 
   .table,

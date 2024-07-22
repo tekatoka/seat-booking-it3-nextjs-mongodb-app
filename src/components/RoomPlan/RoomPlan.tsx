@@ -26,12 +26,14 @@ const RoomPlan: React.FC<RoomProps> = ({ workingPlaces, todayBooking }) => {
     pcName: ''
   }
 
+  const wombatBooking = findBooking('Wombat')
   return (
     <div className={styles.room}>
-      <div className={styles.label}>
+      <div
+        className={clsx(styles.label, wombatBooking ? styles.hasBooking : '')}
+      >
         {wombat.displayName} ({wombat.pcName}): B-206
-        {/* <br />
-        {yoda.displayName}: B-233 */}
+        {wombatBooking ? `- ${wombatBooking.user}` : ''}
       </div>
       <div className={clsx(styles.columnBottom, styles.columnBottomNoBorder)}>
         <div className={styles.row}>

@@ -117,29 +117,17 @@ export const getNewBooking = (
   const takenPlaces = todayBooking.bookings.map(booking => booking.workingPlace)
   const leastPreferredPlaces = ['wombat', 'yoda']
 
-  const allOtherPlacesTaken = workingPlacesData?.workingPlaces.map(
-    (place: WorkingPlace) => place.name
-  )
-
-  let placeToBook =
-    user.favouritePlaces?.find(place => !takenPlaces.includes(place)) ??
-    getRandomPlace(takenPlaces, workingPlacesData)
-
-  if (user.username == 'Dana') {
+  let placeToBook = ''
+  debugger
+  if (user.username === 'Dana') {
     placeToBook = RESERVED_PLACE
   } else {
-    if (allOtherPlacesTaken) {
-      placeToBook =
-        user.favouritePlaces?.find(place => !takenPlaces.includes(place)) ??
-        getRandomPlace(takenPlaces, workingPlacesData)
-    } else {
-      while (
-        takenPlaces.includes(placeToBook) ||
-        leastPreferredPlaces.includes(placeToBook)
-      ) {
-        placeToBook = getRandomPlace(takenPlaces, workingPlacesData)
-      }
-    }
+    placeToBook = getPlaceToBook(
+      user,
+      takenPlaces,
+      leastPreferredPlaces,
+      workingPlacesData
+    )
   }
 
   const newBooking: Booking = {
@@ -149,4 +137,35 @@ export const getNewBooking = (
   }
 
   return newBooking
+}
+
+const getPlaceToBook = (
+  user: User,
+  takenPlaces: string[],
+  leastPreferredPlaces: string[],
+  workingPlacesData: { workingPlaces: WorkingPlace[] }
+): string => {
+  // Try to get a favorite place
+  let placeToBook = user.favouritePlaces?.find(
+    place => !takenPlaces.includes(place)
+  )
+
+  if (!placeToBook) {
+    // Get a random place excluding taken and least preferred places
+    placeToBook = getRandomPlace(
+      [...takenPlaces, ...leastPreferredPlaces],
+      workingPlacesData
+    )
+  }
+
+  if (!placeToBook) {
+    // If no places are available, get a least preferred place
+    placeToBook = getRandomPlace(takenPlaces, {
+      workingPlaces: workingPlacesData.workingPlaces.filter(place =>
+        leastPreferredPlaces.includes(place.name)
+      )
+    })
+  }
+
+  return placeToBook
 }

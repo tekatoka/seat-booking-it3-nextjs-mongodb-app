@@ -60,7 +60,7 @@ export const getLocalDate = (date: Date) => {
 
 export const getDatesBetween = (startDate: Date, endDate: Date): Date[] => {
   const dates: Date[] = []
-  let currentDate = startDate
+  const currentDate = startDate
   while (currentDate <= endDate) {
     dates.push(new Date(currentDate))
     currentDate.setDate(currentDate.getDate() + 1)

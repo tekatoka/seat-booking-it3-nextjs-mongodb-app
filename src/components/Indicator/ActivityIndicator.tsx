@@ -19,6 +19,7 @@ const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({
         />
         {label && <span className={styles.textLabel}>{label}</span>}
       </label>
+      <div style={{ marginBottom: '20px' }} />
     </div>
   )
 }

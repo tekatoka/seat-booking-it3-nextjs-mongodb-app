@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button'
 import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { DropdownSelect, Option } from '@/components/DropdownSelect'
-import { User, DayBooking } from '@/api-lib/types'
+import { User, DayBooking, WorkingPlace } from '@/api-lib/types'
 import toast from 'react-hot-toast'
 import {
   getUsersNotAbsentAndNoBooking,
@@ -121,7 +121,12 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
           const newBooking = getNewBooking(
             selectedUser,
             todayBooking,
-            { workingPlaces: workingPlacesData?.workingPlaces || [] },
+            {
+              workingPlaces:
+                workingPlacesData?.workingPlaces.filter(
+                  (p: WorkingPlace) => p.isActive
+                ) || []
+            },
             usersData
           )
 

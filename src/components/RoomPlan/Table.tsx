@@ -29,7 +29,11 @@ const Table: React.FC<TableProps> = ({
       )}
     >
       {place.displayName}
-      {place.pcName && <div>({place.pcName})</div>}
+      {place.pcName && (
+        <div>
+          ({place.pcName}) {booking ? ` - ${booking.user}` : ''}
+        </div>
+      )}
       {/* {booking && <div>{booking.user}</div>} */}
     </div>
   )
