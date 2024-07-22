@@ -1,8 +1,11 @@
 import { ObjectId } from 'mongodb'
 
+export type AbsenceType = 'default' | 'homeOffice'
+
 export interface Absence {
   from: Date
   till?: Date
+  type: AbsenceType
 }
 
 export interface User {
@@ -36,6 +39,7 @@ export interface CalendarAbsence {
   from: string
   till?: string
   color?: string
+  type: AbsenceType
 }
 
 export interface CalendarHomeOfficeDay {

@@ -5,7 +5,7 @@ import {
   UserAbsencesAndHomeOfficeDays
 } from '@/api-lib/types'
 import { useEffect, useState } from 'react'
-import { formatDateISOString } from '../default'
+import { formatDateISOString, getDatesBetween } from '../default'
 
 const daysOfWeek = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
 
@@ -47,12 +47,32 @@ export const useUserAbsencesAndHomeOfficeDays = (
     users &&
       users.forEach(user => {
         user.absences?.forEach(absence => {
-          userAbsences.push({
-            user: user.username,
-            from: formatDateISOString(absence.from),
-            till: absence.till ? formatDateISOString(absence.till) : undefined,
-            color: user.color || '#f56c6c' //red = default
-          })
+          if (absence.type === 'default') {
+            userAbsences.push({
+              user: user.username,
+              from: formatDateISOString(absence.from),
+              till: absence.till
+                ? formatDateISOString(absence.till)
+                : undefined,
+              color: user.color || '#f56c6c', // red = default,
+              type: 'default'
+            })
+          } else if (absence.type === 'homeOffice') {
+            const from = new Date(absence.from)
+            const till = absence.till
+              ? new Date(absence.till)
+              : new Date(endDate)
+            till.setHours(23, 59, 59) // Set till to the end of the day
+
+            const dates = getDatesBetween(from, till)
+            dates.forEach(date => {
+              userHomeOfficeDays.push({
+                user: user.username,
+                date: formatDateISOString(date),
+                color: user.color || '#67c23a'
+              })
+            })
+          }
         })
 
         user.homeOfficeDays?.forEach(day => {

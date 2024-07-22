@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { User, Absence, WorkingPlace } from '@/api-lib/types'
+import { User, Absence, WorkingPlace, AbsenceType } from '@/api-lib/types'
 import { Button } from '@/components/Button'
 import { Spacer } from '@/components/Layout'
 import { fetcher } from '@/lib/fetch'
@@ -19,34 +19,6 @@ import Checkbox from '@/components/Input/Checkbox'
 import HomeOfficeDays from './HomeOfficeDays'
 import Absences from './Absences'
 import styles from './EditUser.module.css'
-
-interface CustomDatePickerProps {
-  index: number
-  date: Date | string | undefined
-  field: keyof Absence
-  onChange: (index: number, field: keyof Absence, date: Date | null) => void
-  id: string
-}
-
-const CustomDatePicker = ({
-  index,
-  date,
-  field,
-  onChange,
-  id
-}: CustomDatePickerProps) => {
-  const parsedDate = date ? new Date(date) : null
-  return (
-    <DatePicker
-      selected={parsedDate}
-      onChange={(date: Date | null) => onChange(index, field, date)}
-      dateFormat='dd.MM.yyyy'
-      className='ml-1'
-      placeholderText={formatDateAsString(new Date())}
-      id={id}
-    />
-  )
-}
 
 interface EditUserProps {
   user: User
@@ -152,7 +124,8 @@ export const EditUser: React.FC<EditUserProps> = ({
 
           return {
             from: fromDate.toISOString(),
-            till: tillDate ? tillDate.toISOString() : null
+            till: tillDate ? tillDate.toISOString() : null,
+            type: absence.type // Add the absence type
           }
         })
 
@@ -186,12 +159,12 @@ export const EditUser: React.FC<EditUserProps> = ({
   const handleAbsenceChange = (
     index: number,
     field: keyof Absence,
-    date: Date | null
+    value: Date | null | AbsenceType
   ) => {
     const updatedAbsences = [...absences]
     updatedAbsences[index] = {
       ...updatedAbsences[index],
-      [field]: date || new Date()
+      [field]: value || new Date()
     }
 
     // Validation: Check if "till" date is earlier than "from" date
@@ -208,8 +181,14 @@ export const EditUser: React.FC<EditUserProps> = ({
     setAbsences(updatedAbsences)
   }
 
+  const handleAbsenceTypeChange = (index: number, type: AbsenceType) => {
+    const updatedAbsences = [...absences]
+    updatedAbsences[index].type = type
+    setAbsences(updatedAbsences)
+  }
+
   const addAbsence = () => {
-    setAbsences([...absences, { from: stripTime(new Date()) }])
+    setAbsences([...absences, { from: stripTime(new Date()), type: 'default' }])
   }
 
   const removeAbsence = (index: number) => {
@@ -276,6 +255,7 @@ export const EditUser: React.FC<EditUserProps> = ({
         <Absences
           absences={absences}
           handleAbsenceChange={handleAbsenceChange}
+          handleAbsenceTypeChange={handleAbsenceTypeChange}
           addAbsence={addAbsence}
           removeAbsence={removeAbsence}
           color={color}

@@ -40,7 +40,7 @@ const eventStyleGetter = (
   if (event.title.includes('abwesend')) {
     backgroundColor = event.color || '#f56c6c' // red for absence
   } else if (event.title.includes('Home Office')) {
-    backgroundColor = '#67c23a' // green for home office
+    backgroundColor = '#67c23a' // blue for home office
   }
 
   const style: React.CSSProperties = {

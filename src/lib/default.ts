@@ -57,3 +57,13 @@ export const getLocalDate = (date: Date) => {
   date.setHours(date.getHours() - timeOffset / 60)
   return date
 }
+
+export const getDatesBetween = (startDate: Date, endDate: Date): Date[] => {
+  const dates: Date[] = []
+  let currentDate = startDate
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate))
+    currentDate.setDate(currentDate.getDate() + 1)
+  }
+  return dates
+}

@@ -17,7 +17,7 @@ const HomeOfficeDays: React.FC<{
 
   return (
     <div>
-      <span className={styles.label}>Home Office Tage</span>
+      <span className={styles.label}>Feste HomeOffice Tage</span>
       <div className='my-4 space-x-2 flex flex-wrap gap-4'>
         {days.map(day => (
           <Checkbox

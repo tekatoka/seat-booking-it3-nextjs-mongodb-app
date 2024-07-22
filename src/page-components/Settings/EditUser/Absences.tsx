@@ -1,4 +1,4 @@
-import { Absence } from '@/api-lib/types'
+import { Absence, AbsenceType } from '@/api-lib/types'
 import { Button } from '@/components/Button'
 import { LuPlus, LuTrash2 } from 'react-icons/lu'
 import { formatDateAsString, stripTime } from '@/lib/default'
@@ -6,16 +6,18 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './EditUser.module.css'
 import ColorPicker from './ColorPicker/ColorPicker'
+import Checkbox from '@/components/Input/Checkbox'
 
 interface AbsencesProps {
   absences: Absence[]
   handleAbsenceChange: (
     index: number,
     field: keyof Absence,
-    date: Date | null
+    value: Date | null | AbsenceType
   ) => void
   addAbsence: () => void
   removeAbsence: (index: number) => void
+  handleAbsenceTypeChange: (index: number, type: AbsenceType) => void
   color: string
   displayColorPicker: boolean
   setDisplayColorPicker: (display: boolean) => void
@@ -32,7 +34,11 @@ const CustomDatePicker = ({
   index: number
   date: Date | string | undefined
   field: keyof Absence
-  onChange: (index: number, field: keyof Absence, date: Date | null) => void
+  onChange: (
+    index: number,
+    field: keyof Absence,
+    date: Date | null | AbsenceType
+  ) => void
   id: string
 }) => {
   const parsedDate = date ? new Date(date) : null
@@ -53,6 +59,7 @@ const Absences: React.FC<AbsencesProps> = ({
   handleAbsenceChange,
   addAbsence,
   removeAbsence,
+  handleAbsenceTypeChange,
   color,
   displayColorPicker,
   setDisplayColorPicker,
@@ -71,7 +78,7 @@ const Absences: React.FC<AbsencesProps> = ({
         {absences?.map((absence, index) => (
           <div
             key={index}
-            className='flex flex-col sm:flex-row sm:justify-between items-start space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-2 max-w-full'
+            className='flex flex-col sm:flex-row sm:justify-between items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-2 max-w-full'
           >
             <div className='flex flex-col sm:flex-row items-center sm:space-x-4 w-full'>
               <div className='flex items-center space-x-2 w-full sm:w-auto'>
@@ -81,11 +88,11 @@ const Absences: React.FC<AbsencesProps> = ({
                 >
                   von:
                 </label>
-                <div className='flex-1 min-w-[150px]'>
+                <div className='flex-1 min-w-[120px] md:min-w-[125px] md:max-w-[165px]'>
                   <CustomDatePicker
                     index={index}
                     date={absence.from}
-                    field={'from'}
+                    field='from'
                     onChange={handleAbsenceChange}
                     id={`from-${index}`}
                   />
@@ -98,15 +105,28 @@ const Absences: React.FC<AbsencesProps> = ({
                 >
                   bis:
                 </label>
-                <div className='flex-1 min-w-[150px]'>
+                <div className='flex-1 min-w-[120px] md:min-w-[125px] md:max-w-[165px]'>
                   <CustomDatePicker
                     index={index}
                     date={absence.till}
-                    field={'till'}
+                    field='till'
                     onChange={handleAbsenceChange}
                     id={`till-${index}`}
                   />
                 </div>
+                <Checkbox
+                  ariaLabel='type'
+                  label='MA'
+                  isChecked={absence.type === 'homeOffice'}
+                  onChange={e =>
+                    handleAbsenceTypeChange(
+                      index,
+                      e.target.checked ? 'homeOffice' : 'default'
+                    )
+                  }
+                  smallLabel={true}
+                  className='ml-2'
+                />
               </div>
             </div>
             <div className='w-full sm:w-auto mt-2 sm:mt-0'>

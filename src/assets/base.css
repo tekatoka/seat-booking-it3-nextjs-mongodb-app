@@ -80,6 +80,10 @@ main {
   display: inline-block;
 }
 
+.react-datepicker__input-container input {
+  width: 100%;
+}
+
 /* Calendar.module.css */
 
 .rbc-toolbar-label {
