@@ -13,8 +13,8 @@
 .username {
   display: block;
   border-radius: 5px;
-  color: black;
-  background: white;
+  color: var(--foreground);
+  background: transparent;
   border: none;
   font-weight: 500;
   padding: 0 12px;

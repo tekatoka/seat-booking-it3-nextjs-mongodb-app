@@ -11,7 +11,11 @@ import {
   isUserInHomeOffice
 } from '@/lib/dayBooking/utils'
 import { Modal } from '@/components/Modal'
-import { capitalizeString, useCurrentUser } from '@/lib/user'
+import {
+  capitalizeString,
+  useCurrentUser,
+  usersSortedByUsername
+} from '@/lib/user'
 import styles from './Booking.module.css'
 import { formatDateWithDay } from '@/lib/default'
 import clsx from 'clsx'
@@ -54,13 +58,17 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
       const dayBooking = daybookingData?.dayBooking
       if (dayBooking) {
         const availableUsers = getUsersNotAbsentAndNoBooking(dayBooking, {
-          users: currentUser ? [currentUser] : usersData?.users
+          users: currentUser
+            ? [currentUser]
+            : usersSortedByUsername(usersData?.users)
         })
         setAvailableUsers(availableUsers)
         setTodayBooking(dayBooking)
       } else {
         const availableUsers = getUsersNotAbsent({
-          users: currentUser ? [currentUser] : usersData?.users
+          users: currentUser
+            ? [currentUser]
+            : usersSortedByUsername(usersData?.users)
         })
         setAvailableUsers(availableUsers)
       }
@@ -86,7 +94,6 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
       ? `/api/dayBookings/${updatedTodayBooking._id}`
       : '/api/dayBookings'
     const method = updatedTodayBooking._id ? 'PATCH' : 'POST'
-
     const response = await fetch(url, {
       method: method,
       headers: { 'Content-Type': 'application/json' },
@@ -129,7 +136,6 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
             },
             usersData
           )
-
           if (newBooking) {
             const updatedTodayBooking = {
               ...todayBooking,

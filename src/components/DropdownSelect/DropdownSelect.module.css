@@ -9,7 +9,7 @@
 
 .react-select__menu {
   @apply mt-1 shadow-lg rounded-md bg-white;
-  z-index: 10000;
+  z-index: 10000 !important;
 }
 
 .react-select__option {

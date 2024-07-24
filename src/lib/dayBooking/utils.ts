@@ -15,21 +15,6 @@ export const getUserByUsername = (
   return user ?? null
 }
 
-export const getRandomPlace = (
-  excludedPlaces: string[],
-  workingPlacesData: { workingPlaces: WorkingPlace[] }
-): string => {
-  const availablePlaces = workingPlacesData?.workingPlaces
-    .filter(
-      (place: WorkingPlace) =>
-        place.isActive &&
-        !excludedPlaces.includes(place.name) &&
-        place.displayName != RESERVED_PLACE
-    )
-    .map((place: WorkingPlace) => place.name)
-  return availablePlaces[Math.floor(Math.random() * availablePlaces?.length)]
-}
-
 export const isUserAbsentToday = (user: User): boolean => {
   const today = new Date()
   today.setHours(0, 0, 0, 0) // Normalize to midnight
@@ -114,8 +99,33 @@ export const getNewBooking = (
     return null
   }
 
+  const presentUsers = getUsersNotAbsent(userData).filter(
+    u =>
+      u._id != user._id &&
+      !todayBooking.bookings.some(booking => booking.user === u.username)
+  )
+
   const takenPlaces = todayBooking.bookings.map(booking => booking.workingPlace)
   const leastPreferredPlaces = ['wombat', 'yoda']
+
+  const reservedPlaces = presentUsers.reduce((acc: string[], u) => {
+    if (
+      u.favouritePlaces &&
+      u.favouritePlaces[0] != null &&
+      u.favouritePlaces[0] != '' &&
+      !takenPlaces.includes(u.favouritePlaces[0])
+    ) {
+      acc.push(u.favouritePlaces[0])
+    } else if (
+      u.favouritePlaces &&
+      u.favouritePlaces[1] != null &&
+      u.favouritePlaces[1] != '' &&
+      !takenPlaces.includes(u.favouritePlaces[1])
+    ) {
+      acc.push(u.favouritePlaces[1])
+    }
+    return acc
+  }, [])
 
   let placeToBook = ''
   if (user.username === 'Dana') {
@@ -124,6 +134,7 @@ export const getNewBooking = (
     placeToBook = getPlaceToBook(
       user,
       takenPlaces,
+      reservedPlaces,
       leastPreferredPlaces,
       workingPlacesData
     )
@@ -141,6 +152,7 @@ export const getNewBooking = (
 const getPlaceToBook = (
   user: User,
   takenPlaces: string[],
+  reservedPlaces: string[],
   leastPreferredPlaces: string[],
   workingPlacesData: { workingPlaces: WorkingPlace[] }
 ): string => {
@@ -152,7 +164,7 @@ const getPlaceToBook = (
   if (!placeToBook) {
     // Get a random place excluding taken and least preferred places
     placeToBook = getRandomPlace(
-      [...takenPlaces, ...leastPreferredPlaces],
+      [...takenPlaces, ...reservedPlaces, ...leastPreferredPlaces],
       workingPlacesData
     )
   }
@@ -167,4 +179,19 @@ const getPlaceToBook = (
   }
 
   return placeToBook
+}
+
+export const getRandomPlace = (
+  excludedPlaces: string[],
+  workingPlacesData: { workingPlaces: WorkingPlace[] }
+): string => {
+  const availablePlaces = workingPlacesData?.workingPlaces
+    .filter(
+      (place: WorkingPlace) =>
+        place.isActive &&
+        !excludedPlaces.includes(place.name) &&
+        place.displayName != RESERVED_PLACE
+    )
+    .map((place: WorkingPlace) => place.name)
+  return availablePlaces[Math.floor(Math.random() * availablePlaces?.length)]
 }

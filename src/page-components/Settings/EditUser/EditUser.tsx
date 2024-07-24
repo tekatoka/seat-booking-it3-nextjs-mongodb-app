@@ -19,6 +19,7 @@ import Checkbox from '@/components/Input/Checkbox'
 import HomeOfficeDays from './HomeOfficeDays'
 import Absences from './Absences'
 import styles from './EditUser.module.css'
+import { DropdownSelect } from '@/components/DropdownSelect'
 
 interface EditUserProps {
   user: User
@@ -223,24 +224,24 @@ export const EditUser: React.FC<EditUserProps> = ({
       <form onSubmit={onSubmit}>
         <span className={styles.label}>Lieblingsplätze</span>
         <div className='my-4 space-y-4 max-w-full'>
-          <Select
+          <DropdownSelect
             options={workingPlaceOptions}
+            onChange={option => handleFavouritePlaceChange(0, option)}
+            placeholder='1. Lieblingsplatz'
             value={workingPlaceOptions.find(
               option => option.value === favouritePlaces[0]
             )}
-            onChange={option => handleFavouritePlaceChange(0, option)}
-            placeholder='1. Lieblingsplatz'
             isClearable
           />
-          <Select
+          <DropdownSelect
             options={workingPlaceOptions.filter(
               option => option.value !== favouritePlaces[0]
             )}
+            onChange={option => handleFavouritePlaceChange(1, option)}
+            placeholder='2. Lieblingsplatz'
             value={workingPlaceOptions.find(
               option => option.value === favouritePlaces[1]
             )}
-            onChange={option => handleFavouritePlaceChange(1, option)}
-            placeholder='2. Lieblingsplatz'
             isClearable
           />
         </div>

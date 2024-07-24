@@ -12,11 +12,10 @@ import {
 } from '@/components/Bookings'
 import { LoadingDots } from '@/components/LoadingDots'
 import { CalendarComponent } from '@/components/Calendar/CalendarComponent'
-import { formatDateISOString } from '@/lib/default'
+import { formatDateISOString, normalizeDateUTC } from '@/lib/default'
 
 const Hero: React.FC = () => {
-  const today = formatDateISOString(new Date()) // Format the date string
-
+  const today = formatDateISOString(normalizeDateUTC(new Date())) // Format the date string
   const [todayBooking, setTodayBooking] = useState<DayBooking>({
     bookings: [],
     date: new Date()
@@ -27,7 +26,6 @@ const Hero: React.FC = () => {
     useWorkingPlaces()
 
   const { data: dataCurrentUser, error: errorCurrentUser } = useCurrentUser()
-
   const loadingCurrentUser = !dataCurrentUser && !errorCurrentUser
 
   const {
@@ -77,8 +75,9 @@ const Hero: React.FC = () => {
               todayBooking={todayBooking}
               workingPlacesData={workingPlacesData}
             />
-
-            <CalendarComponent userData={usersData?.users} />
+            {dataCurrentUser?.user && (
+              <CalendarComponent userData={usersData?.users} />
+            )}
           </Suspense>
         )}
       </div>
