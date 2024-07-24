@@ -16,8 +16,8 @@ export const getUserByUsername = (
 }
 
 export const isUserAbsentToday = (user: User): boolean => {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0) // Normalize to midnight
+  const today = normalizeDateUTC(new Date())
+  //today.setHours(0, 0, 0, 0) // Normalize to midnight
 
   if (!user.absences) {
     return false
@@ -34,8 +34,8 @@ export const isUserInHomeOffice = (user: User): boolean => {
     return false
   }
 
-  const today = new Date()
-  today.setHours(0, 0, 0, 0) // Normalize to midnight
+  const today = normalizeDateUTC(new Date())
+  //today.setHours(0, 0, 0, 0) // Normalize to midnight
   const weekday = today.toLocaleDateString('de-DE', { weekday: 'short' }) + '.'
 
   return user.homeOfficeDays.includes(weekday)
