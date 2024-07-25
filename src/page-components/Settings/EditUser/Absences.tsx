@@ -41,7 +41,7 @@ const CustomDatePicker = ({
   ) => void
   id: string
 }) => {
-  const parsedDate = normalizeDateUTC(date) ? normalizeDateUTC(new Date(date)) : null
+  const parsedDate = date ? new Date(date) : null
   return (
     <DatePicker
       selected={parsedDate}
