@@ -13,7 +13,7 @@ interface AbsencesProps {
   handleAbsenceChange: (
     index: number,
     field: keyof Absence,
-    value: Date | null | AbsenceType
+    value: Date | null
   ) => void
   addAbsence: () => void
   removeAbsence: (index: number) => void
@@ -37,11 +37,11 @@ const CustomDatePicker = ({
   onChange: (
     index: number,
     field: keyof Absence,
-    date: Date | null | AbsenceType
+    date: Date | null
   ) => void
   id: string
 }) => {
-  const parsedDate = date ? new Date(date) : null
+  const parsedDate = date ? normalizeDateUTC(new Date(date)) : null
   return (
     <DatePicker
       selected={parsedDate}
