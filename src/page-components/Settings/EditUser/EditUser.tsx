@@ -14,7 +14,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import Select from 'react-select'
 import { SketchPicker } from 'react-color'
-import { formatDateAsString, stripTime } from '@/lib/default'
+import { formatDateAsString, stripTime, normalizeDateUTC } from '@/lib/default'
 import Checkbox from '@/components/Input/Checkbox'
 import HomeOfficeDays from './HomeOfficeDays'
 import Absences from './Absences'
@@ -160,18 +160,18 @@ export const EditUser: React.FC<EditUserProps> = ({
   const handleAbsenceChange = (
     index: number,
     field: keyof Absence,
-    value: Date | null | AbsenceType
+    value: Date | null
   ) => {
     const updatedAbsences = [...absences]
     updatedAbsences[index] = {
       ...updatedAbsences[index],
-      [field]: value || new Date()
+      [field]: normalizeDateUTC(value) || normalizeDateUTC(new Date())
     }
 
     // Validation: Check if "till" date is earlier than "from" date
     const { from, till } = updatedAbsences[index]
-    const fromDate = new Date(from)
-    const tillDate = till ? new Date(till) : null
+    const fromDate = normalizeDateUTC(new Date(from))
+    const tillDate = till ? normalizeDateUTC(new Date(till)) : null
     if (field === 'till' && tillDate && fromDate > tillDate) {
       toast.error(
         'Das Enddatum der Abwesenheit darf nicht vor dem Startdatum liegen.'
@@ -189,7 +189,7 @@ export const EditUser: React.FC<EditUserProps> = ({
   }
 
   const addAbsence = () => {
-    setAbsences([...absences, { from: stripTime(new Date()), type: 'default' }])
+    setAbsences([...absences, { from: stripTime(normalizeDateUTC(new Date())), type: 'default' }])
   }
 
   const removeAbsence = (index: number) => {
