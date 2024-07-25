@@ -1,7 +1,7 @@
 import { Absence, AbsenceType } from '@/api-lib/types'
 import { Button } from '@/components/Button'
 import { LuPlus, LuTrash2 } from 'react-icons/lu'
-import { formatDateAsString, stripTime } from '@/lib/default'
+import { formatDateAsString, stripTime, normalizeDateUTC } from '@/lib/default'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './EditUser.module.css'
@@ -41,7 +41,7 @@ const CustomDatePicker = ({
   ) => void
   id: string
 }) => {
-  const parsedDate = date ? new Date(date) : null
+  const parsedDate = normalizeDateUTC(date) ? normalizeDateUTC(new Date(date)) : null
   return (
     <DatePicker
       selected={parsedDate}
