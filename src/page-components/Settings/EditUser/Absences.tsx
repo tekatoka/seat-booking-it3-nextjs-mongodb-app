@@ -1,12 +1,10 @@
 import { Absence, AbsenceType } from '@/api-lib/types'
 import { Button } from '@/components/Button'
 import { LuPlus, LuTrash2 } from 'react-icons/lu'
-import { formatDateAsString, stripTime, normalizeDateUTC } from '@/lib/default'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
 import styles from './EditUser.module.css'
 import ColorPicker from './ColorPicker/ColorPicker'
 import Checkbox from '@/components/Input/Checkbox'
+import { CustomDatePicker } from '@/components/CustomDatePicker'
 
 interface AbsencesProps {
   absences: Absence[]
@@ -22,36 +20,6 @@ interface AbsencesProps {
   displayColorPicker: boolean
   setDisplayColorPicker: (display: boolean) => void
   handleColorChange: (color: any) => void
-}
-
-const CustomDatePicker = ({
-  index,
-  date,
-  field,
-  onChange,
-  id
-}: {
-  index: number
-  date: Date | string | undefined
-  field: keyof Absence
-  onChange: (
-    index: number,
-    field: keyof Absence,
-    date: Date | null
-  ) => void
-  id: string
-}) => {
-  const parsedDate = date ? normalizeDateUTC(new Date(date)) : null
-  return (
-    <DatePicker
-      selected={parsedDate}
-      onChange={(date: Date | null) => onChange(index, field, date)}
-      dateFormat='dd.MM.yyyy'
-      className='ml-1'
-      placeholderText={formatDateAsString(new Date())}
-      id={id}
-    />
-  )
 }
 
 const Absences: React.FC<AbsencesProps> = ({

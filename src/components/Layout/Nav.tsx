@@ -54,7 +54,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, mutate }) => {
       await fetcher('/api/auth', {
         method: 'DELETE'
       })
-      toast.success('Du hast dich erfolgreich abgemeldet')
+      toast.success('Du hast dich erfolgreich abgemeldet', {
+        duration: 1500
+      })
       await mutate({ user: null })
     } catch (e: any) {
       toast.error(e.message)

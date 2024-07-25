@@ -1,4 +1,10 @@
-import { User, WorkingPlace, DayBooking, Booking } from '@/api-lib/types'
+import {
+  User,
+  WorkingPlace,
+  DayBooking,
+  Booking,
+  AbsenceType
+} from '@/api-lib/types'
 import { toast } from 'react-hot-toast'
 import { getLocalDate, normalizeDateUTC } from '../default'
 
@@ -17,20 +23,23 @@ export const getUserByUsername = (
 
 export const isUserAbsentToday = (user: User): boolean => {
   const today = normalizeDateUTC(new Date())
-  //today.setHours(0, 0, 0, 0) // Normalize to midnight
-
   if (!user.absences) {
     return false
   }
-  return user.absences.some(absence => {
-    const from = normalizeDateUTC(new Date(absence.from))
-    const till = absence.till ? normalizeDateUTC(new Date(absence.till)) : null
-    return from <= today && (!till || till >= today)
-  })
+
+  return getAbsenceByTypeAndDate(user, 'default', today)
+}
+
+export const isUserAbsentOnDate = (user: User, date: Date): boolean => {
+  const selectedDate = normalizeDateUTC(date)
+  if (!user.absences) {
+    return false
+  }
+  return getAbsenceByTypeAndDate(user, 'default', selectedDate)
 }
 
 export const isUserInHomeOffice = (user: User): boolean => {
-  if (!user.homeOfficeDays) {
+  if (!user.homeOfficeDays && !user.absences) {
     return false
   }
 
@@ -38,7 +47,30 @@ export const isUserInHomeOffice = (user: User): boolean => {
   //today.setHours(0, 0, 0, 0) // Normalize to midnight
   const weekday = today.toLocaleDateString('de-DE', { weekday: 'short' }) + '.'
 
-  return user.homeOfficeDays.includes(weekday)
+  const homeOfficeToday = getAbsenceByTypeAndDate(user, 'homeOffice', today)
+
+  return (
+    (user.homeOfficeDays?.includes(weekday) || homeOfficeToday) &&
+    !isUserAbsentToday(user)
+  )
+}
+
+const getAbsenceByTypeAndDate = (
+  user: User,
+  type: AbsenceType,
+  today: Date
+) => {
+  return user.absences
+    ? user.absences
+        .filter(a => a.type == type)
+        ?.some(absence => {
+          const from = normalizeDateUTC(new Date(absence.from))
+          const till = absence.till
+            ? normalizeDateUTC(new Date(absence.till))
+            : null
+          return from <= today && (!till || till >= today)
+        })
+    : false
 }
 
 export const getUsersNotAbsent = (usersData: { users: User[] }): User[] => {

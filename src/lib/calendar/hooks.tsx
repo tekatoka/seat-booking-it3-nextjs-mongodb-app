@@ -5,7 +5,13 @@ import {
   UserAbsencesAndHomeOfficeDays
 } from '@/api-lib/types'
 import { useEffect, useState } from 'react'
-import { formatDateISOString, getDatesBetween } from '../default'
+import { useFormState } from 'react-dom'
+import { isUserAbsentOnDate, isUserAbsentToday } from '../dayBooking/utils'
+import {
+  formatDateISOString,
+  getDatesBetween,
+  normalizeDateUTC
+} from '../default'
 
 const daysOfWeek = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
 
@@ -18,11 +24,12 @@ const convertWeekdayToDates = (
   if (dayIndex === -1) return []
 
   const dates: string[] = []
-  const currentDate = new Date(startDate)
+  const currentDate = normalizeDateUTC(new Date(startDate))
 
   while (currentDate <= endDate) {
     if (currentDate.getDay() === dayIndex) {
-      dates.push(new Date(currentDate).toISOString())
+      const normalizedDate = normalizeDateUTC(new Date(currentDate))
+      dates.push(formatDateISOString(normalizedDate))
     }
     currentDate.setDate(currentDate.getDate() + 1)
   }
@@ -74,14 +81,24 @@ export const useUserAbsencesAndHomeOfficeDays = (
             })
           }
         })
-
+        if (user.username == 'Iljana') debugger
         user.homeOfficeDays?.forEach(day => {
           const dates = convertWeekdayToDates(day, startDate, endDate)
           dates.forEach(date => {
-            userHomeOfficeDays.push({
-              user: user.username,
-              date: date
-            })
+            const existsHomeoffice = userHomeOfficeDays.some(
+              homeOfficeDay =>
+                homeOfficeDay.user === user.username &&
+                homeOfficeDay.date === date
+            )
+            if (
+              !existsHomeoffice &&
+              !isUserAbsentOnDate(user, normalizeDateUTC(new Date(date)))
+            ) {
+              userHomeOfficeDays.push({
+                user: user.username,
+                date: date
+              })
+            }
           })
         })
       })

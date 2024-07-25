@@ -8,15 +8,16 @@ interface AbsencesProps {
 }
 
 const Absences: React.FC<AbsencesProps> = ({ user }) => {
+  const absences = user.absences?.filter(a => a.type == 'default')
   return (
     <p className={styles.meta}>
-      {user.absences && user.absences.length > 0 ? (
+      {absences && absences.length > 0 ? (
         (() => {
-          const count = user.absences.length
+          const count = absences.length
           return (
             <div>
               Abwesend:{' '}
-              {user.absences.map((absence, i) => {
+              {absences?.map((absence, i) => {
                 const fromDate = new Date(absence.from)
                 const tillDate = absence.till ? new Date(absence.till) : null
                 const fromFormatted = formatDate(fromDate)

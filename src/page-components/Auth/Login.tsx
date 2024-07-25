@@ -38,7 +38,9 @@ const Login: React.FC = () => {
           })
         })
         mutate({ user: response.user }, false)
-        toast.success('Du hast dich erfolgreich angemeldet')
+        toast.success('Du hast dich erfolgreich angemeldet', {
+          duration: 1500
+        })
       } catch (e) {
         toast.error('Name oder Passwort ist falsch')
       } finally {

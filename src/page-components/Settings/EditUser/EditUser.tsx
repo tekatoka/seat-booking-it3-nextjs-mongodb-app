@@ -189,7 +189,8 @@ export const EditUser: React.FC<EditUserProps> = ({
   }
 
   const addAbsence = () => {
-    setAbsences([...absences, { from: stripTime(new Date()), type: 'default' }])
+    const today = normalizeDateUTC(new Date())
+    setAbsences([...absences, { from: today, type: 'default' }])
   }
 
   const removeAbsence = (index: number) => {
