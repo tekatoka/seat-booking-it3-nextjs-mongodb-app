@@ -81,7 +81,6 @@ export const useUserAbsencesAndHomeOfficeDays = (
             })
           }
         })
-        if (user.username == 'Iljana') debugger
         user.homeOfficeDays?.forEach(day => {
           const dates = convertWeekdayToDates(day, startDate, endDate)
           dates.forEach(date => {
