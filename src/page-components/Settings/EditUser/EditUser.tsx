@@ -165,7 +165,7 @@ export const EditUser: React.FC<EditUserProps> = ({
     const updatedAbsences = [...absences]
     updatedAbsences[index] = {
       ...updatedAbsences[index],
-      [field]: normalizeDateUTC(value) || normalizeDateUTC(new Date())
+      [field]: value ? normalizeDateUTC(value) : normalizeDateUTC(new Date())
     }
 
     // Validation: Check if "till" date is earlier than "from" date
