@@ -4,7 +4,6 @@ import { useUserAbsencesAndHomeOfficeDays } from '@/lib/calendar/hooks'
 import { useCallback, useState } from 'react'
 import { Container, Spacer, Wrapper } from '../Layout'
 import styles from './Calendar.module.css'
-import { formatDateISOString } from '@/lib/default'
 
 interface CalendarComponentProps {
   userData: User[]

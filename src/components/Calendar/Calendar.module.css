@@ -7,7 +7,7 @@
   height: 100%; /* Ensure it takes the full available height */
   display: flex;
   flex-direction: column;
-  overflow: scroll; /* Hide any overflow */
+  overflow: auto; /* Hide any overflow */
 }
 
 .separator {
@@ -23,6 +23,10 @@
   color: var(--secondary);
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.rbc-calendar {
+  height: auto !important;
 }
 
 .rbc-toolbar-label {
