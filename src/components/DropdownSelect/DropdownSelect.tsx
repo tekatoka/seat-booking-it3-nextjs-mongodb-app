@@ -1,8 +1,7 @@
 import useColors from '@/lib/hooks'
 import clsx from 'clsx'
-import { useTheme } from 'next-themes'
 import React, { useEffect, useState } from 'react'
-import Select, { SingleValue } from 'react-select'
+import Select, { components } from 'react-select'
 import styles from './DropdownSelect.module.css'
 
 export interface Option {
@@ -19,6 +18,15 @@ export interface DropdownSelectProps {
   isClearable?: boolean
 }
 
+// Custom SingleValue component for tooltip or other customization
+const CustomSingleValue = (props: any) => {
+  return (
+    <components.SingleValue {...props}>
+      <div title={props.data.label}>{props.data.label}</div>
+    </components.SingleValue>
+  )
+}
+
 export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   options,
   onChange,
@@ -29,7 +37,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   ...props
 }) => {
   const [isDisabled, setIsDisabled] = useState(false)
-  const [selectedValue, setSelectedValue] = useState<SingleValue<Option>>(
+  const [selectedValue, setSelectedValue] = useState<Option | null>(
     value || null
   )
 
@@ -77,7 +85,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
         color: backgroundColor === '#000000' ? backgroundColor : foregroundColor
       }
     }),
-    singleValue: (provided: any, { data }: any) => ({
+    singleValue: (provided: any) => ({
       ...provided,
       whiteSpace: 'pre-wrap'
     })
@@ -86,7 +94,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
     <Select
       options={options}
       onChange={newValue => {
-        setSelectedValue(newValue as SingleValue<Option>)
+        setSelectedValue(newValue as Option | null)
         onChange(newValue as Option | null)
       }}
       placeholder={placeholder || 'Wählen...'}
@@ -100,6 +108,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
       styles={customStyles}
       isClearable={isClearable}
       isDisabled={isDisabled}
+      components={{ SingleValue: CustomSingleValue }} // Use the custom SingleValue component
       {...props}
     />
   )
