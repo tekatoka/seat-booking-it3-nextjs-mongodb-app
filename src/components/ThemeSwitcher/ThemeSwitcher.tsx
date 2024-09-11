@@ -2,7 +2,6 @@ import { useTheme } from 'next-themes'
 import { FC, useEffect, useState } from 'react'
 import { LuMoon, LuSun, LuMonitor } from 'react-icons/lu'
 import { Button } from '../Button' // Ensure the path to Button is correct
-import { IconType } from 'react-icons'
 
 const ThemeSwitcher: FC = () => {
   const { theme, setTheme } = useTheme()
@@ -17,7 +16,7 @@ const ThemeSwitcher: FC = () => {
     dark: 'light'
   }
 
-  const ThemeIcon: IconType =
+  const ThemeIcon =
     {
       light: LuSun,
       dark: LuMoon,
