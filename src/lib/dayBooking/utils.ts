@@ -124,7 +124,7 @@ export const getNewBooking = (
     p => p !== null && p !== ''
   )
   if (todayBooking.bookings.some(booking => booking.user === selectedUser)) {
-    toast.error('Du hast heute bereits einen Arbeitsplatz gezogen!', {
+    toast.error('Du hast heute bereits einen Arbeitsplatz gebucht!', {
       duration: 5000
     })
     console.log(`User ${selectedUser} already has a booking for today`)

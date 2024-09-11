@@ -190,21 +190,27 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
     setIsModalOpen(false)
   }
 
-  const getNoOptionsMessage = (currentUser: User | null) => {
-    if (!currentUser)
+  const getNoOptionsMessage = (
+    currentUser: User | null,
+    availableUsers: Option[]
+  ) => {
+    if (!currentUser && availableUsers?.length == 0)
       return 'Alle Benutzer haben bereits ihre Plätze im Zoogehege gefunden!'
 
-    if (isUserAbsentToday(currentUser)) {
+    if (currentUser && isUserAbsentToday(currentUser)) {
       return 'Du bist heute als Abwesend gemeldet. Du kannst das in den Profil-Einstellungen ändern'
     }
 
-    if (isUserInHomeOffice(currentUser)) {
+    if (currentUser && isUserInHomeOffice(currentUser)) {
       return 'Heute ist Dein MA-Tag. Falsch? Du kannst das in den Profil-Einstellungen ändern'
     }
 
     if (currentUser) return 'Du hast heute bereits einen Arbeitsplatz gebucht!'
 
-    return 'Alle Benutzer haben bereits ihre Plätze im Zoogehege gefunden!'
+    if (availableUsers?.length == 0)
+      'Alle Benutzer haben bereits ihre Plätze im Zoogehege gefunden!'
+
+    return ''
   }
 
   return (
@@ -232,13 +238,16 @@ const BookingSelection: React.FC<BookingSelectionProps> = ({
                       option => option.value === selectedUser
                     ) || null
                   }
-                  noOptionsMessage={getNoOptionsMessage(currentUser)}
+                  noOptionsMessage={getNoOptionsMessage(
+                    currentUser,
+                    availableUserOptions
+                  )}
                 />
                 <Button
                   size='medium'
                   variant='primary'
                   type='submit'
-                  disabled={!selectedUser}
+                  disabled={!selectedUser || availableUserOptions?.length == 0}
                 >
                   Los!
                 </Button>

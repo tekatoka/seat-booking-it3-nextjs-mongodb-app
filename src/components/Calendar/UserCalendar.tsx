@@ -69,12 +69,14 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
       }`,
       start: new Date(absence.from),
       end: absence.till ? new Date(absence.till) : normalizeDateUTC(endDate),
-      color: absence.color
+      color: absence.color,
+      allDay: true
     })),
     ...homeOfficeDays.map(day => ({
       title: `${day.user} MA`,
       start: new Date(day.date),
-      end: new Date(day.date)
+      end: new Date(day.date),
+      allDay: true
     }))
   ]
 
@@ -87,7 +89,6 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
   }
 
   const formats = { dayHeaderFormat: 'E dd. MMMM' }
-
   return (
     <div className={styles.wrap}>
       <Calendar
@@ -96,7 +97,7 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
         startAccessor='start'
         endAccessor='end'
         style={{ height: 'auto' }}
-        onRangeChange={handleRangeChange}
+        //onRangeChange={handleRangeChange}
         eventPropGetter={eventStyleGetter}
         components={{ toolbar: CustomToolbar }}
         messages={{
@@ -124,6 +125,7 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
           day: true,
           agenda: false
         }}
+        defaultView={'work_week'}
       />
     </div>
   )

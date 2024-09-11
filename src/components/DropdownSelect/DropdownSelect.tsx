@@ -1,8 +1,8 @@
 import useColors from '@/lib/hooks'
 import clsx from 'clsx'
 import { useTheme } from 'next-themes'
-import React from 'react'
-import Select from 'react-select'
+import React, { useEffect, useState } from 'react'
+import Select, { SingleValue } from 'react-select'
 import styles from './DropdownSelect.module.css'
 
 export interface Option {
@@ -28,11 +28,32 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   isClearable,
   ...props
 }) => {
+  const [isDisabled, setIsDisabled] = useState(false)
+  const [selectedValue, setSelectedValue] = useState<SingleValue<Option>>(
+    value || null
+  )
+
+  useEffect(() => {
+    if (options.length === 1) {
+      setSelectedValue(options[0])
+      onChange(options[0])
+      setIsDisabled(false)
+    } else if (options.length === 0) {
+      setSelectedValue({ label: noOptionsMessage ?? '', value: 'no-options' })
+      setIsDisabled(true)
+    } else {
+      setIsDisabled(false)
+      if (!options.find(option => option.value === selectedValue?.value)) {
+        setSelectedValue(null)
+      }
+    }
+  }, [options, onChange, noOptionsMessage])
+
   const { foregroundColor, backgroundColor } = useColors()
   const customStyles = {
     control: (base: any) => ({
       ...base,
-      height: 40,
+      height: 'auto',
       minHeight: 40,
       backgroundColor: backgroundColor
     }),
@@ -55,23 +76,31 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
       '&:hover': {
         color: backgroundColor === '#000000' ? backgroundColor : foregroundColor
       }
+    }),
+    singleValue: (provided: any, { data }: any) => ({
+      ...provided,
+      whiteSpace: 'pre-wrap'
     })
   }
   return (
     <Select
       options={options}
-      onChange={newValue => onChange(newValue as Option | null)}
-      placeholder={placeholder || 'Select...'}
+      onChange={newValue => {
+        setSelectedValue(newValue as SingleValue<Option>)
+        onChange(newValue as Option | null)
+      }}
+      placeholder={placeholder || 'Wählen...'}
       className={clsx(styles.selectControl, 'w-full')}
       classNamePrefix='react-select'
       isSearchable
-      value={value}
-      {...props}
+      value={selectedValue}
       noOptionsMessage={({ inputValue }) =>
         !inputValue ? noOptionsMessage : 'Keine Optionen verfügbar'
       }
       styles={customStyles}
       isClearable={isClearable}
+      isDisabled={isDisabled}
+      {...props}
     />
   )
 }

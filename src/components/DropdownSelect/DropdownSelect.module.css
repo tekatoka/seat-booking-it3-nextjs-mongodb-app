@@ -1,5 +1,6 @@
 .react-select__control {
-  height: 50px !important;
+  height: auto;
+  min-height: 50px !important;
   @apply border border-gray-300 rounded-md shadow-sm;
 }
 
@@ -30,4 +31,8 @@
 
 .react-select__control {
   height: 40px !important;
+}
+
+.react-select__single-value {
+  white-space: pre-wrap;
 }
